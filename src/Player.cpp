@@ -20,24 +20,19 @@ Player::~Player() {
 
 bool Player::Awake() {
 
-	//L03: TODO 2: Initialize Player parameters
 	position = Vector2D(96, 96);
 	return true;
 }
 
 bool Player::Start() {
 
-	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/player1.png");
 
-	// L08 TODO 5: Add physics to the player - initialize physics body
 	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
-	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
 
-	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
 	//initialize audio effect
@@ -48,40 +43,50 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	// L08 TODO 5: Add physics to the player - updated player position using physics
-	b2Vec2 velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
+	b2Vec2 velocity = b2Vec2(0, 0);
+	b2Transform pbodyPos;
 
-	// Move left
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -0.2 * 16;
-	}
-
-	// Move right
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = 0.2 * 16;
-	}
-	
-	//Jump
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-		// Apply an initial upward force
-		pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-		isJumping = true;
-	}
-
-	// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
-	if(isJumping == true)
+	switch (Engine::GetInstance().scene.get()->GetGameState())
 	{
-		velocity.y = pbody->body->GetLinearVelocity().y;
+	case GameState::START:
+		velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
+
+		// Move left
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			velocity.x = -0.2 * 16;
+		}
+
+		// Move right
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = 0.2 * 16;
+		}
+
+		//Jump
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
+			// Apply an initial upward force
+			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+			isJumping = true;
+		}
+
+		// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
+		if (isJumping == true)
+		{
+			velocity.y = pbody->body->GetLinearVelocity().y;
+		}
+
+
+		pbodyPos = pbody->body->GetTransform();
+		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY());
+		break;
+	default:
+		break;
 	}
 
-	// Apply the velocity to the player
 	pbody->body->SetLinearVelocity(velocity);
 
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
-
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY());
 	return true;
 }
 
@@ -92,7 +97,6 @@ bool Player::CleanUp()
 	return true;
 }
 
-// L08 TODO 6: Define OnCollision function for the player. 
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{

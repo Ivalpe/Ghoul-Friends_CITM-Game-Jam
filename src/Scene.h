@@ -5,6 +5,10 @@
 
 struct SDL_Texture;
 
+enum class GameState {
+	MAINMENU, START
+};
+
 class Scene : public Module
 {
 public:
@@ -32,9 +36,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	GameState GetGameState() {
+		return state;
+	}
+
 private:
 	SDL_Texture* img;
 
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
+	GameState state;
 };

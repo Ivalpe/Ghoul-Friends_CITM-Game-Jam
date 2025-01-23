@@ -16,6 +16,7 @@ Scene::Scene() : Module()
 {
 	name = "scene";
 	img = nullptr;
+	state = GameState::MAINMENU;
 }
 
 // Destructor
@@ -30,9 +31,9 @@ bool Scene::Awake()
 
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
-	
+
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
-	Item* item = (Item*) Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
+	Item* item = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
 	item->position = Vector2D(200, 672);
 	return ret;
 }
@@ -40,9 +41,6 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	//L06 TODO 3: Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
-
 	return true;
 }
 
@@ -55,20 +53,33 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	//L03 TODO 3: Make the camera movement independent of framerate
+
 	float camSpeed = 1;
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
+	switch (state)
+	{
+	case GameState::MAINMENU:
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+			Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+			state = GameState::START;
+		}
+		break;
+	case GameState::START:
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+			Engine::GetInstance().render.get()->camera.y -= ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+			Engine::GetInstance().render.get()->camera.y += ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			Engine::GetInstance().render.get()->camera.x -= ceil(camSpeed * dt);
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		Engine::GetInstance().render.get()->camera.x += ceil(camSpeed * dt);
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			Engine::GetInstance().render.get()->camera.x += ceil(camSpeed * dt);
+		break;
+	default:
+		break;
+	}
 
 	return true;
 }
@@ -78,7 +89,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
