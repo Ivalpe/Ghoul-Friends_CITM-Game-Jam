@@ -6,6 +6,10 @@
 
 struct SDL_Texture;
 
+enum class DirectionPlayer {
+	LEFT, RIGHT
+};
+
 class Player : public Entity
 {
 public:
@@ -27,6 +31,14 @@ public:
 
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
+	DirectionPlayer GetDirection() {
+		return dp;
+	}
+
+	Vector2D GetPosition() {
+		return position;
+	}
+
 public:
 
 	//Declare player parameters
@@ -41,4 +53,5 @@ public:
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
+	DirectionPlayer dp;
 };

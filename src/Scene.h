@@ -2,6 +2,8 @@
 
 #include "Module.h"
 #include "Player.h"
+#include <vector>
+#include "Power.h"
 
 struct SDL_Texture;
 
@@ -46,4 +48,5 @@ private:
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
 	GameState state;
+	std::vector<Power*> fireballList;
 };

@@ -7,10 +7,12 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Entity.h"
+#include "Physics.h"
 #include "EntityManager.h"
 #include "Player.h"
 #include "Map.h"
 #include "Item.h"
+#include "Power.h"
 
 Scene::Scene() : Module()
 {
@@ -78,9 +80,33 @@ bool Scene::Update(float dt)
 		if (cameraX <= cameraMaxX) Engine::GetInstance().render.get()->camera.x = cameraMaxX;
 		if (cameraY >= 0) Engine::GetInstance().render.get()->camera.y = 0;
 		if (cameraY <= cameraMaxY) Engine::GetInstance().render.get()->camera.y = cameraMaxY;
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+			Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ATTACKPLAYER);
+			power->SetParameters(configParameters.child("entities").child("fireball"));
+			if (player->GetDirection() == DirectionPlayer::LEFT) power->Start(true);
+			else power->Start(false);
+
+			Vector2D playerPos = player->GetPosition();
+			if (player->GetDirection() == DirectionPlayer::LEFT) power->SetPosition({ playerPos.getX() - 4, playerPos.getY() + 14 });
+			else power->SetPosition({ playerPos.getX() + 32, playerPos.getY() + 14 });
+
+			fireballList.push_back(power);
+
+		}
 		break;
 	default:
 		break;
+	}
+
+	for (auto it = fireballList.begin(); it != fireballList.end(); ) {
+		if ((*it)->HasCollision()) {
+			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
+			Engine::GetInstance().entityManager->DestroyEntity(*it);
+			it = fireballList.erase(it);
+		}
+		else ++it;
 	}
 
 	return true;

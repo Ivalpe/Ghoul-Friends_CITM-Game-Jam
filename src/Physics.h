@@ -26,7 +26,8 @@ enum bodyType {
 enum class ColliderType {
 	PLAYER, 
 	ITEM,
-	PLATFORM, 
+	PLATFORM,
+	ATTACKPLAYER,
 	UNKNOWN
 	// ..
 };
@@ -79,6 +80,10 @@ public:
 	void EndContact(b2Contact* contact);
 
 	void DeletePhysBody(PhysBody* physBody);
+
+	void DeleteBody(b2Body* body) {
+		world->DestroyBody(body);
+	}
 
 private:
 

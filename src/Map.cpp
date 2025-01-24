@@ -59,7 +59,7 @@ bool Map::Update(float dt)
 								//Get the screen coordinates from the tile coordinates
 								Vector2D mapCoord = MapToWorld(i, j);
 								//Draw the texture
-								Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), &tileRect);
+								Engine::GetInstance().render->DrawTexture(tileSet->texture, mapCoord.getX(), mapCoord.getY(), SDL_FLIP_NONE, &tileRect);
 							}
 						}
 					}

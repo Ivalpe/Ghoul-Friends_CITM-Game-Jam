@@ -19,7 +19,7 @@ Player::~Player() {
 }
 
 bool Player::Awake() {
-
+	dp = DirectionPlayer::RIGHT;
 	position = Vector2D(96, 96);
 	return true;
 }
@@ -53,11 +53,13 @@ bool Player::Update(float dt)
 
 		// Move left
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			dp = DirectionPlayer::LEFT;
 			velocity.x = -0.2 * 16;
 		}
 
 		// Move right
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			dp = DirectionPlayer::RIGHT;
 			velocity.x = 0.2 * 16;
 		}
 
@@ -79,7 +81,7 @@ bool Player::Update(float dt)
 		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY());
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), SDL_FLIP_NONE);
 		break;
 	default:
 		break;
