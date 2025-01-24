@@ -62,7 +62,7 @@ bool Scene::Update(float dt)
 	{
 	case GameState::MAINMENU:
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-			
+
 			state = GameState::START;
 		}
 		break;
@@ -70,17 +70,17 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render.get()->camera.x = ((player->position.getX() * -1) + 200) * 4;
 		Engine::GetInstance().render.get()->camera.y = ((player->position.getY() * -1) + 100) * 4;
 
-		cameraX = Engine::GetInstance().render.get()->camera.x;  
+		cameraX = Engine::GetInstance().render.get()->camera.x;
 		cameraY = Engine::GetInstance().render.get()->camera.y;
 		cameraMaxX = Engine::GetInstance().map.get()->GetWidth() * 4 * 16 * -1 + 1920;
 		cameraMaxY = Engine::GetInstance().map.get()->GetHeight() * 4 * 16 * -1 + 1080;
-		if (cameraX >= 0) Engine::GetInstance().render.get()->camera.x = 0; 
+		if (cameraX >= 0) Engine::GetInstance().render.get()->camera.x = 0;
 		if (cameraX <= cameraMaxX) Engine::GetInstance().render.get()->camera.x = cameraMaxX;
 		if (cameraY >= 0) Engine::GetInstance().render.get()->camera.y = 0;
 		if (cameraY <= cameraMaxY) Engine::GetInstance().render.get()->camera.y = cameraMaxY;
 		break;
 	default:
-		break; 
+		break;
 	}
 
 	return true;
