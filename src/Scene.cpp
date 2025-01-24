@@ -41,6 +41,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
 	return true;
 }
 
@@ -60,7 +61,7 @@ bool Scene::Update(float dt)
 	{
 	case GameState::MAINMENU:
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-			Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+			
 			state = GameState::START;
 		}
 		break;
