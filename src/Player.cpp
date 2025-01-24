@@ -26,7 +26,7 @@ bool Player::Awake() {
 
 bool Player::Start() {
 
-	texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/player1.png");
+	texture = Engine::GetInstance().textures.get()->Load("Assets/Textures/Player.png");
 
 	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);

@@ -1,4 +1,3 @@
-<!-- Config file for the engine -->
 <config>
   <engine>
     <title>My platformer game</title>
@@ -10,10 +9,10 @@
   </render>
 
   <window>
-    <resolution width="1280" height="720" scale="1"/>
-    <fullscreen value="false"/>
+    <resolution width="1920" height="1080" scale="4"/>
+    <fullscreen value="true"/>
     <borderless value="false"/>
     <resizable value="false"/>
-    <fullscreen_window value="false"/>
+    <fullscreen_window value="true"/>
   </window>
 </config>
