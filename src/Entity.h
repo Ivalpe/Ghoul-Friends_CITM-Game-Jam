@@ -9,6 +9,7 @@ enum class EntityType
 	ITEM,
 	ATTACKPLAYER,
 	ENEMY,
+	CHEST,
 	UNKNOWN
 };
 

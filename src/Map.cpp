@@ -71,7 +71,6 @@ bool Map::Update(float dt)
 	return ret;
 }
 
-// L09: TODO 2: Implement function to the Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
 	TileSet* set = nullptr;
@@ -91,13 +90,11 @@ bool Map::CleanUp()
 {
 	LOG("Unloading map");
 
-	// L06: TODO 2: Make sure you clean up any memory allocated from tilesets/map
 	for (const auto& tileset : mapData.tilesets) {
 		delete tileset;
 	}
 	mapData.tilesets.clear();
 
-	// L07 TODO 2: clean up all layer data
 	for (const auto& layer : mapData.layers)
 	{
 		delete layer;
@@ -115,6 +112,7 @@ bool Map::Load(std::string path, std::string fileName)
 	// Assigns the name of the map file and the path
 	mapFileName = fileName;
 	mapPath = path;
+	posChest.clear();
 	posEnemy.clear();
 	std::string mapPathName = mapPath + mapFileName;
 
@@ -127,15 +125,10 @@ bool Map::Load(std::string path, std::string fileName)
 		ret = false;
 	}
 	else {
-
-		// L06: TODO 3: Implement LoadMap to load the map properties
-		// retrieve the paremeters of the <map> node and store the into the mapData struct
 		mapData.width = mapFileXML.child("map").attribute("width").as_int();
 		mapData.height = mapFileXML.child("map").attribute("height").as_int();
 		mapData.tileWidth = mapFileXML.child("map").attribute("tilewidth").as_int();
 		mapData.tileHeight = mapFileXML.child("map").attribute("tileheight").as_int();
-
-		// L06: TODO 4: Implement the LoadTileSet function to load the tileset properties
 
 		//Iterate the Tileset
 		for (pugi::xml_node tilesetNode = mapFileXML.child("map").child("tileset"); tilesetNode != NULL; tilesetNode = tilesetNode.next_sibling("tileset"))
@@ -158,10 +151,8 @@ bool Map::Load(std::string path, std::string fileName)
 			mapData.tilesets.push_back(tileSet);
 		}
 
-		// L07: TODO 3: Iterate all layers in the TMX and load each of them
 		for (pugi::xml_node layerNode = mapFileXML.child("map").child("layer"); layerNode != NULL; layerNode = layerNode.next_sibling("layer")) {
 
-			// L07: TODO 4: Implement the load of a single layer 
 			//Load the attributes and saved in a new MapLayer
 			MapLayer* mapLayer = new MapLayer();
 			mapLayer->id = layerNode.attribute("id").as_int();
@@ -169,7 +160,6 @@ bool Map::Load(std::string path, std::string fileName)
 			mapLayer->width = layerNode.attribute("width").as_int();
 			mapLayer->height = layerNode.attribute("height").as_int();
 
-			//L09: TODO 6 Call Load Layer Properties
 			LoadProperties(layerNode, mapLayer->properties);
 
 			//Iterate over all the tiles and assign the values in the data array
@@ -194,8 +184,12 @@ bool Map::Load(std::string path, std::string fileName)
 							PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
 							c1->ctype = ColliderType::PLATFORM;
 						}
-						else if (gid == 13) {
-							Vector2D mapCoord = { (float)i * 8, (float)j * 8 };
+						else if (gid == 12) { // Chest
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
+							posChest.push_back(mapCoord);
+						}
+						else if (gid == 13) { // Skeleton
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
 							posEnemy.push_back(mapCoord);
 						}
 					}

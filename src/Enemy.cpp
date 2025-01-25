@@ -118,7 +118,7 @@ bool Enemy::Update(float dt) {
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
 	if (currentAnimation == &attack)
-		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? - 16 : + 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 	else
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 
@@ -199,10 +199,8 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::UNKNOWN:
 		break;
 	case ColliderType::ATTACKPLAYER:
-		if (physA->ctype != ColliderType::SENSOR) {
+		if (physA->ctype != ColliderType::SENSOR)
 			currentAnimation = &die;
-			
-		}
 		break;
 	case ColliderType::PLAYER:
 		if (physA->ctype == ColliderType::SENSOR) {

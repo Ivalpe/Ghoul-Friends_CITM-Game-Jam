@@ -149,6 +149,10 @@ public:
         return posEnemy;
     }
 
+    std::vector<Vector2D> GetChestList() {
+        return posChest;
+    }
+
 public: 
     std::string mapFileName;
     std::string mapPath;
@@ -157,4 +161,5 @@ private:
     bool mapLoaded;
     MapData mapData;
     std::vector<Vector2D> posEnemy;
+    std::vector<Vector2D> posChest;
 };

@@ -95,6 +95,18 @@
 					</animations>
 				</skeleton>
 			</enemies>
+			<chest texture="Assets/Maps/tileset.png" w="16" h="16">
+				<animations>
+						<closed loop="true" speed="0.06">
+							<frame x="112" y="96" w="16" h="16" />
+						</closed>
+						<open loop="true" speed="0.06">
+							<frame x="128" y="96" w="16" h="16" />
+							<frame x="144" y="96" w="16" h="16" />
+							<frame x="160" y="96" w="16" h="16" />
+						</open>
+				</animations>
+			</chest>
 			<fireball texture="Assets/Textures/Fireball.png" w="8" h="8">
 				<animations>
 					<idle loop="true" speed="0.12">

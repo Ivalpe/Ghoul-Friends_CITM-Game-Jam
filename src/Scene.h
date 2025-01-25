@@ -5,6 +5,7 @@
 #include <vector>
 #include "Power.h"
 #include "Enemy.h"
+#include "Chest.h"
 
 struct SDL_Texture;
 
@@ -61,4 +62,5 @@ private:
 	GameState state;
 	std::vector<Power*> fireballList;
 	std::vector<Enemy*> enemyList;
+	std::vector<Chest*> chestList;
 };

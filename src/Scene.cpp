@@ -14,6 +14,7 @@
 #include "Item.h"
 #include "Power.h"
 #include "Enemy.h"
+#include "Chest.h"
 
 Scene::Scene() : Module()
 {
@@ -33,7 +34,6 @@ bool Scene::Awake()
 	LOG("Loading Scene");
 	bool ret = true;
 
-	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
 
@@ -76,6 +76,15 @@ bool Scene::Update(float dt)
 				en->Start();
 				en->SetPosition({ enemy.getX(), enemy.getY() });
 				enemyList.push_back(en);
+			}
+
+			std::vector<Vector2D> listChest = Engine::GetInstance().map->GetChestList();
+			for (auto chest : listChest) {
+				Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
+				ch->SetParameters(configParameters.child("entities").child("chest"));
+				ch->Start();
+				ch->SetPosition({ chest.getX(), chest.getY() });
+				chestList.push_back(ch);
 			}
 
 			state = GameState::START;

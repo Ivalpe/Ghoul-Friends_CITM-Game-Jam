@@ -14,7 +14,8 @@ EntityManager::EntityManager() : Module()
 
 // Destructor
 EntityManager::~EntityManager()
-{}
+{
+}
 
 // Called before render is available
 bool EntityManager::Awake()
@@ -82,6 +83,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::ENEMY:
 		entity = new Enemy();
 		break;
+	case EntityType::CHEST:
+		entity = new Chest();
+		break;
 	default:
 		break;
 	}
@@ -114,8 +118,18 @@ bool EntityManager::Update(float dt)
 	bool ret = true;
 	for (const auto entity : entities)
 	{
-		if (entity->active == false) continue;
-		ret = entity->Update(dt);
+		if (entity->type != EntityType::PLAYER) {
+			if (entity->active == false) continue;
+			ret = entity->Update(dt);
+		}
+	}
+
+	for (const auto entity : entities)
+	{
+		if (entity->type == EntityType::PLAYER) {
+			if (entity->active == false) continue;
+			ret = entity->Update(dt);
+		}
 	}
 	return ret;
 }
