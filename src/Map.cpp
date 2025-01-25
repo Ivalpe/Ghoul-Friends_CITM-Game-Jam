@@ -115,6 +115,7 @@ bool Map::Load(std::string path, std::string fileName)
 	// Assigns the name of the map file and the path
 	mapFileName = fileName;
 	mapPath = path;
+	posEnemy.clear();
 	std::string mapPathName = mapPath + mapFileName;
 
 	pugi::xml_document mapFileXML;
@@ -184,7 +185,7 @@ bool Map::Load(std::string path, std::string fileName)
 
 		//Iterate the layer and create colliders
 		for (const auto& mapLayer : mapData.layers) {
-			if (mapLayer->name == "Collisions") {
+			if (mapLayer->name == "Collisions" || mapLayer->name == "Events") {
 				for (int i = 0; i < mapData.width; i++) {
 					for (int j = 0; j < mapData.height; j++) {
 						int gid = mapLayer->Get(i, j);
@@ -192,6 +193,10 @@ bool Map::Load(std::string path, std::string fileName)
 							Vector2D mapCoord = MapToWorld(i, j);
 							PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
 							c1->ctype = ColliderType::PLATFORM;
+						}
+						else if (gid == 13) {
+							Vector2D mapCoord = { (float)i * 8, (float)j * 8 };
+							posEnemy.push_back(mapCoord);
 						}
 					}
 				}

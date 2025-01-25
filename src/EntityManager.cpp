@@ -79,6 +79,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::ATTACKPLAYER:
 		entity = new Power(type);
 		break;
+	case EntityType::ENEMY:
+		entity = new Enemy();
+		break;
 	default:
 		break;
 	}

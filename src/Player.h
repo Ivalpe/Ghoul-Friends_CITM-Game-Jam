@@ -26,6 +26,10 @@ public:
 
 	bool CleanUp();
 
+	void SetParameters(pugi::xml_node parameters) {
+		this->parameters = parameters;
+	}
+
 	// L08 TODO 6: Define OnCollision function for the player. 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
@@ -46,12 +50,9 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 
-	//Audio fx
-	int pickCoinFxId;
-
-	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	DirectionPlayer dp;
+	pugi::xml_node parameters;
 };

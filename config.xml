@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
 	<engine>
-		<title>The Ritual</title>
+		<title>Game Jam</title>
 		<maxFrameDuration value="16" />
 	</engine>
 	<render>
@@ -15,30 +15,17 @@
 		<fullscreen_window value="true" />
 	</window>
 	<scene>
-		<savedGame value="false" x="144" y="184" level="1" coins="0" />
 		<levels>
-			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="452" iy="292" />
-			<map path="Assets/Maps/" name="Level1.tmx" number="1" ix="60" iy="192" />
-			<map path="Assets/Maps/" name="Level2.tmx" number="2" ix="1910" iy="140" />
-			<map path="Assets/Maps/" name="Level3.tmx" number="3" ix="100" iy="20" />
-			<map path="Assets/Maps/" name="Level4.tmx" number="4" ix="484" iy="212" />
+			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="89" iy="264" />
 		</levels>
 		<entities>
-			<player dx="52" dy="175" dlevel="1" ix="452" iy="292" x="144" y="184" w="16" h="32" texture="Assets/Textures/PlayerV2.png">
+			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/Player.png">
 				<animations>
 					<idle loop="true" speed="0.06">
 						<frame x="0" y="32" w="16" h="32" />
 						<frame x="16" y="32" w="16" h="32" />
 						<frame x="32" y="32" w="16" h="32" />
 					</idle>
-					<run loop="true" speed="0.12">
-						<frame x="0" y="0" w="16" h="32" />
-						<frame x="16" y="0" w="16" h="32" />
-						<frame x="32" y="0" w="16" h="32" />
-						<frame x="48" y="0" w="16" h="32" />
-						<frame x="64" y="0" w="16" h="32" />
-						<frame x="80" y="0" w="16" h="32" />
-					</run>
 					<shoot>
 						<frame x="0" y="64" w="16" h="32" />
 						<frame x="16" y="64" w="16" h="32" />
@@ -73,11 +60,11 @@
 				</animations>
 			</player>
 			<enemies>
-				<evilwizard w="16" h="32" texture="Assets/Textures/Enemies.png" gravity="true">
+				<skeleton w="16" h="16" texture="Assets/Textures/Skeleton.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.06">
-							<frame x="0" y="96" w="16" h="32" />
-							<frame x="16" y="96" w="16" h="32" />
+							<frame x="0" y="0" w="16" h="16" />
+							<frame x="16" y="0" w="16" h="16" />
 						</idle>
 						<dmg loop="false" speed="0.06">
 							<frame x="64" y="64" w="16" h="32" />
@@ -93,78 +80,7 @@
 							<frame x="80" y="64" w="16" h="32" />
 						</die>
 					</animations>
-				</evilwizard>
-				<bat w="21" h="16" texture="Assets/Textures/Enemies.png" gravity="false">
-					<animations>
-						<fly loop="true" speed="0.06">
-							<frame x="0" y="160" w="21" h="16" />
-							<frame x="21" y="160" w="21" h="16" />
-							<frame x="42" y="160" w="21" h="16" />
-							<frame x="63" y="160" w="21" h="16" />
-						</fly>
-						<idle loop="true" speed="0.06">
-							<frame x="0" y="176" w="21" h="16" />
-							<frame x="21" y="176" w="21" h="16" />
-						</idle>
-						<die loop="false" speed="0.06">
-							<frame x="84" y="160" w="21" h="16" />
-							<frame x="105" y="160" w="21" h="16" />
-						</die>
-					</animations>
-				</bat>
-				<boss w="32" h="48" texture="Assets/Textures/Boss.png" gravity="true">
-					<animations>
-						<idle loop="true" speed="0.06">
-							<frame x="0" y="0" w="32" h="48" />
-							<frame x="32" y="0" w="32" h="48" />
-							<frame x="64" y="0" w="32" h="48" />
-							<frame x="96" y="0" w="32" h="48" />
-							<frame x="128" y="0" w="32" h="48" />
-							<frame x="160" y="0" w="32" h="48" />
-							<frame x="192" y="0" w="32" h="48" />
-							<frame x="224" y="0" w="32" h="48" />
-						</idle>
-						<dmg loop="false" speed="0.06">
-							<frame x="0" y="0" w="32" h="48" />
-							<frame x="304" y="0" w="32" h="48" />
-							<frame x="336" y="0" w="32" h="48" />
-						</dmg>
-						<crouch loop="true" speed="0.06">
-							<frame x="0" y="48" w="48" h="48" />
-							<frame x="48" y="48" w="48" h="48" />
-							<frame x="96" y="48" w="48" h="48" />
-							<frame x="144" y="48" w="48" h="48" />
-						</crouch>
-						<walk loop="true" speed="0.12">
-							<frame x="0" y="240" w="48" h="48" />
-							<frame x="48" y="240" w="48" h="48" />
-							<frame x="96" y="240" w="48" h="48" />
-							<frame x="144" y="240" w="48" h="48" />
-							<frame x="192" y="240" w="48" h="48" />
-							<frame x="240" y="240" w="48" h="48" />
-							<frame x="288" y="240" w="48" h="48" />
-							<frame x="336" y="240" w="48" h="48" />
-						</walk>
-						<die loop="false" speed="0.06">
-							<frame x="0" y="192" w="64" h="48" />
-							<frame x="64" y="192" w="64" h="48" />
-							<frame x="128" y="192" w="64" h="48" />
-							<frame x="192" y="192" w="64" h="48" />
-						</die>
-						<attack loop="false" speed="0.20">
-							<frame x="0" y="96" w="80" h="48" />
-							<frame x="80" y="96" w="80" h="48" />
-							<frame x="160" y="96" w="80" h="48" />
-							<frame x="240" y="96" w="80" h="48" />
-							<frame x="320" y="96" w="80" h="48" />
-							<frame x="0" y="144" w="80" h="48" />
-							<frame x="80" y="144" w="80" h="48" />
-							<frame x="160" y="144" w="80" h="48" />
-							<frame x="240" y="144" w="80" h="48" />
-							<frame x="320" y="144" w="80" h="48" />
-						</attack>
-					</animations>
-				</boss>
+				</skeleton>
 			</enemies>
 			<fireball texture="Assets/Textures/Fireball.png" w="8" h="8">
 				<animations>
@@ -185,153 +101,6 @@
 					</explode>
 				</animations>
 			</fireball>
-			<bigfireball texture="Assets/Textures/Fireball.png" w="16" h="16">
-				<animations>
-					<idle loop="true" speed="0.12">
-						<frame x="96" y="0" w="32" h="32" />
-						<frame x="128" y="0" w="32" h="32" />
-						<frame x="160" y="0" w="32" h="32" />
-						<frame x="192" y="0" w="32" h="32" />
-					</idle>
-					<fire loop="false" speed="0.12">
-						<frame x="0" y="0" w="32" h="32" />
-						<frame x="32" y="0" w="32" h="32" />
-						<frame x="64" y="0" w="32" h="32" />
-					</fire>
-					<explode loop="false" speed="0.16">
-						<frame x="96" y="32" w="32" h="32" />
-						<frame x="128" y="32" w="32" h="32" />
-						<frame x="160" y="32" w="32" h="32" />
-						<frame x="192" y="32" w="32" h="32" />
-					</explode>
-				</animations>
-			</bigfireball>
-			<meleeattack texture="Assets/Textures/AttackBoss.png" w="32" h="48">
-				<animations>
-					<idle loop="true" speed="0.12">
-						<frame x="0" y="0" w="32" h="48" />
-					</idle>
-				</animations>
-			</meleeattack>
-			<firecamp texture="Assets/Textures/Firecamp.png" w="16" h="16">
-				<animations>
-					<idle loop="false" speed="0.16">
-						<frame x="0" y="0" w="16" h="16" />
-					</idle>
-					<on loop="true" speed="0.06">
-						<frame x="0" y="16" w="16" h="16" />
-						<frame x="16" y="16" w="16" h="16" />
-						<frame x="32" y="16" w="16" h="16" />
-						<frame x="48" y="16" w="16" h="16" />
-						<frame x="64" y="16" w="16" h="16" />
-					</on>
-				</animations>
-			</firecamp>
-			<poison texture="Assets/Textures/Poison.png" w="8" h="32">
-				<animations>
-					<idle loop="true" speed="0.10">
-						<frame x="0" y="0" w="8" h="32" />
-						<frame x="8" y="0" w="8" h="32" />
-						<frame x="16" y="0" w="8" h="32" />
-						<frame x="24" y="0" w="8" h="32" />
-						<frame x="32" y="0" w="8" h="32" />
-						<frame x="40" y="0" w="8" h="32" />
-						<frame x="48" y="0" w="8" h="32" />
-						<frame x="56" y="0" w="8" h="32" />
-						<frame x="64" y="0" w="8" h="32" />
-						<frame x="72" y="0" w="8" h="32" />
-						<frame x="80" y="0" w="8" h="32" />
-						<frame x="88" y="0" w="8" h="32" />
-						<frame x="96" y="0" w="8" h="32" />
-						<frame x="104" y="0" w="8" h="32" />
-						<frame x="112" y="0" w="8" h="32" />
-						<frame x="120" y="0" w="8" h="32" />
-					</idle>
-				</animations>
-			</poison>
-			<items>
-				<coin w="8" h="8" texture="Assets/Textures/Items+HUD.png">
-					<animations>
-						<idle loop="true" speed="0.12">
-							<frame x="0" y="80" w="16" h="16" />
-							<frame x="16" y="80" w="16" h="16" />
-							<frame x="32" y="80" w="16" h="16" />
-							<frame x="48" y="80" w="16" h="16" />
-							<frame x="64" y="80" w="16" h="16" />
-							<frame x="80" y="80" w="16" h="16" />
-							<frame x="96" y="80" w="16" h="16" />
-							<frame x="112" y="80" w="16" h="16" />
-						</idle>
-						<collect loop="false" speed="0.12">
-							<frame x="128" y="80" w="16" h="16" />
-							<frame x="144" y="80" w="16" h="16" />
-							<frame x="160" y="80" w="16" h="16" />
-							<frame x="176" y="80" w="16" h="16" />
-						</collect>
-					</animations>
-				</coin>
-				<fireup w="8" h="8" texture="Assets/Textures/Items+HUD.png">
-					<animations>
-						<idle loop="true" speed="0.12">
-							<frame x="0" y="96" w="16" h="16" />
-							<frame x="16" y="96" w="16" h="16" />
-							<frame x="32" y="96" w="16" h="16" />
-							<frame x="48" y="96" w="16" h="16" />
-						</idle>
-						<collect loop="false" speed="0.12">
-							<frame x="64" y="96" w="16" h="16" />
-							<frame x="80" y="96" w="16" h="16" />
-							<frame x="96" y="96" w="16" h="16" />
-							<frame x="112" y="96" w="16" h="16" />
-							<frame x="128" y="96" w="16" h="16" />
-						</collect>
-					</animations>
-				</fireup>
-				<health w="8" h="8" texture="Assets/Textures/Items+HUD.png">
-					<animations>
-						<idle loop="true" speed="0.12">
-							<frame x="0" y="64" w="16" h="16" />
-							<frame x="16" y="64" w="16" h="16" />
-							<frame x="32" y="64" w="16" h="16" />
-							<frame x="48" y="64" w="16" h="16" />
-						</idle>
-						<collect loop="false" speed="0.12">
-							<frame x="64" y="64" w="16" h="16" />
-							<frame x="80" y="64" w="16" h="16" />
-							<frame x="96" y="64" w="16" h="16" />
-						</collect>
-					</animations>
-				</health>
-			</items>
 		</entities>
-		<audio>
-			<fx>
-				<fireball1SFX path="Assets/Audio/Fx/magic-fireball.ogg" />
-				<fireball2SFX path="Assets/Audio/Fx/fireball_land.ogg" />
-				<bigfireball1SFX path="Assets/Audio/Fx/big_fireball.ogg" />
-				<bigfireball2SFX path="Assets/Audio/Fx/bigfireball_land.ogg" />
-				<enemydSFX path="Assets/Audio/Fx/enemy_die.ogg" />
-				<saveSFX path="Assets/Audio/Fx/save.ogg" />
-				<loadSFX path="Assets/Audio/Fx/load_save.ogg" />
-				<pdeathSFX path="Assets/Audio/Fx/player_death.ogg" />
-				<acidkillSFX path="Assets/Audio/Fx/acid.ogg" />
-				<bonfireSFX path="Assets/Audio/Fx/bonfire.ogg" />
-				<landSFX path="Assets/Audio/Fx/land.ogg" />
-				<jumpSFX path="Assets/Audio/Fx/jump.ogg" />
-				<damageSFX path="Assets/Audio/Fx/damage_player.ogg" />
-				<stone_doorSFX path="Assets/Audio/Fx/stone_door.ogg" />
-				<button_clickSFX path="Assets/Audio/Fx/button_click.ogg" />
-				<item_pickupSFX path="Assets/Audio/Fx/item_pickup.ogg" />
-				<bossDieSFX path="Assets/Audio/Fx/bossDie.ogg" />
-				<bossSwordSFX path="Assets/Audio/Fx/bossSword.ogg" />
-				<bossDmgSFX path="Assets/Audio/Fx/damage_2_alex.ogg" />
-			</fx>
-			<music>
-				<MainMenuMusic path="Assets/Audio/Music/Medieval Vol. 2 4 (Loop).wav" />
-				<LevelMusic path="Assets/Audio/Music/Action 3 Loop.wav" />
-				<BossMusic path="Assets/Audio/Music/1. Abyssal Tyrant (Loop).wav" />
-				<Ending path="Assets/Audio/Music/festive mood.wav" />
-			</music>
-		</audio>
 	</scene>
 </config>

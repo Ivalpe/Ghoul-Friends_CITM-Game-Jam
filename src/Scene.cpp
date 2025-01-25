@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Item.h"
 #include "Power.h"
+#include "Enemy.h"
 
 Scene::Scene() : Module()
 {
@@ -23,7 +24,8 @@ Scene::Scene() : Module()
 
 // Destructor
 Scene::~Scene()
-{}
+{
+}
 
 // Called before render is available
 bool Scene::Awake()
@@ -33,6 +35,7 @@ bool Scene::Awake()
 
 	//L04: TODO 3b: Instantiate the player using the entity manager
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
+	player->SetParameters(configParameters.child("entities").child("player"));
 
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	Item* item = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
@@ -43,7 +46,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "Level0.tmx");
 	return true;
 }
 
@@ -64,6 +67,16 @@ bool Scene::Update(float dt)
 	{
 	case GameState::MAINMENU:
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+
+			std::vector<Vector2D> listEnemy = Engine::GetInstance().map->GetEnemyList();
+			for (auto enemy : listEnemy) {
+				Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+				en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
+				en->SetEnemyType(EnemyType::SKELETON);
+				en->Start();
+				en->SetPosition({ enemy.getX(), enemy.getY() });
+				enemyList.push_back(en);
+			}
 
 			state = GameState::START;
 		}
@@ -95,6 +108,7 @@ bool Scene::Update(float dt)
 			fireballList.push_back(power);
 
 		}
+
 		break;
 	default:
 		break;
