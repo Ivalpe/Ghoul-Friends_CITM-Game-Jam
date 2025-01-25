@@ -201,7 +201,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ATTACKPLAYER:
 		if (physA->ctype != ColliderType::SENSOR) {
 			currentAnimation = &die;
-			currentAnimation->Reset();
+			
 		}
 		break;
 	case ColliderType::PLAYER:
