@@ -165,7 +165,3 @@ void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		break;
 	}
 }
-
-bool Enemy::IsDead() {
-	return dead;
-}

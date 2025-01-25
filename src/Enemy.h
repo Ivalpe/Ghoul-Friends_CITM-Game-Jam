@@ -56,7 +56,9 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
-	bool IsDead();
+	bool IsDead() {
+		return dead;
+	}
 
 	b2Body* getBody() {
 		return pbody->body;

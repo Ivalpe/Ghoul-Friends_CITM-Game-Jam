@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "SDL2/SDL.h"
 #include "Box2D/Box2D.h"
+#include <vector>
 
 struct SDL_Texture;
 
@@ -57,4 +58,5 @@ public:
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	DirectionPlayer dp;
 	pugi::xml_node parameters;
+	SDL_RendererFlip flipType;
 };

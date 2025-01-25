@@ -23,7 +23,7 @@ bool Power::Awake() {
 bool Power::Start(bool inv) {
 
 	inverted = inv;
-	col = false;
+	colision = false;
 	//initilize textures
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
 	texW = parameters.attribute("w").as_int();
@@ -52,9 +52,7 @@ bool Power::Start(bool inv) {
 bool Power::Update(float dt) {
 	if (true) {
 		//if (!Engine::GetInstance().scene.get()->IsPause()) {
-		if (statePower == StatePower::DIE && 
-			currentAnimation->HasFinished()) 
-			col = true;
+		if (statePower == StatePower::DIE && currentAnimation->HasFinished()) colision = true;
 		else if (statePower == StatePower::DIE) pbody->body->SetLinearVelocity({ 0, 0 });
 		else {
 			float speed = inverted ? -5.0f : 5.0f;
@@ -116,5 +114,5 @@ void Power::OnCollision(PhysBody* physA, PhysBody* physB) {
 }
 
 bool Power::HasCollision() {
-	return col;
+	return colision;
 }

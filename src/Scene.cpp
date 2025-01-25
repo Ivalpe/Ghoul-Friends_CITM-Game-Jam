@@ -94,21 +94,6 @@ bool Scene::Update(float dt)
 		if (cameraY >= 0) Engine::GetInstance().render.get()->camera.y = 0;
 		if (cameraY <= cameraMaxY) Engine::GetInstance().render.get()->camera.y = cameraMaxY;
 
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-			Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ATTACKPLAYER);
-			power->SetParameters(configParameters.child("entities").child("fireball"));
-			if (player->GetDirection() == DirectionPlayer::LEFT) power->Start(true);
-			else power->Start(false);
-
-			Vector2D playerPos = player->GetPosition();
-			if (player->GetDirection() == DirectionPlayer::LEFT) power->SetPosition({ playerPos.getX() - 4, playerPos.getY() + 14 });
-			else power->SetPosition({ playerPos.getX() + 32, playerPos.getY() + 14 });
-
-			fireballList.push_back(power);
-
-		}
-
 		break;
 	default:
 		break;
@@ -119,6 +104,17 @@ bool Scene::Update(float dt)
 			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
 			Engine::GetInstance().entityManager->DestroyEntity(*it);
 			it = fireballList.erase(it);
+		}
+		else ++it;
+	}
+
+	// Clear dead enemies from the list
+	for (auto it = enemyList.begin(); it != enemyList.end();) {
+		if ((*it)->IsDead()) {
+			Engine::GetInstance().physics->DeleteBody((*it)->getSensorBody());
+			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
+			Engine::GetInstance().entityManager->DestroyEntity(*it);
+			it = enemyList.erase(it);
 		}
 		else ++it;
 	}
@@ -135,6 +131,19 @@ bool Scene::PostUpdate()
 		ret = false;
 
 	return ret;
+}
+
+void Scene::CreateAttack() {
+	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ATTACKPLAYER);
+	power->SetParameters(configParameters.child("entities").child("fireball"));
+	if (player->GetDirection() == DirectionPlayer::LEFT) power->Start(true);
+	else power->Start(false);
+
+	Vector2D playerPos = player->GetPosition();
+	if (player->GetDirection() == DirectionPlayer::LEFT) power->SetPosition({ playerPos.getX() - 4, playerPos.getY() + 14 });
+	else power->SetPosition({ playerPos.getX() + 32, playerPos.getY() + 8 });
+
+	fireballList.push_back(power);
 }
 
 // Called before quitting

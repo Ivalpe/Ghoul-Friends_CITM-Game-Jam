@@ -63,13 +63,12 @@ private:
 	PhysBody* pbody;
 	bool hasPlayedFire = false;
 
-
 	Timer explosionTimer;
 	float explosionTime;
 	Timer fireTimer;
 	float fireTime;
 
-	bool col;
+	bool colision;
 	bool inverted;
 
 	int tempAttack = 1;

@@ -36,6 +36,8 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
+	void CreateAttack();
+
 	// Called before quitting
 	bool CleanUp();
 

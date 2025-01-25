@@ -37,12 +37,13 @@ bool Player::Start() {
 	pbody->listener = this;
 
 	pbody->ctype = ColliderType::PLAYER;
+	flipType = SDL_FLIP_NONE;
 
 	return true;
 }
 
 bool Player::Update(float dt)
-{
+{	
 	b2Vec2 velocity = b2Vec2(0, 0);
 	b2Transform pbodyPos;
 
@@ -55,12 +56,18 @@ bool Player::Update(float dt)
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			dp = DirectionPlayer::LEFT;
 			velocity.x = -0.2 * 16;
+			flipType = SDL_FLIP_NONE;
 		}
 
 		// Move right
 		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			dp = DirectionPlayer::RIGHT;
 			velocity.x = 0.2 * 16;
+			flipType = SDL_FLIP_HORIZONTAL;
+		}
+
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			Engine::GetInstance().scene.get()->CreateAttack();
 		}
 
 		//Jump
@@ -81,7 +88,7 @@ bool Player::Update(float dt)
 		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 2, SDL_FLIP_NONE);
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 2, flipType);
 		break;
 	default:
 		break;
