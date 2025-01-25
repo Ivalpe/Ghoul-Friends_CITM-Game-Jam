@@ -46,6 +46,8 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 
+	int life = 100;
+
 	//Audio fx
 	int pickCoinFxId;
 
