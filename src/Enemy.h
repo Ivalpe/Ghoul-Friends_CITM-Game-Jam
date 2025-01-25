@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Animation.h"
 #include "Physics.h"
+#include "Pathfinding.h"
 
 struct SDL_Texture;
 
@@ -43,6 +44,8 @@ public:
 
 	bool CleanUp();
 
+	void MovementEnemy(float dt);
+
 	void SetParameters(pugi::xml_node parameters) {
 		this->parameters = parameters;
 	}
@@ -53,6 +56,7 @@ public:
 
 	void SetPosition(Vector2D pos);
 	Vector2D GetPosition();
+	void ResetPath();
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
@@ -66,6 +70,10 @@ public:
 
 	b2Body* getSensorBody() {
 		return sensor->body;
+	}
+
+	b2Body* getRangeBody() {
+		return rangeAttack->body;
 	}
 
 	DirectionEnemy GetDirection() {
@@ -89,11 +97,13 @@ private:
 
 	PhysBody* pbody;
 	PhysBody* sensor;
-	bool dead, followPlayer;
+	PhysBody* rangeAttack;
+	bool dead, followPlayer, rangePlayer;
 	b2Vec2 velocity;
 	float speed;
 	int id;
 
+	Pathfinding* pathfinding;
 	int tempChangeAnimation;
 	bool directionLeft = true;
 };

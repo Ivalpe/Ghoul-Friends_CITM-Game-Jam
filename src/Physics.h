@@ -30,6 +30,7 @@ enum class ColliderType {
 	ATTACKPLAYER,
 	SKELETON,
 	SENSOR,
+	RANGEATTACK,
 	UNKNOWN
 	// ..
 };
@@ -86,6 +87,10 @@ public:
 
 	void DeleteBody(b2Body* body) {
 		world->DestroyBody(body);
+	}
+
+	bool GetDebug() {
+		return debug;
 	}
 
 private:

@@ -49,6 +49,10 @@ public:
 		return player->life;
 	}
 
+	Vector2D GetPlayerPosition() {
+		return player->GetPosition();
+	}
+
 private:
 	SDL_Texture* img;
 

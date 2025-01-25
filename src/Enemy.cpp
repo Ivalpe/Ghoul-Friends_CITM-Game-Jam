@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "Map.h"
+#include "Pathfinding.h"
 
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
@@ -24,6 +25,7 @@ bool Enemy::Awake() {
 bool Enemy::Start() {
 	tempChangeAnimation = 120;
 	followPlayer = false;
+	rangePlayer = false;
 	speed = 1.9f;
 
 	//Initilize textures
@@ -48,9 +50,16 @@ bool Enemy::Start() {
 	pbody->listener = this;
 
 	//Sensor
-	sensor = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texH, texW * 4, bodyType::KINEMATIC);
+	sensor = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY() + texH, texW * 12, texH, bodyType::KINEMATIC);
 	sensor->ctype = ColliderType::SENSOR;
 	sensor->listener = this;
+
+	rangeAttack = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX() - 32, (int)position.getY() + texH, texW * 2, texH, bodyType::KINEMATIC);
+	rangeAttack->ctype = ColliderType::RANGEATTACK;
+	rangeAttack->listener = this;
+
+	pathfinding = new Pathfinding();
+	ResetPath();
 
 	// Set the gravity of the body
 	if (!parameters.attribute("gravity").as_bool()) pbody->body->SetGravityScale(0);
@@ -71,12 +80,18 @@ bool Enemy::Update(float dt) {
 	if (currentAnimation == &walk) {
 		if (directionLeft) {
 			velocity.x = -speed;
-			flipType = SDL_FLIP_HORIZONTAL;
 		}
 		else {
 			velocity.x = +speed;
-			flipType = SDL_FLIP_NONE;
 		}
+	}
+
+	if (followPlayer && !rangePlayer) {
+		MovementEnemy(dt);
+	}
+
+	if (rangePlayer) {
+		currentAnimation = &attack;
 	}
 
 	/*
@@ -102,12 +117,16 @@ bool Enemy::Update(float dt) {
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
+	if (currentAnimation == &attack)
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? - 16 : + 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+	else
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
 
 	b2Vec2 enemyPos = pbody->body->GetPosition();
 	sensor->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
+	rangeAttack->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
 
 	if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;
 	return true;
@@ -117,6 +136,42 @@ bool Enemy::CleanUp()
 {
 	Engine::GetInstance().textures.get()->UnLoad(texture);
 	return true;
+}
+
+void Enemy::MovementEnemy(float dt) {
+	//Reset
+	Vector2D pos = GetPosition();
+	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
+	pathfinding->ResetPath(tilePos);
+
+	int max = 20;
+	bool found = false;
+	while (!found) {
+		found = pathfinding->PropagateAStar(MANHATTAN);
+		max--;
+		if (max == 0) break;
+		if (Engine::GetInstance().physics.get()->GetDebug())
+			pathfinding->DrawPath();
+	}
+
+	if (found) {
+		int sizeBread = pathfinding->breadcrumbs.size();
+		Vector2D posBread;
+		if (sizeBread >= 2) posBread = pathfinding->breadcrumbs[pathfinding->breadcrumbs.size() - 2];
+		else posBread = pathfinding->breadcrumbs[pathfinding->breadcrumbs.size() - 1];
+
+		//Movement Enemy
+		if (currentAnimation != &die) {
+			if (posBread.getX() <= tilePos.getX()) {
+				velocity.x = -speed;
+				flipType = SDL_FLIP_NONE;
+			}
+			else {
+				velocity.x = speed;
+				flipType = SDL_FLIP_HORIZONTAL;
+			}
+		}
+	}
 }
 
 void Enemy::SetPosition(Vector2D pos) {
@@ -132,6 +187,11 @@ Vector2D Enemy::GetPosition() {
 	return pos;
 }
 
+void Enemy::ResetPath() {
+	Vector2D pos = GetPosition();
+	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap(pos.getX(), pos.getY());
+	pathfinding->ResetPath(tilePos);
+}
 
 void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
@@ -140,13 +200,18 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ATTACKPLAYER:
 		if (physA->ctype != ColliderType::SENSOR) {
-
 			currentAnimation = &die;
 			currentAnimation->Reset();
-
 		}
 		break;
 	case ColliderType::PLAYER:
+		if (physA->ctype == ColliderType::SENSOR) {
+			followPlayer = true;
+		}
+		if (physA->ctype == ColliderType::RANGEATTACK) {
+			rangePlayer = true;
+		}
+
 		break;
 	default:
 		break;
@@ -159,6 +224,11 @@ void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLAYER:
 		if (physA->ctype == ColliderType::SENSOR) {
 			followPlayer = false;
+		}
+		if (physA->ctype == ColliderType::RANGEATTACK) {
+			rangePlayer = false;
+			currentAnimation->Reset();
+			currentAnimation = &idle;
 		}
 		break;
 	default:

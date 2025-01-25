@@ -133,6 +133,10 @@ public:
     // L09: TODO 6: Load a group of properties 
     bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
+    MapLayer* GetNavigationLayer();
+
+    Vector2D WorldToMap(int x, int y);
+
     int GetWidth() {
         return mapData.width;
     }
