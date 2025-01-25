@@ -43,6 +43,10 @@ public:
 		return state;
 	}
 
+	int GetPlayerLife() {
+		return player->life;
+	}
+
 private:
 	SDL_Texture* img;
 

@@ -50,6 +50,8 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 
+	int life = 100;
+
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping

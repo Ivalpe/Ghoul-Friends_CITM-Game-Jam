@@ -86,6 +86,8 @@
     </ClCompile>
     <ClCompile Include="src\Enemy.cpp">
       <Filter>Source Files\Game</Filter>
+    <ClCompile Include="src\UIManager.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +153,8 @@
     </ClInclude>
     <ClInclude Include="src\Enemy.h">
       <Filter>Source Files\Game</Filter>
+    <ClInclude Include="src\UIManager.h">
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
