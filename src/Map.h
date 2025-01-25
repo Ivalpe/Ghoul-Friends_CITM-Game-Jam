@@ -3,6 +3,7 @@
 #include "Module.h"
 #include <list>
 #include <vector>
+#include <map>
 
 // L09: TODO 5: Add attributes to the property structure
 struct Properties
@@ -140,12 +141,16 @@ public:
         return mapData.height;
     }
 
+    std::vector<Vector2D> GetEnemyList() {
+        return posEnemy;
+    }
+
 public: 
     std::string mapFileName;
     std::string mapPath;
 
 private:
     bool mapLoaded;
-    // L06: DONE 1: Declare a variable data of the struct MapData
     MapData mapData;
+    std::vector<Vector2D> posEnemy;
 };

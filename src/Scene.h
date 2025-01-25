@@ -4,6 +4,7 @@
 #include "Player.h"
 #include <vector>
 #include "Power.h"
+#include "Enemy.h"
 
 struct SDL_Texture;
 
@@ -53,4 +54,5 @@ private:
 	Player* player;
 	GameState state;
 	std::vector<Power*> fireballList;
+	std::vector<Enemy*> enemyList;
 };
