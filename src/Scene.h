@@ -39,6 +39,10 @@ public:
 
 	void CreateAttack();
 
+	void DrawText(bool draw) {
+		drawChestText = draw;
+	}
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -63,4 +67,6 @@ private:
 	std::vector<Power*> fireballList;
 	std::vector<Enemy*> enemyList;
 	std::vector<Chest*> chestList;
+	bool drawChestText = false;
+	pugi::xml_document textsParameters;
 };

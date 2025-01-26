@@ -72,6 +72,9 @@ void Chest::SetPosition(Vector2D pos) {
 void Chest::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
+	case ColliderType::PLAYER:
+		Engine::GetInstance().scene->DrawText(true);
+		break;
 	default:
 		break;
 	}
@@ -80,6 +83,9 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB) {
 void Chest::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
+	case ColliderType::PLAYER:
+		Engine::GetInstance().scene->DrawText(false);
+		break;
 	default:
 		break;
 	}

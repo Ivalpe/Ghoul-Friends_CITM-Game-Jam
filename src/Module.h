@@ -58,6 +58,7 @@ public:
 		return true;
 	}
 
+
 public:
 
 	std::string name;

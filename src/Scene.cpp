@@ -21,6 +21,7 @@ Scene::Scene() : Module()
 	name = "scene";
 	img = nullptr;
 	state = GameState::MAINMENU;
+	textsParameters.load_file("texts.xml");
 }
 
 // Destructor
@@ -127,6 +128,11 @@ bool Scene::Update(float dt)
 			it = enemyList.erase(it);
 		}
 		else ++it;
+	}
+
+	if (drawChestText) {
+		std::string text = textsParameters.child("OpenChest").attribute("text").as_string();
+		Engine::GetInstance().render->DrawText(text.c_str(), 60, 60, text.size() * 10, 40);
 	}
 
 	return true;
