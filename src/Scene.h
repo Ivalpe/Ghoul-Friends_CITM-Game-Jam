@@ -2,6 +2,7 @@
 
 #include "Module.h"
 #include "Player.h"
+#include "Merchant.h"
 #include <vector>
 #include "Power.h"
 #include "Enemy.h"
@@ -73,6 +74,7 @@ private:
 	std::vector<Power*> fireballList;
 	std::vector<Enemy*> enemyList;
 	std::vector<Chest*> chestList;
+	std::vector<Merchant*> eventsList;
 	bool drawChestText = false;
 	pugi::xml_document textsParameters;
 	std::map<SDL_Texture*, int> itemsList;

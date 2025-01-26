@@ -15,7 +15,8 @@ Map::Map() : Module(), mapLoaded(false)
 
 // Destructor
 Map::~Map()
-{}
+{
+}
 
 // Called before render is available
 bool Map::Awake()
@@ -112,6 +113,7 @@ bool Map::Load(std::string path, std::string fileName)
 	// Assigns the name of the map file and the path
 	mapFileName = fileName;
 	mapPath = path;
+	posRandomEvent.clear();
 	posChest.clear();
 	posEnemy.clear();
 	std::string mapPathName = mapPath + mapFileName;
@@ -191,6 +193,10 @@ bool Map::Load(std::string path, std::string fileName)
 						else if (gid == 13) { // Skeleton
 							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
 							posEnemy.push_back(mapCoord);
+						}
+						else if (gid == 14) { // Random Event
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
+							posRandomEvent.push_back(mapCoord);
 						}
 					}
 				}

@@ -104,7 +104,7 @@ Vector2D Power::GetPosition() {
 }
 void Power::OnCollision(PhysBody* physA, PhysBody* physB) {
 
-	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGEATTACK) {
+	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGE) {
 		statePower = StatePower::DIE;
 		currentAnimation = &explode;
 
