@@ -43,7 +43,7 @@ bool Player::Start() {
 }
 
 bool Player::Update(float dt)
-{	
+{
 	b2Vec2 velocity = b2Vec2(0, 0);
 	b2Transform pbodyPos;
 
@@ -66,8 +66,16 @@ bool Player::Update(float dt)
 			flipType = SDL_FLIP_HORIZONTAL;
 		}
 
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		if (coolFire && timer > 0) timer--;
+
+		if (timer == 0) {
+			coolFire = false;
+		}
+
+		if (!coolFire && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 			Engine::GetInstance().scene.get()->CreateAttack();
+			coolFire = true;
+			timer = fireRate;
 		}
 
 		//Jump
@@ -104,6 +112,24 @@ bool Player::CleanUp()
 	LOG("Cleanup player");
 	Engine::GetInstance().textures.get()->UnLoad(texture);
 	return true;
+}
+
+void Player::AddItem(int item) {
+	if (item >= 0 && item <= 19) { //Drums
+		fireRate *= 0.8;
+	}
+	else if (item >= 20 && item <= 39) { //Armor
+
+	}
+	else if (item >= 30 && item <= 59) { //Book
+
+	}
+	else if (item >= 40 && item <= 79) { //Life
+
+	}
+	else if (item >= 50 && item <= 100) { //Regeneration
+
+	}
 }
 
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) {

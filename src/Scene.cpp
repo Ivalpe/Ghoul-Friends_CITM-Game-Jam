@@ -21,6 +21,7 @@ Scene::Scene() : Module()
 	name = "scene";
 	state = GameState::MAINMENU;
 	textsParameters.load_file("texts.xml");
+	srand(time(NULL));
 }
 
 // Destructor
@@ -150,11 +151,16 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		AddItem(1);
+	}
+
 	return true;
 }
 
 void Scene::AddItem(int item) {
-	if (item == 1) {
+
+	if (item >= 0 && item <= 19) {
 		auto it = itemsList.find(drums);
 		if (it != itemsList.end()) {
 			it->second++;
@@ -162,8 +168,9 @@ void Scene::AddItem(int item) {
 		else {
 			itemsList.emplace(drums, 1);
 		}
+		player->AddItem(item);
 	}
-	else if (item == 2) {
+	else if (item >= 20 && item <= 39) {
 		auto it = itemsList.find(armor);
 		if (it != itemsList.end()) {
 			it->second++;
@@ -172,7 +179,7 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(armor, 1);
 		}
 	}
-	else if (item == 3) {
+	else if (item >= 30 && item <= 59) {
 		auto it = itemsList.find(book);
 		if (it != itemsList.end()) {
 			it->second++;
@@ -181,7 +188,7 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(book, 1);
 		}
 	}
-	else if (item == 4) {
+	else if (item >= 40 && item <= 79) {
 		auto it = itemsList.find(life);
 		if (it != itemsList.end()) {
 			it->second++;
@@ -190,7 +197,7 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(life, 1);
 		}
 	}
-	else if (item == 5) {
+	else if (item >= 50 && item <= 100) {
 		auto it = itemsList.find(regeneration);
 		if (it != itemsList.end()) {
 			it->second++;

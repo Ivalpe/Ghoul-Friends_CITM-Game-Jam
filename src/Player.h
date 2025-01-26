@@ -16,7 +16,7 @@ class Player : public Entity
 public:
 
 	Player();
-	
+
 	virtual ~Player();
 
 	bool Awake();
@@ -26,6 +26,8 @@ public:
 	bool Update(float dt);
 
 	bool CleanUp();
+
+	void AddItem(int item);
 
 	void SetParameters(pugi::xml_node parameters) {
 		this->parameters = parameters;
@@ -52,6 +54,8 @@ public:
 	int texW, texH;
 
 	int life = 100;
+	int fireRate = 60, timer;
+	bool coolFire = false;
 
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping

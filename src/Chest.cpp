@@ -55,7 +55,7 @@ bool Chest::Update(float dt) {
 
 	if (openChest && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
 		currentAnimation = &open;
-		int i = rand() % 5 + 1;
+		int i = rand() % 100 + 1;
 		Engine::GetInstance().scene->AddItem(i);
 		Engine::GetInstance().scene->DrawText(false);
 	}
