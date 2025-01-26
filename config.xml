@@ -95,16 +95,26 @@
 					</animations>
 				</skeleton>
 			</enemies>
+			<merchant texture="Assets/Textures/merchant.png" w="16" h="16">
+				<animations>
+					<idle>
+						<frame x="0" y="0" w="16" h="16" />
+					</idle>
+					<sell>
+						<frame x="16" y="0" w="16" h="16" />
+					</sell>
+				</animations>
+			</merchant>
 			<chest texture="Assets/Maps/tileset.png" w="16" h="16">
 				<animations>
-						<closed loop="true" speed="0.06">
-							<frame x="112" y="96" w="16" h="16" />
-						</closed>
-						<open loop="false" speed="0.10">
-							<frame x="128" y="96" w="16" h="16" />
-							<frame x="144" y="96" w="16" h="16" />
-							<frame x="160" y="96" w="16" h="16" />
-						</open>
+					<closed loop="true" speed="0.06">
+						<frame x="112" y="96" w="16" h="16" />
+					</closed>
+					<open loop="false" speed="0.10">
+						<frame x="128" y="96" w="16" h="16" />
+						<frame x="144" y="96" w="16" h="16" />
+						<frame x="160" y="96" w="16" h="16" />
+					</open>
 				</animations>
 			</chest>
 			<fireball texture="Assets/Textures/Fireball.png" w="8" h="8">

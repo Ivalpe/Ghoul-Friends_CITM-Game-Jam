@@ -30,7 +30,7 @@ enum class ColliderType {
 	ATTACKPLAYER,
 	SKELETON,
 	SENSOR,
-	RANGEATTACK,
+	RANGE,
 	UNKNOWN
 	// ..
 };
