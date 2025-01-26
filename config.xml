@@ -16,7 +16,7 @@
 	</window>
 	<scene>
 		<levels>
-			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="89" iy="264" />
+			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="73" iy="232" />
 		</levels>
 		<entities>
 			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/Player.png">
