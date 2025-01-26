@@ -57,9 +57,14 @@ public:
 	int fireRate = 60, timer;
 	bool coolFire = false;
 
+	//temporary damage counter
+	int damageCounter = 0;
+
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
+	bool isDamaged = false;
+	int damageReceived = 0;
 	DirectionPlayer dp;
 	pugi::xml_node parameters;
 	SDL_RendererFlip flipType;

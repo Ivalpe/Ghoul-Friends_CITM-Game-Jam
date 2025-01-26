@@ -49,6 +49,9 @@ bool Enemy::Start() {
 	pbody->ctype = ColliderType::SKELETON;
 	pbody->listener = this;
 
+	//Assign damage that enemy does
+	pbody->damageDone = 10;
+
 	//Sensor
 	sensor = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY() + texH, texW * 12, texH, bodyType::KINEMATIC);
 	sensor->ctype = ColliderType::SENSOR;

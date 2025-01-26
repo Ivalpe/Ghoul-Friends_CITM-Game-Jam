@@ -47,6 +47,15 @@ bool Player::Update(float dt)
 	b2Vec2 velocity = b2Vec2(0, 0);
 	b2Transform pbodyPos;
 
+	//temporary damage reset
+	if (isDamaged) {
+		++damageCounter;
+		if(damageCounter >= 60){
+			damageCounter = 0;
+			isDamaged = false;
+		}
+	}
+
 	switch (Engine::GetInstance().scene.get()->GetGameState())
 	{
 	case GameState::START:
@@ -143,6 +152,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
+		break;
+	case ColliderType::SKELETON:
+		isDamaged = true;
+		damageReceived = physB->damageDone;
+		life -= physB->damageDone;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");

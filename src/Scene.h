@@ -56,6 +56,14 @@ public:
 		return player->life;
 	}
 
+	bool IsPlayerDamaged() {
+		return player->isDamaged;
+	}
+
+	int PlayerDamagedReceived() {
+		return player->damageReceived;
+	}
+
 	Vector2D GetPlayerPosition() {
 		return player->GetPosition();
 	}
