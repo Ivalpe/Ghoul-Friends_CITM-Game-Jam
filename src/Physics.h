@@ -31,6 +31,7 @@ enum class ColliderType {
 	SKELETON,
 	SENSOR,
 	RANGE,
+	MERCHANT,
 	UNKNOWN
 	// ..
 };

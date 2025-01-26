@@ -44,7 +44,7 @@ bool Merchant::Start() {
 
 	//Sensor
 	sensor = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texH, texW * 6, bodyType::KINEMATIC);
-	sensor->ctype = ColliderType::RANGE;
+	sensor->ctype = ColliderType::MERCHANT;
 	sensor->listener = this;
 
 	// Set the gravity of the body
@@ -95,7 +95,7 @@ void Merchant::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		if (physA->ctype == ColliderType::RANGE)
+		if (physA->ctype == ColliderType::MERCHANT)
 			currentAnimation = &sell;
 		break;
 	default:
@@ -107,7 +107,7 @@ void Merchant::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		if (physA->ctype == ColliderType::RANGE)
+		if (physA->ctype == ColliderType::MERCHANT)
 			currentAnimation = &idle;
 		break;
 	default:

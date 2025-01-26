@@ -60,6 +60,7 @@ bool Enemy::Start() {
 	rangeAttack = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX() - 32, (int)position.getY() + texH, texW * 2, texH, bodyType::KINEMATIC);
 	rangeAttack->ctype = ColliderType::RANGE;
 	rangeAttack->listener = this;
+	rangeAttack->damageDone = 12;
 
 	pathfinding = new Pathfinding();
 	ResetPath();
