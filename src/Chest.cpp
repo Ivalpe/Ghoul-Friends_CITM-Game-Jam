@@ -43,7 +43,7 @@ bool Chest::Start() {
 
 bool Chest::Update(float dt) {
 
-	pbody->body->SetLinearVelocity({0,0});
+	pbody->body->SetLinearVelocity({ 0,0 });
 
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
@@ -52,6 +52,13 @@ bool Chest::Update(float dt) {
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), SDL_FLIP_NONE, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
+
+	if (openChest && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+		currentAnimation = &open;
+		int i = rand() % 5 + 1;
+		Engine::GetInstance().scene->AddItem(i);
+		Engine::GetInstance().scene->DrawText(false);
+	}
 
 	return true;
 }
@@ -73,7 +80,10 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		Engine::GetInstance().scene->DrawText(true);
+		if (currentAnimation == &close) {
+			Engine::GetInstance().scene->DrawText(true);
+			openChest = true;
+		}
 		break;
 	default:
 		break;
@@ -85,6 +95,7 @@ void Chest::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLAYER:
 		Engine::GetInstance().scene->DrawText(false);
+		openChest = false;
 		break;
 	default:
 		break;

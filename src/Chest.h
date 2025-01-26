@@ -51,6 +51,6 @@ private:
 	Animation* currentAnimation = nullptr;
 	Animation open, close;
 	StateChest stChest;
-
+	bool openChest = false;
 	PhysBody* pbody;
 };

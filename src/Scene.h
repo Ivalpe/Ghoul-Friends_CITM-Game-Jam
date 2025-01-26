@@ -39,6 +39,8 @@ public:
 
 	void CreateAttack();
 
+	void AddItem(int item);
+
 	void DrawText(bool draw) {
 		drawChestText = draw;
 	}
@@ -59,7 +61,11 @@ public:
 	}
 
 private:
-	SDL_Texture* img;
+	SDL_Texture* drums;
+	SDL_Texture* book;
+	SDL_Texture* armor;
+	SDL_Texture* life;
+	SDL_Texture* regeneration;
 
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
@@ -69,4 +75,5 @@ private:
 	std::vector<Chest*> chestList;
 	bool drawChestText = false;
 	pugi::xml_document textsParameters;
+	std::map<SDL_Texture*, int> itemsList;
 };

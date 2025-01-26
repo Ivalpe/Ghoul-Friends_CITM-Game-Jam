@@ -19,7 +19,6 @@
 Scene::Scene() : Module()
 {
 	name = "scene";
-	img = nullptr;
 	state = GameState::MAINMENU;
 	textsParameters.load_file("texts.xml");
 }
@@ -41,6 +40,7 @@ bool Scene::Awake()
 	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
 	Item* item = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
 	item->position = Vector2D(200, 672);
+
 	return ret;
 }
 
@@ -48,6 +48,13 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	Engine::GetInstance().map->Load("Assets/Maps/", "Level0.tmx");
+
+	drums = Engine::GetInstance().textures.get()->Load("Assets/Items/drums.png");
+	book = Engine::GetInstance().textures.get()->Load("Assets/Items/bookDmg.png");
+	armor = Engine::GetInstance().textures.get()->Load("Assets/Items/armor.png");
+	life = Engine::GetInstance().textures.get()->Load("Assets/Items/life.png");
+	regeneration = Engine::GetInstance().textures.get()->Load("Assets/Items/regeneration.png");
+
 	return true;
 }
 
@@ -135,7 +142,63 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render->DrawText(text.c_str(), 60, 60, text.size() * 10, 40);
 	}
 
+	int x = 100;
+	for (auto item : itemsList) {
+		for (int i = 0; i < item.second; i++) {
+			Engine::GetInstance().render->DrawTexture(item.first, x - Engine::GetInstance().render->camera.x / 4, 10 - Engine::GetInstance().render->camera.y / 4, SDL_FLIP_NONE);
+			x += 20;
+		}
+	}
+
 	return true;
+}
+
+void Scene::AddItem(int item) {
+	if (item == 1) {
+		auto it = itemsList.find(drums);
+		if (it != itemsList.end()) {
+			it->second++;
+		}
+		else {
+			itemsList.emplace(drums, 1);
+		}
+	}
+	else if (item == 2) {
+		auto it = itemsList.find(armor);
+		if (it != itemsList.end()) {
+			it->second++;
+		}
+		else {
+			itemsList.emplace(armor, 1);
+		}
+	}
+	else if (item == 3) {
+		auto it = itemsList.find(book);
+		if (it != itemsList.end()) {
+			it->second++;
+		}
+		else {
+			itemsList.emplace(book, 1);
+		}
+	}
+	else if (item == 4) {
+		auto it = itemsList.find(life);
+		if (it != itemsList.end()) {
+			it->second++;
+		}
+		else {
+			itemsList.emplace(life, 1);
+		}
+	}
+	else if (item == 5) {
+		auto it = itemsList.find(regeneration);
+		if (it != itemsList.end()) {
+			it->second++;
+		}
+		else {
+			itemsList.emplace(regeneration, 1);
+		}
+	}
 }
 
 // Called each loop iteration
@@ -166,8 +229,6 @@ void Scene::CreateAttack() {
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
-	SDL_DestroyTexture(img);
 
 	return true;
 }
