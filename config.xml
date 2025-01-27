@@ -19,7 +19,7 @@
 			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="73" iy="232" />
 		</levels>
 		<entities>
-			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/Sprites.png">
+			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/playerAnimations.png">
 				<animations>
 					<idle loop="true" speed="0.06">
 						<frame x="0" y="0" w="16" h="16" />
@@ -41,21 +41,30 @@
 						<frame x="80" y="96" w="16" h="32" />
 					</fall>
 					<dmg loop="false" speed="0.12">
-						<frame x="0" y="128" w="16" h="32" />
-						<frame x="16" y="128" w="16" h="32" />
-						<frame x="32" y="128" w="16" h="32" />
-						<frame x="48" y="128" w="16" h="32" />
-						<frame x="64" y="128" w="16" h="32" />
-						<frame x="80" y="128" w="16" h="32" />
+						<frame x="0" y="16" w="16" h="16" />
+						<frame x="16" y="16" w="16" h="16" />
+						<frame x="32" y="16" w="16" h="16" />
 					</dmg>
 					<die loop="false" speed="0.12">
+						<frame x="0" y="48" w="16" h="16" />
+						<frame x="16" y="48" w="16" h="16" />
+						<frame x="32" y="48" w="16" h="16" />
+						<frame x="48" y="48" w="16" h="16" />
+						<frame x="64" y="48" w="16" h="16" />
+						<frame x="80" y="48" w="16" h="16" />
+						<frame x="96" y="48" w="16" h="16" />
+						<frame x="112" y="48" w="16" h="16" />
+						<frame x="128" y="48" w="16" h="16" />
+						<frame x="144" y="48" w="16" h="16" />
+						<frame x="160" y="48" w="16" h="16" />
+						<frame x="176" y="48" w="16" h="16" />
+						<frame x="192" y="48" w="16" h="16" />
+						<frame x="208" y="48" w="16" h="16" />
+					</die>
+					<respawn loop ="false" speed="0.12">
 						<frame x="0" y="160" w="16" h="32" />
 						<frame x="16" y="160" w="16" h="32" />
-						<frame x="32" y="160" w="16" h="32" />
-						<frame x="48" y="160" w="16" h="32" />
-						<frame x="64" y="160" w="16" h="32" />
-						<frame x="80" y="160" w="16" h="32" />
-					</die>
+					</respawn>
 				</animations>
 			</player>
 			<enemies>

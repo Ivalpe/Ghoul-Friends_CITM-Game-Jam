@@ -58,11 +58,9 @@ public:
 	int fireRate = 60, timer;
 	bool coolFire = false;
 
-	//temporary damage counter
-	int damageCounter = 0;
-
 	Animation* currentAnimation = nullptr; 
-	Animation idle;                        
+	Animation idle;     
+	Animation damage;
 
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping

@@ -34,6 +34,8 @@ bool Player::Start() {
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
 
+	//load animations
+	damage.LoadAnimations(parameters.child("animations").child("dmg"));
 	
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
@@ -50,18 +52,17 @@ bool Player::Update(float dt)
 	b2Vec2 velocity = b2Vec2(0, 0);
 	b2Transform pbodyPos;
 
-	//temporary damage reset
-	if (isDamaged) {
-		++damageCounter;
-		if(damageCounter >= 60){
-			damageCounter = 0;
-			isDamaged = false;
-		}
-	}
-
 	switch (Engine::GetInstance().scene.get()->GetGameState())
 	{
 	case GameState::START:
+		//damage reset
+		if (isDamaged) {
+			if (damage.HasFinished()) {
+				damage.Reset();
+				isDamaged = false;
+			}
+		}
+
 		velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
 		// Move left
@@ -172,11 +173,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		isDamaged = true;
 		damageReceived = physB->damageDone - (physB->damageDone * armor);
 		life -= damageReceived;
+		currentAnimation = &damage;
 		break;
 	case ColliderType::RANGE:
 		isDamaged = true;
 		damageReceived = physB->damageDone - (physB->damageDone * armor);;
 		life -= damageReceived;
+		currentAnimation = &damage;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
