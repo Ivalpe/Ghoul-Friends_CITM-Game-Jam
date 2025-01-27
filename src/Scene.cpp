@@ -236,8 +236,8 @@ void Scene::CreateAttack() {
 	else power->Start(false);
 
 	Vector2D playerPos = player->GetPosition();
-	if (player->GetDirection() == DirectionPlayer::LEFT) power->SetPosition({ playerPos.getX() - 4, playerPos.getY() + 14 });
-	else power->SetPosition({ playerPos.getX() + 32, playerPos.getY() + 8 });
+	if (player->GetDirection() == DirectionPlayer::LEFT) power->SetPosition({ playerPos.getX() - 16, playerPos.getY() });
+	else power->SetPosition({ playerPos.getX() + 20, playerPos.getY() });
 
 	fireballList.push_back(power);
 }

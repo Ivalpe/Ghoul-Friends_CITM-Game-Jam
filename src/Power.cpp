@@ -38,7 +38,7 @@ bool Power::Start(bool inv) {
 	currentAnimation = &idle;
 
 	//Assign collider type
-	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 2, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::ATTACKPLAYER;
 
 	pbody->listener = this;
@@ -55,7 +55,7 @@ bool Power::Update(float dt) {
 		if (statePower == StatePower::DIE && currentAnimation->HasFinished()) colision = true;
 		else if (statePower == StatePower::DIE) pbody->body->SetLinearVelocity({ 0, 0 });
 		else {
-			float speed = inverted ? -5.0f : 5.0f;
+			float speed = inverted ? -10.0f : 10.0f;
 			pbody->body->SetLinearVelocity({ speed, 0 });
 		}
 	}
@@ -77,7 +77,7 @@ bool Power::Update(float dt) {
 	else position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texW - texW / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH);
 
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), inverted ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, &currentAnimation->GetCurrentFrame());
+	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (inverted ? 0 : 16), (int)position.getY() + 8, inverted ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, &currentAnimation->GetCurrentFrame());
 	currentAnimation->Update();
 
 	return true;
@@ -104,7 +104,7 @@ Vector2D Power::GetPosition() {
 }
 void Power::OnCollision(PhysBody* physA, PhysBody* physB) {
 
-	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGE) {
+	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGE && physB->ctype != ColliderType::MERCHANT) {
 		statePower = StatePower::DIE;
 		currentAnimation = &explode;
 

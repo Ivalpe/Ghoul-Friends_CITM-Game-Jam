@@ -31,7 +31,10 @@ bool Player::Start() {
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
 
-	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);
+	idle.LoadAnimations(parameters.child("animations").child("idle"));
+	currentAnimation = &idle;
+
+	
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
 	pbody->listener = this;
@@ -105,7 +108,8 @@ bool Player::Update(float dt)
 		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 2, flipType);
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		currentAnimation->Update();
 		break;
 	default:
 		break;

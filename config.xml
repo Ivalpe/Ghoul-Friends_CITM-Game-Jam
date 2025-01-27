@@ -19,12 +19,11 @@
 			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="73" iy="232" />
 		</levels>
 		<entities>
-			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/Player.png">
+			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/Sprites.png">
 				<animations>
 					<idle loop="true" speed="0.06">
-						<frame x="0" y="32" w="16" h="32" />
-						<frame x="16" y="32" w="16" h="32" />
-						<frame x="32" y="32" w="16" h="32" />
+						<frame x="0" y="0" w="16" h="16" />
+						<frame x="16" y="0" w="16" h="16" />
 					</idle>
 					<shoot>
 						<frame x="0" y="64" w="16" h="32" />
@@ -95,13 +94,14 @@
 					</animations>
 				</skeleton>
 			</enemies>
-			<merchant texture="Assets/Textures/merchant.png" w="16" h="16">
+			<merchant texture="Assets/Textures/Sprites.png" w="16" h="16">
 				<animations>
-					<idle>
-						<frame x="0" y="0" w="16" h="16" />
+					<idle loop="true" speed="0.06">
+						<frame x="0" y="48" w="16" h="16" />
+						<frame x="16" y="48" w="16" h="16" />
 					</idle>
-					<sell>
-						<frame x="16" y="0" w="16" h="16" />
+					<sell loop="true" speed="0.06">
+						<frame x="32" y="48" w="16" h="16" />
 					</sell>
 				</animations>
 			</merchant>
@@ -117,23 +117,12 @@
 					</open>
 				</animations>
 			</chest>
-			<fireball texture="Assets/Textures/Fireball.png" w="8" h="8">
+			<fireball texture="Assets/Maps/Tileset.png" w="16" h="16">
 				<animations>
 					<idle loop="true" speed="0.12">
-						<frame x="0" y="32" w="16" h="16" />
-						<frame x="16" y="32" w="16" h="16" />
-						<frame x="32" y="32" w="16" h="16" />
-						<frame x="48" y="32" w="16" h="16" />
-						<frame x="64" y="32" w="16" h="16" />
+						<frame x="240" y="176" w="16" h="16" />
+						<frame x="256" y="176" w="16" h="16" />
 					</idle>
-					<explode loop="false" speed="0.16">
-						<frame x="0" y="48" w="16" h="16" />
-						<frame x="16" y="48" w="16" h="16" />
-						<frame x="32" y="48" w="16" h="16" />
-						<frame x="48" y="48" w="16" h="16" />
-						<frame x="64" y="48" w="16" h="16" />
-						<frame x="80" y="48" w="16" h="16" />
-					</explode>
 				</animations>
 			</fireball>
 		</entities>

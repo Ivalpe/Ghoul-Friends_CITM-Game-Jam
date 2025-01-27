@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "Box2D/Box2D.h"
 #include <vector>
+#include "Animation.h"
 
 struct SDL_Texture;
 
@@ -59,6 +60,9 @@ public:
 
 	//temporary damage counter
 	int damageCounter = 0;
+
+	Animation* currentAnimation = nullptr; 
+	Animation idle;                        
 
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
