@@ -36,14 +36,14 @@ bool Merchant::Start() {
 	currentAnimation = &idle;
 
 	//Add a physics to an item - initialize the physics body
-	pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW, texW / 2, bodyType::STATIC);
+	pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY(), texH / 2, bodyType::STATIC);
 
 	//Assign collider type
 	pbody->ctype = ColliderType::SENSOR;
 	pbody->listener = this;
 
 	//Sensor
-	sensor = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texH, texW * 6, bodyType::KINEMATIC);
+	sensor = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY(), texW * 2, bodyType::KINEMATIC);
 	sensor->ctype = ColliderType::MERCHANT;
 	sensor->listener = this;
 
@@ -63,7 +63,7 @@ bool Merchant::Update(float dt) {
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), flipType, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 

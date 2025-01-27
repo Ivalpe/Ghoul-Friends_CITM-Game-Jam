@@ -102,7 +102,7 @@ bool Scene::Update(float dt)
 				Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
 				mc->SetParameters(configParameters.child("entities").child("merchant"));
 				mc->Start();
-				mc->SetPosition({ event.getX(), event.getY() });
+				mc->SetPosition({ event.getX(), event.getY() - 16});
 				eventsList.push_back(mc);
 			}
 
