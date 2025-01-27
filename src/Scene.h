@@ -13,7 +13,7 @@
 struct SDL_Texture;
 
 enum class GameState {
-	MAINMENU, START
+	MAINMENU, START, DEATH
 };
 
 class Scene : public Module
@@ -87,6 +87,10 @@ private:
 	SDL_Texture* buttonTexture;
 	SDL_Texture* buttonPressed;
 	SDL_Texture* buttonShop;
+
+	//death screen timer
+	int deathTime = 0;
+	int deathMaxTime = 120;
 
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;

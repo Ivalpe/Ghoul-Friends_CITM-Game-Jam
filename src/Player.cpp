@@ -31,11 +31,16 @@ bool Player::Start() {
 	texW = parameters.attribute("w").as_int();
 	texH = parameters.attribute("h").as_int();
 
+	respawnPos.setX(position.getX());
+	respawnPos.setY(175);
+
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
 
 	//load animations
 	damage.LoadAnimations(parameters.child("animations").child("dmg"));
+	death.LoadAnimations(parameters.child("animations").child("die"));
+	respawn.LoadAnimations(parameters.child("animations").child("respawn"));
 	
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
@@ -49,7 +54,7 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	b2Vec2 velocity = b2Vec2(0, 0);
+	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 	b2Transform pbodyPos;
 
 	switch (Engine::GetInstance().scene.get()->GetGameState())
@@ -63,56 +68,94 @@ bool Player::Update(float dt)
 			}
 		}
 
-		velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
-
-		// Move left
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			dp = DirectionPlayer::LEFT;
-			velocity.x = -0.2 * 16;
-			flipType = SDL_FLIP_NONE;
+		//death and respawn management and reset
+		if (life <= 0 and !isDying) {
+			isDying = true;
+			currentAnimation = &death;
+			life = 0;
 		}
 
-		// Move right
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			dp = DirectionPlayer::RIGHT;
-			velocity.x = 0.2 * 16;
-			flipType = SDL_FLIP_HORIZONTAL;
+		if (isDying) {
+			if (death.HasFinished() and !hasDied) {
+				death.Reset();
+				isDying = false;
+				hasDied = true;
+				life = maxLife;
+			}
+		} 
+
+		if (startRespawn and hasDied) {
+			SetPosition(respawnPos);
+			hasDied = false;
+			isRespawning = true;
+			startRespawn = false;
+			currentAnimation = &respawn;
 		}
 
-		if (coolFire && timer > 0) timer--;
-
-		if (timer == 0) {
-			coolFire = false;
-		}
-
-		if (!coolFire && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-			Engine::GetInstance().scene.get()->CreateAttack();
-			coolFire = true;
-			timer = fireRate;
-		}
-
-		//Jump
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-			// Apply an initial upward force
-			pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
-			isJumping = true;
-		}
-
-		// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
-		if (isJumping == true)
-		{
-			velocity.y = pbody->body->GetLinearVelocity().y;
-		}
-
-		if (regenerationActive) {
-			coolHealth--;
-			if (coolHealth <= 0) {
-				coolHealth = 60 * 5;
-				life += (maxLife * 0.01f) * regenerationItems;
+		if (isRespawning) {
+			//velocity = b2Vec2(0, jumpForce);
+			if (respawn.HasFinished()) {
+				respawn.Reset();
+				isRespawning = false;
+				isDamaged = false;
+				currentAnimation = &idle;
 			}
 		}
 
-		if (life >= maxLife) life = maxLife;
+		//movement
+		if (!isRespawning and !isDying) {
+			velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
+
+			// Move left
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				dp = DirectionPlayer::LEFT;
+				velocity.x = -0.2 * 16;
+				flipType = SDL_FLIP_NONE;
+			}
+
+			// Move right
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				dp = DirectionPlayer::RIGHT;
+				velocity.x = 0.2 * 16;
+				flipType = SDL_FLIP_HORIZONTAL;
+			}
+
+			if (coolFire && timer > 0) timer--;
+
+			if (timer == 0) {
+				coolFire = false;
+			}
+
+			if (!coolFire && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+				Engine::GetInstance().scene.get()->CreateAttack();
+				coolFire = true;
+				timer = fireRate;
+			}
+
+			//Jump
+			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
+				// Apply an initial upward force
+				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
+				isJumping = true;
+			}
+
+			// If the player is jumpling, we don't want to apply gravity, we use the current velocity prduced by the jump
+			if (isJumping == true)
+			{
+				velocity.y = pbody->body->GetLinearVelocity().y;
+			}
+
+			if (regenerationActive) {
+				coolHealth--;
+				if (coolHealth <= 0) {
+					coolHealth = 60 * 5;
+					life += (maxLife * 0.01f) * regenerationItems;
+				}
+			}
+
+			if (life >= maxLife) life = maxLife;
+			if (life <= 0) life = 0;
+		}
 
 
 		pbodyPos = pbody->body->GetTransform();
@@ -157,6 +200,13 @@ void Player::AddItem(int item) {
 	}
 }
 
+void Player::SetPosition(Vector2D pos) {
+	pos.setX(pos.getX() + texW / 2);
+	pos.setY(pos.getY() + texH / 2);
+	b2Vec2 bodyPos = b2Vec2(PIXEL_TO_METERS(pos.getX()), PIXEL_TO_METERS(pos.getY()));
+	pbody->body->SetTransform(bodyPos, 0);
+}
+
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
@@ -170,16 +220,20 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
 		break;
 	case ColliderType::SKELETON:
-		isDamaged = true;
-		damageReceived = physB->damageDone - (physB->damageDone * armor);
-		life -= damageReceived;
-		currentAnimation = &damage;
+		if (!isDying and !isRespawning) {
+			isDamaged = true;
+			damageReceived = physB->damageDone - (physB->damageDone * armor);
+			life -= damageReceived;
+			currentAnimation = &damage;
+		}
 		break;
 	case ColliderType::RANGE:
-		isDamaged = true;
-		damageReceived = physB->damageDone - (physB->damageDone * armor);;
-		life -= damageReceived;
-		currentAnimation = &damage;
+		if (!isDying and !isRespawning) {
+			isDamaged = true;
+			damageReceived = physB->damageDone - (physB->damageDone * armor);;
+			life -= damageReceived;
+			currentAnimation = &damage;
+		}
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");

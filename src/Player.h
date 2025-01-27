@@ -47,6 +47,8 @@ public:
 		return position;
 	}
 
+	void SetPosition(Vector2D pos);
+
 public:
 
 	//Declare player parameters
@@ -61,15 +63,23 @@ public:
 	Animation* currentAnimation = nullptr; 
 	Animation idle;     
 	Animation damage;
+	Animation death;
+	Animation respawn;
 
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isDamaged = false;
+	bool isDying = false;
+	bool hasDied = false;
+	bool startRespawn = false;
+	bool isRespawning = false;
 	int damageReceived = 0;
 	DirectionPlayer dp;
 	pugi::xml_node parameters;
 	SDL_RendererFlip flipType;
+
+	Vector2D respawnPos;
 
 	int coolHealth = 60 * 5;
 	int regenerationItems = 0;
