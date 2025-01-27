@@ -81,7 +81,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLAYER:
 		if (currentAnimation == &close) {
-			Engine::GetInstance().scene->DrawText(true);
+			Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("OpenChest"));
 			openChest = true;
 		}
 		break;

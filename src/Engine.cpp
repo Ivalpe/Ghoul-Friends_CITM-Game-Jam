@@ -40,6 +40,7 @@ Engine::Engine() {
     scene = std::make_shared<Scene>();
     map = std::make_shared<Map>();
     entityManager = std::make_shared<EntityManager>();
+    guiManager = std::make_shared<GuiManager>();
     uiManager = std::make_shared<UIManager>();
 
     // Ordered for awake / Start / Update
@@ -54,6 +55,7 @@ Engine::Engine() {
     AddModule(std::static_pointer_cast<Module>(scene));
     AddModule(std::static_pointer_cast<Module>(entityManager));
     AddModule(std::static_pointer_cast<Module>(uiManager));
+    AddModule(std::static_pointer_cast<Module>(guiManager));
 
     // Render last 
     AddModule(std::static_pointer_cast<Module>(render));
@@ -183,7 +185,6 @@ void Engine::FinishUpdate()
     if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {
         int delay = (int)(maxFrameDuration - currentDt);
 
-        // L03: TODO 2: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
         PerfTimer delayTimer = PerfTimer();
         SDL_Delay(delay);
         //Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected

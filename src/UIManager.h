@@ -3,6 +3,8 @@
 #include "Module.h"
 #include "Input.h"
 #include "Render.h"
+#include "vector"
+#include "GuiControlButton.h"
 
 class UIManager : public Module {
 public:
@@ -14,7 +16,13 @@ public:
 
 	bool Update(float dt);
 
+	void Add(GuiClass gui, GuiControl* control);
+
 	bool CleanUp();
+
+	void Show(GuiClass gui, bool show);
+
+	int GetSize(GuiClass gui);
 
 private:
 	//player lifebar
@@ -23,4 +31,6 @@ private:
 	int flashDuration = 0;
 	bool iconFlash = false;
 	SDL_Texture* lifebar;
+
+	std::vector<GuiControl*> mainMenu;
 };
