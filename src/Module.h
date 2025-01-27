@@ -3,6 +3,8 @@
 #include <string>
 #include "pugixml.hpp"
 
+class GuiControl;
+
 class Module
 {
 public:
@@ -58,6 +60,10 @@ public:
 		return true;
 	}
 
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
+	}
 
 public:
 

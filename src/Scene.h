@@ -7,6 +7,8 @@
 #include "Power.h"
 #include "Enemy.h"
 #include "Chest.h"
+#include "GuiControl.h"
+#include "Item.h"
 
 struct SDL_Texture;
 
@@ -42,8 +44,9 @@ public:
 
 	void AddItem(int item);
 
-	void DrawText(bool draw) {
+	void DrawText(bool draw, pugi::char_t* dialogueSearch = const_cast<pugi::char_t*>("")) {
 		drawChestText = draw;
+		searchText = dialogueSearch;
 	}
 
 	// Called before quitting
@@ -73,12 +76,17 @@ public:
 		return player->GetPosition();
 	}
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 private:
 	SDL_Texture* drums;
 	SDL_Texture* book;
 	SDL_Texture* armor;
 	SDL_Texture* life;
 	SDL_Texture* regeneration;
+	SDL_Texture* buttonTexture;
+	SDL_Texture* buttonPressed;
+	SDL_Texture* buttonShop;
 
 	//death screen timer
 	int deathTime = 0;
@@ -91,7 +99,9 @@ private:
 	std::vector<Enemy*> enemyList;
 	std::vector<Chest*> chestList;
 	std::vector<Merchant*> eventsList;
+	std::vector<Item*> itemShopList;
 	bool drawChestText = false;
 	pugi::xml_document textsParameters;
 	std::map<SDL_Texture*, int> itemsList;
+	pugi::char_t* searchText;
 };

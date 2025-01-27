@@ -16,6 +16,7 @@
 #include "Enemy.h"
 #include "Chest.h"
 #include "Merchant.h"
+#include "GuiControlButton.h"
 
 Scene::Scene() : Module()
 {
@@ -39,10 +40,6 @@ bool Scene::Awake()
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
 
-	//L08 Create a new item using the entity manager and set the position to (200, 672) to test
-	Item* item = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
-	item->position = Vector2D(200, 672);
-
 	return ret;
 }
 
@@ -56,6 +53,20 @@ bool Scene::Start()
 	armor = Engine::GetInstance().textures.get()->Load("Assets/Items/armor.png");
 	life = Engine::GetInstance().textures.get()->Load("Assets/Items/life.png");
 	regeneration = Engine::GetInstance().textures.get()->Load("Assets/Items/regeneration.png");
+	buttonTexture = Engine::GetInstance().textures.get()->Load("Assets/Menus/Button.png");
+	buttonPressed = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonPressed.png");
+	buttonShop = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonShop.png");
+
+	std::vector<const char*> names = { "New Game", "Load Game", "Settings", "Credits" , "Exit Game" };
+	int coordInitial = 360, interspace = 100;
+	GuiControlButton* button;
+	for (auto n : names) {
+		button = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, Engine::GetInstance().uiManager.get()->GetSize(GuiClass::MAIN_MENU), n, { 480, coordInitial, 250,60 }, this, GuiClass::MAIN_MENU);
+		button->SetTexture(buttonTexture, buttonTexture, buttonPressed, buttonTexture);
+		Engine::GetInstance().uiManager.get()->Add(GuiClass::MAIN_MENU, button);
+		coordInitial += interspace;
+	}
+	Engine::GetInstance().uiManager.get()->Show(GuiClass::MAIN_MENU, true);
 
 	return true;
 }
@@ -76,38 +87,6 @@ bool Scene::Update(float dt)
 	switch (state)
 	{
 	case GameState::MAINMENU:
-		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-
-			std::vector<Vector2D> listEnemy = Engine::GetInstance().map->GetEnemyList();
-			for (auto enemy : listEnemy) {
-				Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
-				en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
-				en->SetEnemyType(EnemyType::SKELETON);
-				en->Start();
-				en->SetPosition({ enemy.getX(), enemy.getY() });
-				enemyList.push_back(en);
-			}
-
-			std::vector<Vector2D> listChest = Engine::GetInstance().map->GetChestList();
-			for (auto chest : listChest) {
-				Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
-				ch->SetParameters(configParameters.child("entities").child("chest"));
-				ch->Start();
-				ch->SetPosition({ chest.getX(), chest.getY() });
-				chestList.push_back(ch);
-			}
-
-			std::vector<Vector2D> listEvents = Engine::GetInstance().map->GetRandomEventList();
-			for (auto event : listEvents) {
-				Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
-				mc->SetParameters(configParameters.child("entities").child("merchant"));
-				mc->Start();
-				mc->SetPosition({ event.getX(), event.getY() - 16});
-				eventsList.push_back(mc);
-			}
-			state = GameState::START;
-
-		}
 		break;
 	case GameState::START:
 		Engine::GetInstance().render.get()->camera.x = ((player->position.getX() * -1) + 200) * 4;
@@ -160,8 +139,17 @@ bool Scene::Update(float dt)
 		else ++it;
 	}
 
+	for (auto it = itemShopList.begin(); it != itemShopList.end();) {
+		if ((*it)->isBuyed()) {
+			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
+			Engine::GetInstance().entityManager->DestroyEntity(*it);
+			it = itemShopList.erase(it);
+		}
+		else ++it;
+	}
+
 	if (drawChestText) {
-		std::string text = textsParameters.child("OpenChest").attribute("text").as_string();
+		std::string text = textsParameters.child(searchText).attribute("text").as_string();
 		Engine::GetInstance().render->DrawText(text.c_str(), 60, 60, text.size() * 10, 40);
 	}
 
@@ -235,6 +223,56 @@ void Scene::AddItem(int item) {
 	}
 
 	player->AddItem(item);
+}
+
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	std::vector<Vector2D> listEnemy, listChest, listEvents;
+
+	switch (control->id)
+	{
+	case 1:
+		listEnemy = Engine::GetInstance().map->GetEnemyList();
+		for (auto enemy : listEnemy) {
+			Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+			en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
+			en->SetEnemyType(EnemyType::SKELETON);
+			en->Start();
+			en->SetPosition({ enemy.getX(), enemy.getY() });
+			enemyList.push_back(en);
+		}
+
+		listChest = Engine::GetInstance().map->GetChestList();
+		for (auto chest : listChest) {
+			Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
+			ch->SetParameters(configParameters.child("entities").child("chest"));
+			ch->Start();
+			ch->SetPosition({ chest.getX(), chest.getY() });
+			chestList.push_back(ch);
+		}
+
+		listEvents = Engine::GetInstance().map->GetRandomEventList();
+		for (auto event : listEvents) {
+			Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
+			mc->SetParameters(configParameters.child("entities").child("merchant"));
+			mc->Start();
+			mc->SetPosition({ event.getX(), event.getY() - 16 });
+			eventsList.push_back(mc);
+			Item* i = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
+			int ran = rand() % 100 + 1;
+			i->SetTexture(ran);
+			i->Start();
+			i->SetPosition({ event.getX() - 16, event.getY() });
+			itemShopList.push_back(i);
+		}
+
+		Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
+		state = GameState::START;
+		break;
+	default:
+		break;
+	}
+	return true;
 }
 
 // Called each loop iteration
