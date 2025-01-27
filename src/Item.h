@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 #include "SDL2/SDL.h"
+#include "Animation.h"
+#include "Physics.h"
 
 struct SDL_Texture;
 
@@ -16,20 +18,38 @@ public:
 
 	bool Start();
 
+	void SetTexture(int ran);
+
 	bool Update(float dt);
 
 	bool CleanUp();
 
-public:
+	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	bool isPicked = false;
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
+	void SetPosition(Vector2D pos);
+
+	bool isBuyed() {
+		return buyed;
+	}
+
+	b2Body* getBody() {
+		return pbody->body;
+	}
+
+public:
 
 private:
 
 	SDL_Texture* texture;
 	const char* texturePath;
-	int texW, texH;
+	int texW, texH, item;
+	bool canBuy = false;
+	bool buyed = false;
 
-	//L08 TODO 4: Add a physics to an item
+	Animation* currentAnimation = nullptr;
+	Animation idle;
+
 	PhysBody* pbody;
 };

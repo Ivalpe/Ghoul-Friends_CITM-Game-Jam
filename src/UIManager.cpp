@@ -2,8 +2,10 @@
 #include "Engine.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "GuiControl.h"
+#include "GuiControlButton.h"
 
-UIManager::UIManager(): Module() {
+UIManager::UIManager() : Module() {
 	name = "uiManager";
 }
 
@@ -42,19 +44,48 @@ bool UIManager::Update(float dt) {
 				else iconFlash = true;
 			}
 
-			if (iconFlash) bar = { 11, 18, (int)((lifePlayer / maxLifePlayer) * barWidth), 6};
+			if (iconFlash) bar = { 11, 18, (int)((lifePlayer / maxLifePlayer) * barWidth), 6 };
 
 			if (flashesCount >= 4) {
 				lifebarFlash = false;
 			}
 		}
-		
+
 		Engine::GetInstance().render.get()->DrawTexture(lifebar, 54, 14, SDL_FLIP_NONE, &bar, false);
 		std::string lifePoints = std::to_string(Engine::GetInstance().scene.get()->GetPlayerLife());
 		Engine::GetInstance().render.get()->DrawText(lifePoints.c_str(), 80, 15, 100, 35);
 	}
 
 	return true;
+}
+
+void UIManager::Add(GuiClass gui, GuiControl* control) {
+	switch (gui)
+	{
+	case GuiClass::MAIN_MENU:
+		mainMenu.push_back(control);
+		break;
+	}
+}
+
+void UIManager::Show(GuiClass gui, bool show) {
+
+	switch (gui) {
+	case GuiClass::MAIN_MENU:
+		for (auto button : mainMenu) {
+			if (show) button->ShowOn();
+			else button->ShowOff();
+		}
+		break;
+	}
+}
+
+int UIManager::GetSize(GuiClass gui) {
+	switch (gui) {
+	case GuiClass::MAIN_MENU:
+		return mainMenu.size() + 1;
+		break;
+	}
 }
 
 bool UIManager::CleanUp() {
