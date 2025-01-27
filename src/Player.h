@@ -65,11 +65,16 @@ public:
 	Animation damage;
 	Animation death;
 	Animation respawn;
+	Animation attack;
+	Animation running;
+	Animation jumping;
 
 	PhysBody* pbody;
 	float jumpForce = .3f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
+	bool isMoving = false;
 	bool isDamaged = false;
+	bool isAttacking = false;
 	bool isDying = false;
 	bool hasDied = false;
 	bool startRespawn = false;

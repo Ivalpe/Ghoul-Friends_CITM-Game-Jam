@@ -41,6 +41,9 @@ bool Player::Start() {
 	damage.LoadAnimations(parameters.child("animations").child("dmg"));
 	death.LoadAnimations(parameters.child("animations").child("die"));
 	respawn.LoadAnimations(parameters.child("animations").child("respawn"));
+	attack.LoadAnimations(parameters.child("animations").child("shoot"));
+	running.LoadAnimations(parameters.child("animations").child("run"));
+	jumping.LoadAnimations(parameters.child("animations").child("jump"));
 	
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
@@ -60,6 +63,8 @@ bool Player::Update(float dt)
 	switch (Engine::GetInstance().scene.get()->GetGameState())
 	{
 	case GameState::START:
+		isMoving = false;
+
 		//damage reset
 		if (isDamaged) {
 			if (damage.HasFinished()) {
@@ -111,6 +116,7 @@ bool Player::Update(float dt)
 				dp = DirectionPlayer::LEFT;
 				velocity.x = -0.2 * 16;
 				flipType = SDL_FLIP_NONE;
+				isMoving = true;
 			}
 
 			// Move right
@@ -118,6 +124,7 @@ bool Player::Update(float dt)
 				dp = DirectionPlayer::RIGHT;
 				velocity.x = 0.2 * 16;
 				flipType = SDL_FLIP_HORIZONTAL;
+				isMoving = true;
 			}
 
 			if (coolFire && timer > 0) timer--;
@@ -127,10 +134,25 @@ bool Player::Update(float dt)
 			}
 
 			if (!coolFire && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-				Engine::GetInstance().scene.get()->CreateAttack();
-				coolFire = true;
+				isAttacking = true;
+				currentAnimation = &attack;
 				timer = fireRate;
 			}
+
+			if (isAttacking) {
+				if (attack.currentFrame >= (18*attack.speed) and !coolFire) {
+					Engine::GetInstance().scene.get()->CreateAttack();
+					coolFire = true;
+				}
+				if (attack.HasFinished()) {
+					attack.Reset();
+					isAttacking = false;
+					currentAnimation = &idle;
+				}
+			}
+
+			if (isMoving and currentAnimation != &running and !isAttacking) currentAnimation = &running;
+			if (!isMoving and !isJumping and !isAttacking) currentAnimation = &idle;
 
 			//Jump
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
@@ -143,6 +165,7 @@ bool Player::Update(float dt)
 			if (isJumping == true)
 			{
 				velocity.y = pbody->body->GetLinearVelocity().y;
+				if (currentAnimation != &jumping) currentAnimation = &jumping;
 			}
 
 			if (regenerationActive) {
@@ -214,6 +237,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision PLATFORM");
 		//reset the jump flag when touching the ground
 		isJumping = false;
+		currentAnimation = &idle;
+		jumping.Reset();
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
