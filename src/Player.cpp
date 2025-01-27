@@ -153,6 +153,7 @@ bool Player::Update(float dt)
 
 			if (isMoving and currentAnimation != &running and !isAttacking) currentAnimation = &running;
 			if (!isMoving and !isJumping and !isAttacking) currentAnimation = &idle;
+			if (isDamaged and currentAnimation != &damage) isDamaged = false;
 
 			//Jump
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
