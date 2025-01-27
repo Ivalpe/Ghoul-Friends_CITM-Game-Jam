@@ -105,8 +105,8 @@ bool Scene::Update(float dt)
 				mc->SetPosition({ event.getX(), event.getY() - 16});
 				eventsList.push_back(mc);
 			}
-
 			state = GameState::START;
+
 		}
 		break;
 	case GameState::START:
@@ -122,6 +122,18 @@ bool Scene::Update(float dt)
 		if (cameraY >= 0) Engine::GetInstance().render.get()->camera.y = 0;
 		if (cameraY <= cameraMaxY) Engine::GetInstance().render.get()->camera.y = cameraMaxY;
 
+		if (player->hasDied and !player->startRespawn) {
+			state = GameState::DEATH;
+			deathTime = 0;
+		}
+
+		break;
+	case GameState::DEATH:
+		++deathTime;
+		if (deathTime >= deathMaxTime) {
+			state = GameState::START;
+			player->startRespawn = true;
+		}
 		break;
 	default:
 		break;
