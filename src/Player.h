@@ -54,7 +54,7 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 
-	int life = 100;
+	int life = 100, maxLife = 100;
 	int fireRate = 60, timer;
 	bool coolFire = false;
 
@@ -72,4 +72,9 @@ public:
 	DirectionPlayer dp;
 	pugi::xml_node parameters;
 	SDL_RendererFlip flipType;
+
+	int coolHealth = 60 * 5;
+	int regenerationItems = 0;
+	bool regenerationActive = false;
+	float armor = 0;
 };

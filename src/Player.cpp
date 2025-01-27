@@ -103,6 +103,16 @@ bool Player::Update(float dt)
 			velocity.y = pbody->body->GetLinearVelocity().y;
 		}
 
+		if (regenerationActive) {
+			coolHealth--;
+			if (coolHealth <= 0) {
+				coolHealth = 60 * 5;
+				life += (maxLife * 0.01f) * regenerationItems;
+			}
+		}
+
+		if (life >= maxLife) life = maxLife;
+
 
 		pbodyPos = pbody->body->GetTransform();
 		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
@@ -132,16 +142,17 @@ void Player::AddItem(int item) {
 		fireRate *= 0.8;
 	}
 	else if (item >= 20 && item <= 39) { //Armor
-
+		armor += 0.05;
 	}
 	else if (item >= 30 && item <= 59) { //Book
 
 	}
 	else if (item >= 40 && item <= 79) { //Life
-
+		maxLife += maxLife * (15 / 100.0f);
 	}
-	else if (item >= 50 && item <= 100) { //Regeneration
-
+	else if (item >= 80 && item <= 100) { //Regeneration
+		regenerationActive = true;
+		regenerationItems++;
 	}
 }
 
@@ -159,13 +170,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::SKELETON:
 		isDamaged = true;
-		damageReceived = physB->damageDone;
-		life -= physB->damageDone;
+		damageReceived = physB->damageDone - (physB->damageDone * armor);
+		life -= damageReceived;
 		break;
 	case ColliderType::RANGE:
 		isDamaged = true;
-		damageReceived = physB->damageDone;
-		life -= physB->damageDone;
+		damageReceived = physB->damageDone - (physB->damageDone * armor);;
+		life -= damageReceived;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");

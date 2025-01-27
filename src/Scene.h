@@ -57,6 +57,10 @@ public:
 		return player->life;
 	}
 
+	int GetPlayerMaxLife() {
+		return player->maxLife;
+	}
+
 	bool IsPlayerDamaged() {
 		return player->isDamaged;
 	}

@@ -162,7 +162,13 @@ bool Scene::Update(float dt)
 	}
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		AddItem(1);
+		AddItem(61);
+	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		AddItem(81);
+	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
+		AddItem(21);
 	}
 
 	return true;
@@ -178,7 +184,6 @@ void Scene::AddItem(int item) {
 		else {
 			itemsList.emplace(drums, 1);
 		}
-		player->AddItem(item);
 	}
 	else if (item >= 20 && item <= 39) {
 		auto it = itemsList.find(armor);
@@ -198,7 +203,7 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(book, 1);
 		}
 	}
-	else if (item >= 40 && item <= 79) {
+	else if (item >= 60 && item <= 79) {
 		auto it = itemsList.find(life);
 		if (it != itemsList.end()) {
 			it->second++;
@@ -207,7 +212,7 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(life, 1);
 		}
 	}
-	else if (item >= 50 && item <= 100) {
+	else if (item >= 80 && item <= 100) {
 		auto it = itemsList.find(regeneration);
 		if (it != itemsList.end()) {
 			it->second++;
@@ -216,6 +221,8 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(regeneration, 1);
 		}
 	}
+
+	player->AddItem(item);
 }
 
 // Called each loop iteration

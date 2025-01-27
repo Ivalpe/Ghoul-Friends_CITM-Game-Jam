@@ -16,6 +16,11 @@ bool UIManager::Start() {
 }
 
 bool UIManager::Update(float dt) {
+	float lifePlayer = Engine::GetInstance().scene->GetPlayerLife();
+	float maxLifePlayer = Engine::GetInstance().scene->GetPlayerMaxLife();
+	float barWidth = 50;
+	SDL_Rect barRect = { 0,0,68,8 };
+
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::START) {
 		//lifebar render
 		Engine::GetInstance().render.get()->DrawTexture(lifebar, 10, 10, SDL_FLIP_NONE, &barRect, false);
@@ -23,8 +28,8 @@ bool UIManager::Update(float dt) {
 		//Activate flashing animation when player is damaged
 		if (Engine::GetInstance().scene.get()->IsPlayerDamaged()) lifebarFlash = true;
 
-		//calculate life bar (full = 39)
-		SDL_Rect bar = { 11, 10, 0.39 * Engine::GetInstance().scene.get()->GetPlayerLife(), 6 };
+		//calculate life bar (full = 50)
+		SDL_Rect bar = { 11, 10, (int)((lifePlayer / maxLifePlayer) * barWidth), 6 };
 
 		if (lifebarFlash) {
 			++flashDuration;
@@ -37,7 +42,7 @@ bool UIManager::Update(float dt) {
 				else iconFlash = true;
 			}
 
-			if (iconFlash) bar = { 11, 18, (int)(0.39 * (Engine::GetInstance().scene.get()->GetPlayerLife() + Engine::GetInstance().scene.get()->PlayerDamagedReceived())), 6 };
+			if (iconFlash) bar = { 11, 18, (int)((lifePlayer / maxLifePlayer) * barWidth), 6};
 
 			if (flashesCount >= 4) {
 				lifebarFlash = false;

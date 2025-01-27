@@ -23,5 +23,4 @@ private:
 	int flashDuration = 0;
 	bool iconFlash = false;
 	SDL_Texture* lifebar;
-	SDL_Rect barRect = { 0,0,52,8 };
 };
