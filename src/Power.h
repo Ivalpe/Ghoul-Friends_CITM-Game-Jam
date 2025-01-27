@@ -72,4 +72,5 @@ private:
 	bool inverted;
 
 	int tempAttack = 1;
+	int maxTime = 120;
 };

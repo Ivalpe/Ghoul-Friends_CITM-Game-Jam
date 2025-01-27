@@ -69,6 +69,13 @@ bool Power::Update(float dt) {
 
 	if (statePower == StatePower::IDLE) currentAnimation = &idle;
 
+	maxTime--;
+
+	if (maxTime <= 0) {
+		currentAnimation = &explode;
+		statePower = StatePower::DIE;
+	}
+
 
 	b2Transform pbodyPos = pbody->body->GetTransform();
 
