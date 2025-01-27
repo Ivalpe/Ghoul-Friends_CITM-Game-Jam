@@ -45,6 +45,8 @@ bool UIManager::Update(float dt) {
 		}
 		
 		Engine::GetInstance().render.get()->DrawTexture(lifebar, 54, 14, SDL_FLIP_NONE, &bar, false);
+		std::string lifePoints = std::to_string(Engine::GetInstance().scene.get()->GetPlayerLife());
+		Engine::GetInstance().render.get()->DrawText(lifePoints.c_str(), 80, 15, 100, 35);
 	}
 
 	return true;

@@ -86,6 +86,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::CHEST:
 		entity = new Chest();
 		break;
+	case EntityType::MERCHANT:
+		entity = new Merchant();
+		break;
 	default:
 		break;
 	}

@@ -58,8 +58,9 @@ bool Enemy::Start() {
 	sensor->listener = this;
 
 	rangeAttack = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX() - 32, (int)position.getY() + texH, texW * 2, texH, bodyType::KINEMATIC);
-	rangeAttack->ctype = ColliderType::RANGEATTACK;
+	rangeAttack->ctype = ColliderType::RANGE;
 	rangeAttack->listener = this;
+	rangeAttack->damageDone = 12;
 
 	pathfinding = new Pathfinding();
 	ResetPath();
@@ -209,7 +210,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (physA->ctype == ColliderType::SENSOR) {
 			followPlayer = true;
 		}
-		if (physA->ctype == ColliderType::RANGEATTACK) {
+		if (physA->ctype == ColliderType::RANGE) {
 			rangePlayer = true;
 		}
 
@@ -226,7 +227,7 @@ void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		if (physA->ctype == ColliderType::SENSOR) {
 			followPlayer = false;
 		}
-		if (physA->ctype == ColliderType::RANGEATTACK) {
+		if (physA->ctype == ColliderType::RANGE) {
 			rangePlayer = false;
 			currentAnimation->Reset();
 			currentAnimation = &idle;

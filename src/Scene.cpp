@@ -15,6 +15,7 @@
 #include "Power.h"
 #include "Enemy.h"
 #include "Chest.h"
+#include "Merchant.h"
 
 Scene::Scene() : Module()
 {
@@ -94,6 +95,15 @@ bool Scene::Update(float dt)
 				ch->Start();
 				ch->SetPosition({ chest.getX(), chest.getY() });
 				chestList.push_back(ch);
+			}
+
+			std::vector<Vector2D> listEvents = Engine::GetInstance().map->GetRandomEventList();
+			for (auto event : listEvents) {
+				Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
+				mc->SetParameters(configParameters.child("entities").child("merchant"));
+				mc->Start();
+				mc->SetPosition({ event.getX(), event.getY() });
+				eventsList.push_back(mc);
 			}
 
 			state = GameState::START;

@@ -158,6 +158,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		damageReceived = physB->damageDone;
 		life -= physB->damageDone;
 		break;
+	case ColliderType::RANGE:
+		isDamaged = true;
+		damageReceived = physB->damageDone;
+		life -= physB->damageDone;
+		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
 		break;
