@@ -57,7 +57,11 @@ bool Scene::Start()
 	buttonPressed = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonPressed.png");
 	buttonShop = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonShop.png");
 
-	std::vector<const char*> names = { "New Game", "Load Game", "Settings", "Credits" , "Exit Game" };
+	const char* newGame = textsParameters.child("NewGame").attribute("text").as_string();
+	const char* settings = textsParameters.child("Settings").attribute("text").as_string();
+	const char* exit = textsParameters.child("Exit").attribute("text").as_string();
+
+	std::vector<const char*> names = { newGame, settings, exit };
 	int coordInitial = 360, interspace = 100;
 	GuiControlButton* button;
 	for (auto n : names) {

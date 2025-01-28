@@ -1,3 +1,6 @@
 <OpenChest text="Pulsa F para abrir el cofre" />
 <BuyItem text="Pulsa F para comprar este objeto" />
 <Caves text="Pulsa F para viajar a las cuevas" />
+<NewGame text="Comenzar" />
+<Settings text="Ajustes" />
+<Exit text="Salir del juego" />
