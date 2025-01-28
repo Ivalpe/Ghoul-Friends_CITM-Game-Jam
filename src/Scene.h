@@ -108,6 +108,9 @@ private:
 	int deathTime = 0;
 	int deathMaxTime = 120;
 
+	//level
+	LEVELS currentLevel = LEVELS::LEVEL0;
+
 	//L03: TODO 3b: Declare a Player attribute
 	Player* player;
 	GameState state;
