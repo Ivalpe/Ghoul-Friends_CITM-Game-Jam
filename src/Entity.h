@@ -12,6 +12,7 @@ enum class EntityType
 	ENEMY,
 	CHEST,
 	MERCHANT,
+	DOOR,
 	COIN,
 	UNKNOWN
 };

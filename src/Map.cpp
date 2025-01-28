@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Log.h"
 #include "Physics.h"
+#include <map>
 
 #include <math.h>
 
@@ -116,6 +117,8 @@ bool Map::Load(std::string path, std::string fileName)
 	posRandomEvent.clear();
 	posChest.clear();
 	posEnemy.clear();
+	posDoor.clear();
+
 	std::string mapPathName = mapPath + mapFileName;
 
 	pugi::xml_document mapFileXML;
@@ -197,6 +200,10 @@ bool Map::Load(std::string path, std::string fileName)
 						else if (gid == 14) { // Random Event
 							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
 							posRandomEvent.push_back(mapCoord);
+						}
+						else if (gid == 15) { //Door Cave
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
+							posDoor.emplace("Cave", mapCoord);
 						}
 					}
 				}
