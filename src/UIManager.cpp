@@ -15,6 +15,7 @@ bool UIManager::Start() {
 	lifebar = Engine::GetInstance().textures.get()->Load("Assets/Textures/lifebar.png");
 	pauseScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/pauseScreen.png");
 	deathScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/deathScreen.png");
+	menuScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/menu.png");
 
 	return true;
 }
@@ -24,7 +25,13 @@ bool UIManager::Update(float dt) {
 	float maxLifePlayer = Engine::GetInstance().scene->GetPlayerMaxLife();
 	int coins = Engine::GetInstance().scene->GetPlayerCoins();
 	float barWidth = 50;
+	SDL_Rect screenRect = { 0,0,1920,1080};
 	SDL_Rect barRect = { 0,0,68,8 };
+	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::MAINMENU) {
+		
+		Engine::GetInstance().render.get()->DrawTexture(menuScreen, 0,0, SDL_FLIP_NONE, NULL, false);
+		
+	}
 
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::START) {
 		//lifebar render
@@ -37,7 +44,7 @@ bool UIManager::Update(float dt) {
 
 		//calculate life bar (full = 50)
 		SDL_Rect bar = { 11, 10, (int)((lifePlayer / maxLifePlayer) * barWidth), 6 };
-
+	
 		if (lifebarFlash) {
 			++flashDuration;
 			if (flashDuration >= 12) {
@@ -60,8 +67,12 @@ bool UIManager::Update(float dt) {
 		std::string lifePoints = std::to_string(Engine::GetInstance().scene.get()->GetPlayerLife());
 		Engine::GetInstance().render.get()->DrawText(lifePoints.c_str(), 80, 15, 100, 35);
 	}
+	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::PAUSESCREEN) {
+
+		Engine::GetInstance().render.get()->DrawTexture(pauseScreen, 100, 100, SDL_FLIP_NONE, &screenRect, false);
+	}
 	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::DEATH) {
-		SDL_Rect screenRect = { 0,0,1920,1080 };
+		
 		Engine::GetInstance().render.get()->DrawTexture(deathScreen, 0, 0, SDL_FLIP_NONE, &screenRect, false);
 	}
 
