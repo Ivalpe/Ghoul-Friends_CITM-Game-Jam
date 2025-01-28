@@ -27,7 +27,7 @@ Scene::Scene() : Module()
 	state = GameState::MAINMENU;
 	textsDoc.load_file("texts.xml");
 	textsParameters = textsDoc.child("texts");
-	
+
 	srand(time(NULL));
 }
 
@@ -98,10 +98,10 @@ bool Scene::PreUpdate()
 	return true;
 }
 
-void Scene::LoadLevel(LEVELS lvl) {
+void Scene::LoadLevel(int lvl) {
 
 	//clear lists
-	for (auto f:fireballList) {
+	for (auto f : fireballList) {
 		f->CleanUp();
 		Engine::GetInstance().physics->DeleteBody((f)->getBody());
 		Engine::GetInstance().entityManager->DestroyEntity(f);
@@ -114,7 +114,7 @@ void Scene::LoadLevel(LEVELS lvl) {
 		Engine::GetInstance().entityManager->DestroyEntity(c);
 	}
 	coinsList.clear();
-	
+
 	for (auto e : enemyList) {
 		Engine::GetInstance().physics->DeleteBody((e)->getSensorBody());
 		Engine::GetInstance().physics->DeleteBody((e)->getRangeBody());
@@ -131,14 +131,22 @@ void Scene::LoadLevel(LEVELS lvl) {
 
 	Engine::GetInstance().map->NewLevelCleanUp();
 
-	switch (lvl) {
-	case LEVELS::CAVE:
+	switch (lvl)
+	{
+	case 1:
 		Engine::GetInstance().map->Load("Assets/Maps/", "Cave.tmx");
-		player->SetPosition({320, 800});
+		player->SetPosition({ 320, 800 });
+		break;
+	case 2:
+		Engine::GetInstance().map->Load("Assets/Maps/", "Mountain.tmx");
+		player->SetPosition({ 320, 800 });
+		break;
+	default:
 		break;
 	}
 
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
+	std::map<int, Vector2D> listDoorMap;
 
 	listEnemy = Engine::GetInstance().map->GetEnemyList();
 	for (auto enemy : listEnemy) {
@@ -179,6 +187,15 @@ void Scene::LoadLevel(LEVELS lvl) {
 		i->Start();
 		i->SetPosition({ event.getX() - 16, event.getY() });
 		itemShopList.push_back(i);
+	}
+
+	listDoorMap = Engine::GetInstance().map->GetDoorList();
+	for (auto door : listDoorMap) {
+		Door* d = (Door*)Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR);
+		d->SetParameters(configParameters.child("entities").child("doorCave"), door.first);
+		d->Start();
+		d->SetPosition({ door.second.getX(), door.second.getY() });
+		doorList.push_back(d);
 	}
 }
 
@@ -281,7 +298,7 @@ bool Scene::Update(float dt)
 	}
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
-		LoadLevel(LEVELS::CAVE);
+		LoadLevel(1);
 	}
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
@@ -351,7 +368,8 @@ void Scene::AddItem(int item) {
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
-	std::map<const char*, Vector2D> listDoorMap;
+	std::map<int, Vector2D> listDoorMap;
+	int level;
 
 	switch (state) {
 	case GameState::MAINMENU:
@@ -402,7 +420,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			listDoorMap = Engine::GetInstance().map->GetDoorList();
 			for (auto door : listDoorMap) {
 				Door* d = (Door*)Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR);
-				d->SetParameters(configParameters.child("entities").child("doorCave"));
+				d->SetParameters(configParameters.child("entities").child("doorCave"), door.first);
 				d->Start();
 				d->SetPosition({ door.second.getX(), door.second.getY() });
 				doorList.push_back(d);

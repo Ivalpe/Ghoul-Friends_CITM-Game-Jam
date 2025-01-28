@@ -53,7 +53,7 @@ bool Door::Update(float dt) {
 	currentAnimation->Update();
 
 	if (canDoor && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
-		Engine::GetInstance().scene->LoadLevel(LEVELS::CAVE);
+		Engine::GetInstance().scene->LoadLevel(level);
 	}
 	return true;
 }

@@ -27,8 +27,9 @@ public:
 
 	bool CleanUp();
 
-	void SetParameters(pugi::xml_node parameters) {
+	void SetParameters(pugi::xml_node parameters, int l) {
 		this->parameters = parameters;
+		level = l;
 	}
 
 	void SetPosition(Vector2D pos);
@@ -52,4 +53,5 @@ private:
 	StateDoor stDoor;
 	PhysBody* pbody;
 	bool canDoor = false;
+	int level;
 };

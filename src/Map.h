@@ -160,7 +160,7 @@ public:
 		return posRandomEvent;
 	}
 
-	std::map<const char*, Vector2D> GetDoorList() {
+	std::map<int, Vector2D> GetDoorList() {
 		return posDoor;
 	}
 
@@ -175,5 +175,5 @@ private:
 	std::vector<Vector2D> posEnemy;
 	std::vector<Vector2D> posChest;
 	std::vector<Vector2D> posRandomEvent;
-	std::map<const char*, Vector2D> posDoor;
+	std::map<int, Vector2D> posDoor;
 };
