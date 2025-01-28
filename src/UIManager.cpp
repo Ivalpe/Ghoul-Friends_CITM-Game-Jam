@@ -29,7 +29,7 @@ bool UIManager::Update(float dt) {
 	SDL_Rect barRect = { 0,0,68,8 };
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::MAINMENU) {
 		
-		Engine::GetInstance().render.get()->DrawTexture(menuScreen, 0,0, SDL_FLIP_NONE, NULL, false);
+		Engine::GetInstance().render.get()->DrawTexture(menuScreen, 0,0, SDL_FLIP_NONE, NULL, false,false);
 		
 	}
 
@@ -69,7 +69,7 @@ bool UIManager::Update(float dt) {
 	}
 	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::PAUSESCREEN) {
 
-		Engine::GetInstance().render.get()->DrawTexture(pauseScreen, 100, 100, SDL_FLIP_NONE, &screenRect, false);
+		Engine::GetInstance().render.get()->DrawTexture(pauseScreen, 100, 100, SDL_FLIP_NONE, &screenRect, false,false);
 	}
 	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::DEATH) {
 		
