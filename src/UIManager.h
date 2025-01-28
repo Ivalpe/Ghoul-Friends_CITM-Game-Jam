@@ -31,6 +31,7 @@ private:
 	int flashDuration = 0;
 	bool iconFlash = false;
 	SDL_Texture* lifebar;
+	SDL_Texture* menu;
 
 	std::vector<GuiControl*> mainMenu;
 };

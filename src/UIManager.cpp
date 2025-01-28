@@ -13,6 +13,7 @@ UIManager::~UIManager() {}
 
 bool UIManager::Start() {
 	lifebar = Engine::GetInstance().textures.get()->Load("Assets/Textures/lifebar.png");
+	menu= Engine::GetInstance().textures.get()->Load("Assets/Textures/menu.png");
 
 	return true;
 }
@@ -22,6 +23,11 @@ bool UIManager::Update(float dt) {
 	float maxLifePlayer = Engine::GetInstance().scene->GetPlayerMaxLife();
 	float barWidth = 50;
 	SDL_Rect barRect = { 0,0,68,8 };
+	SDL_Rect barMenu = { 0,0,1920,1080 };
+	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::MAINMENU) {
+		//menu render(background)
+		Engine::GetInstance().render.get()->DrawTexture(menu, 1920, 1080, SDL_FLIP_NONE, &barMenu, false);
+	}
 
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::START) {
 		//lifebar render
