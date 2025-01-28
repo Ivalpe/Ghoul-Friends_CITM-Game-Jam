@@ -35,6 +35,10 @@ public:
 		this->parameters = parameters;
 	}
 
+	b2Body* getBody() {
+		return pbody->body;
+	}
+
 	void SetPosition(Vector2D pos);
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);

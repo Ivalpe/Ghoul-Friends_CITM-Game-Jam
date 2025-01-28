@@ -247,6 +247,10 @@
 								<frame x="16" y="80" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="2" text="hola"/>
+							<dialogue character="-1" text="holiss"/>
+						</dialogues>
 					</npc>
 					<npc npcType="4" name="armguy" texture="Assets/Textures/Sprites.png" level="0" x="1760" y="1072" w="16" h="16">
 						<animations>

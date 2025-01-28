@@ -44,6 +44,7 @@ bool Scene::Awake()
 
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
+
 	eventManager = new Events();
 	eventManager->SetEventParameters(configParameters.child("entities").child("events"));
 
@@ -144,6 +145,7 @@ void Scene::LoadLevel(int lvl) {
 	}
 	itemShopList.clear();
 
+	eventManager->CleanUp();
 	Engine::GetInstance().map->NewLevelCleanUp();
 
 	switch (lvl)

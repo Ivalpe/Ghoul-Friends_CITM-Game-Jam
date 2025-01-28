@@ -52,8 +52,18 @@ bool NPC::Start() {
 		pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW / 2, texW / 2, bodyType::STATIC);
 	}
 
-	if (Engine::GetInstance().scene.get()->eventManager->FireEventDone) {
-		done = true;
+	switch (type) {
+	case NPCs::FIRE:
+		if (Engine::GetInstance().scene.get()->eventManager->FireEventDone) {
+			done = true;
+		}
+		break;
+	case NPCs::ZERA:
+		/*if (!Engine::GetInstance().scene.get()->eventManager->isFireExtinguished) {
+			done = true;
+			render = false;
+		}*/
+		break;
 	}
 
 	//Assign collider type
@@ -95,6 +105,14 @@ bool NPC::Update(float dt) {
 				Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
 			}
 			break;
+		case NPCs::ZERA:
+			if (!done) {
+				Engine::GetInstance().scene.get()->eventManager->zeraApproached = true;
+				isActive = false;
+				done = true;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ZERA_EVENT;
+			}
+			break;
 		}
 	}
 
@@ -132,6 +150,9 @@ void NPC::OnCollision(PhysBody* physA, PhysBody* physB) {
 		case NPCs::FIRE:
 			if(!Engine::GetInstance().scene.get()->eventManager->isFireExtinguished and currentAnimation != &var) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Fire"));
 			break;
+		default:
+			if(!done) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Interaction"));
+			break;
 		}
 		break;
 	default:
@@ -147,6 +168,9 @@ void NPC::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		switch (type) {
 		case NPCs::FIRE:
 			if (!done) currentAnimation = &var;
+			Engine::GetInstance().scene->DrawText(false);
+			break;
+		default:
 			Engine::GetInstance().scene->DrawText(false);
 			break;
 		}
