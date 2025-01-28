@@ -36,5 +36,6 @@ private:
 	std::vector<GuiControl*> pause;
 
 	SDL_Texture* pauseScreen;
+	SDL_Texture* menuScreen;
 	SDL_Texture* deathScreen;
 };
