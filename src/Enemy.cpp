@@ -83,7 +83,10 @@ bool Enemy::Update(float dt) {
 
 	velocity = b2Vec2(0, -GRAVITY_Y);
 
-	if (currentAnimation == &dmg && currentAnimation->HasFinished()) currentAnimation = &idle;
+	if (currentAnimation == &dmg && currentAnimation->HasFinished()) {
+		currentAnimation = &idle;
+		dmg.Reset();
+	}
 
 	if (coolFire && timer > 0) timer--;
 
@@ -96,7 +99,7 @@ bool Enemy::Update(float dt) {
 		isDying = true;
 	}
 
-	if (!isDying) {
+	if (!isDying and !isDamaged) {
 		if (currentAnimation == &walk) {
 			if (directionLeft) {
 				velocity.x = -speed;
@@ -216,6 +219,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 			life -= 2;
 			LOG("ENEMY DAMAGE 2");
 			isDamaged = true;
+			currentAnimation = &dmg;
 		}
 		break;
 	case ColliderType::PLAYER:
