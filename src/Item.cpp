@@ -22,7 +22,6 @@ bool Item::Awake() {
 bool Item::Start() {
 
 	Engine::GetInstance().textures.get()->GetSize(texture, texW, texH);
-	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX() + texH / 2, (int)position.getY() + texH / 2, texH / 2, bodyType::DYNAMIC);
 
 	//Sensor
 	pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW, texW / 2, bodyType::STATIC);

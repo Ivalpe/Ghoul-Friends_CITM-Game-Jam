@@ -129,6 +129,19 @@ void Scene::LoadLevel(int lvl) {
 	}
 	chestList.clear();
 
+	for (auto m : eventsList) {
+		Engine::GetInstance().physics->DeleteBody((m)->getSensorBody());
+		Engine::GetInstance().physics->DeleteBody((m)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(m);
+	}
+	eventsList.clear();
+
+	for (auto i : itemShopList) {
+		Engine::GetInstance().physics->DeleteBody((i)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(i);
+	}
+	itemShopList.clear();
+
 	Engine::GetInstance().map->NewLevelCleanUp();
 
 	switch (lvl)
@@ -238,8 +251,8 @@ bool Scene::Update(float dt)
 		break;
 	case GameState::DEATH:
 		++deathTime;
-		LoadLevel(0);
 		if (deathTime >= deathMaxTime) {
+			LoadLevel(0);
 			state = GameState::START;
 			player->startRespawn = true;
 		}

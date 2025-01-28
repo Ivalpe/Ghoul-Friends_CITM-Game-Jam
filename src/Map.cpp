@@ -219,13 +219,7 @@ bool Map::Load(std::string path, std::string fileName)
 				for (int i = 0; i < mapData.width; i++) {
 					for (int j = 0; j < mapData.height; j++) {
 						int gid = mapLayer->Get(i, j);
-						if (gid == 11) {
-							Vector2D mapCoord = MapToWorld(i, j);
-							PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
-							c1->ctype = ColliderType::PLATFORM;
-							//collisions.push_back(c1);
-						}
-						else if (gid == 12) { // Chest
+						if (gid == 12) { // Chest
 							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
 							posChest.push_back(mapCoord);
 						}

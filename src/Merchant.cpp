@@ -10,7 +10,7 @@
 #include "Map.h"
 #include "Pathfinding.h"
 
-Merchant::Merchant() : Entity(EntityType::ENEMY)
+Merchant::Merchant() : Entity(EntityType::MERCHANT)
 {
 
 }
