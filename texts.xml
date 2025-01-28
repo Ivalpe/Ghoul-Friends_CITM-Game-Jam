@@ -7,4 +7,6 @@
 	<Exit text="Salir del juego" />
 	<Continue text="Resumir Partida"/>
 	<Return text ="Regresar al Menu"/>
+	<Fire text="Pulsa F para apagar"/>
+	<ContinueDialogue text="Pulsa espacio para continuar"/>
 </texts>

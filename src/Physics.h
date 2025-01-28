@@ -33,6 +33,7 @@ enum class ColliderType {
 	RANGE,
 	COIN,
 	MERCHANT,
+	NPC,
 	UNKNOWN
 	// ..
 };

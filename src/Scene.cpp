@@ -44,6 +44,8 @@ bool Scene::Awake()
 
 	player = (Player*)Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER);
 	player->SetParameters(configParameters.child("entities").child("player"));
+	eventManager = new Events();
+	eventManager->SetEventParameters(configParameters.child("entities").child("events"));
 
 	return ret;
 }
@@ -164,6 +166,8 @@ void Scene::LoadLevel(int lvl) {
 	default:
 		break;
 	}
+
+	eventManager->LoadLevelEvents((int)currentLevel);
 
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
 	std::map<int, Vector2D> listDoorMap;
@@ -447,6 +451,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 				doorList.push_back(d);
 			}
 
+			eventManager->LoadLevelEvents((int)currentLevel);
+
 			Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
 			state = GameState::START;
 			break;
@@ -481,6 +487,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
+
+	eventManager->Update();
 
 	if (quitGame) ret = false;
 	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {

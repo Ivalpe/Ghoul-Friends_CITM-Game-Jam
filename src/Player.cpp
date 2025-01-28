@@ -109,7 +109,7 @@ bool Player::Update(float dt)
 		}
 
 		//movement
-		if (!isRespawning and !isDying and !hasDied) {
+		if (!isRespawning and !isDying and !hasDied and !Engine::GetInstance().scene.get()->eventHappening) {
 			velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
 			// Move left

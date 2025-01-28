@@ -8,6 +8,7 @@
 #include "Power.h"
 #include "Coin.h"
 #include "Door.h"
+#include "NPC.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -96,6 +97,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::DOOR:
 		entity = new Door();
+		break;
+	case EntityType::NPC:
+		entity = new NPC();
 		break;
 	default:
 		break;
