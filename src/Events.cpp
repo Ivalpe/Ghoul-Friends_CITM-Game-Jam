@@ -15,7 +15,7 @@ Events::~Events() {
 void Events::LoadLevelEvents(int lvl) {
 	chatbox = Engine::GetInstance().textures.get()->Load("Assets/Textures/chatbox.png");
 	NyssaPFP = Engine::GetInstance().textures.get()->Load("Assets/Textures/talkingperssinalas.png");
-	npcPFPs = Engine::GetInstance().textures.get()->Load("Assets/Textures/npcs.png");
+	npcPFPs = Engine::GetInstance().textures.get()->Load("Assets/Textures/npcsBig.png");
 
 	//temporary crow one
 	npcPFPsRect.push_back({ 0, 0, 148, 148 });
