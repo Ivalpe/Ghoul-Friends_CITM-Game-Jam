@@ -132,9 +132,14 @@ void Scene::LoadLevel(LEVELS lvl) {
 	Engine::GetInstance().map->NewLevelCleanUp();
 
 	switch (lvl) {
+	case LEVELS::LEVEL0:
+		Engine::GetInstance().map->Load("Assets/Maps/", "Level0.tmx");
+		currentLevel = LEVELS::LEVEL0;
+		break;
 	case LEVELS::CAVE:
 		Engine::GetInstance().map->Load("Assets/Maps/", "Cave.tmx");
 		player->SetPosition({320, 800});
+		currentLevel = LEVELS::CAVE;
 		break;
 	}
 
@@ -214,6 +219,7 @@ bool Scene::Update(float dt)
 		break;
 	case GameState::DEATH:
 		++deathTime;
+		if (currentLevel != LEVELS::LEVEL0) LoadLevel(LEVELS::LEVEL0);
 		if (deathTime >= deathMaxTime) {
 			state = GameState::START;
 			player->startRespawn = true;
