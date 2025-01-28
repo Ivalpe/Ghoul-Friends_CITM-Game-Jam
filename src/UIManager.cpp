@@ -29,7 +29,7 @@ bool UIManager::Update(float dt) {
 	SDL_Rect barRect = { 0,0,68,8 };
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::MAINMENU) {
 		
-		Engine::GetInstance().render.get()->DrawTexture(pauseScreen, 0,0, SDL_FLIP_NONE, NULL, false);
+		Engine::GetInstance().render.get()->DrawTexture(menuScreen, 0,0, SDL_FLIP_NONE, NULL, false);
 		
 	}
 
