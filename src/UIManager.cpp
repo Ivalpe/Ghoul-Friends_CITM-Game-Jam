@@ -71,6 +71,9 @@ void UIManager::Add(GuiClass gui, GuiControl* control) {
 	case GuiClass::MAIN_MENU:
 		mainMenu.push_back(control);
 		break;
+	case GuiClass::PAUSE:
+		pause.push_back(control);
+		break;
 	}
 }
 
@@ -83,6 +86,12 @@ void UIManager::Show(GuiClass gui, bool show) {
 			else button->ShowOff();
 		}
 		break;
+	case GuiClass::PAUSE:
+		for (auto button : pause) {
+			if (show) button->ShowOn();
+			else button->ShowOff();
+		}
+		break;
 	}
 }
 
@@ -90,6 +99,9 @@ int UIManager::GetSize(GuiClass gui) {
 	switch (gui) {
 	case GuiClass::MAIN_MENU:
 		return mainMenu.size() + 1;
+		break;
+	case GuiClass::PAUSE:
+		return pause.size() + 1;
 		break;
 	}
 }

@@ -21,7 +21,8 @@ enum class GuiControlType
 };
 
 enum class GuiClass {
-	MAIN_MENU
+	MAIN_MENU,
+	PAUSE
 };
 
 enum class GuiControlState
