@@ -85,9 +85,15 @@ bool NPC::Update(float dt) {
 	if (isActive and Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
 		switch (type) {
 		case NPCs::FIRE:
-			Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
-			currentAnimation = &var;
-			isActive = false;
+			if (!done) {
+				Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
+				currentAnimation = &var;
+				isActive = false;
+			}
+			else {
+				render = false;
+				Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
+			}
 			break;
 		}
 	}
@@ -124,7 +130,7 @@ void NPC::OnCollision(PhysBody* physA, PhysBody* physB) {
 		isActive = true;
 		switch (type) {
 		case NPCs::FIRE:
-			if(!done) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Fire"));
+			if(!Engine::GetInstance().scene.get()->eventManager->isFireExtinguished and currentAnimation != &var) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Fire"));
 			break;
 		}
 		break;
@@ -140,7 +146,7 @@ void NPC::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		isActive = false;
 		switch (type) {
 		case NPCs::FIRE:
-			if(!done) currentAnimation = &var;
+			if (!done) currentAnimation = &var;
 			Engine::GetInstance().scene->DrawText(false);
 			break;
 		}
