@@ -15,6 +15,16 @@ Events::~Events() {
 void Events::LoadLevelEvents(int lvl) {
 	chatbox = Engine::GetInstance().textures.get()->Load("Assets/Textures/chatbox.png");
 	NyssaPFP = Engine::GetInstance().textures.get()->Load("Assets/Textures/talkingperssinalas.png");
+	npcPFPs = Engine::GetInstance().textures.get()->Load("Assets/Textures/npcs.png");
+
+	//temporary crow one
+	npcPFPsRect.push_back({ 0, 0, 148, 148 });
+
+	npcPFPsRect.push_back({ 0, 0, 148, 148 });
+	npcPFPsRect.push_back({ 0, 168, 148, 148 });
+	npcPFPsRect.push_back({ 147, 168, 148, 148 });
+	npcPFPsRect.push_back({ 0, 336, 148, 148 });
+
 
 	pugi::xml_node levelEvents;
 	for (pugi::xml_node levelNode = eventNode.child("event"); levelNode != NULL; levelNode = levelNode.next_sibling("event")) {
@@ -24,19 +34,52 @@ void Events::LoadLevelEvents(int lvl) {
 	switch (lvl) {
 	case (int)LEVELS::LEVEL0:
 		for (pugi::xml_node npcNode = levelEvents.child("npc"); npcNode != NULL; npcNode = npcNode.next_sibling("npc")) {
-			NPCs type = (NPCs)npcNode.attribute("npc").as_int();
+			int type = npcNode.attribute("npcType").as_int();
 			
 			switch (type) {
-			case NPCs::FIRE:
+			case (int)NPCs::FIRE:
 				fire = (NPC*)Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC);
 				fire->SetParameters(npcNode);
-				fire->SetNPCType(type);
+				fire->SetNPCType((NPCs)type);
 				fire->Start();
 				break;
+			default:
+				NPC* n = (NPC*)Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC);
+				n->SetParameters(npcNode);
+				n->SetNPCType((NPCs)type);
+				n->Start();
+				npcs.push_back(n);
+				break;
+			}
+
+			for (pugi::xml_node dialogueNode = npcNode.child("dialogues").child("dialogue"); dialogueNode != NULL; dialogueNode = dialogueNode.next_sibling("dialogue")) {
+				Dialogue diag;
+				diag.character = dialogueNode.attribute("character").as_int();
+				diag.text = dialogueNode.attribute("text").as_string();
+
+				switch (type) {
+				case (int)NPCs::ZERA:
+					zeraDialogue.push_back(diag);
+					break;
+				}
 			}
 		}
 		break;
 	}
+}
+
+void Events::CleanUp() {
+	if (fire) {
+		Engine::GetInstance().physics->DeleteBody((fire)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(fire);
+		fire = nullptr;
+	}
+
+	for (auto n : npcs) {
+		Engine::GetInstance().physics->DeleteBody((n)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(n);
+	}
+	npcs.clear();
 }
 
 void Events::Update() {
@@ -47,6 +90,9 @@ void Events::Update() {
 		switch (currentEvent) {
 		case ActiveEvent::FIRE_EVENT:
 			FireEvent();
+			break;
+		case ActiveEvent::ZERA_EVENT:
+			ZeraEvent();
 			break;
 		}
 	}
@@ -89,5 +135,40 @@ void Events::FireEvent() {
 			Engine::GetInstance().render.get()->DrawText("Nyssa", 700, 846, 200, 90);
 			Engine::GetInstance().render.get()->DrawText("¿Que..? ¿Que ha sido eso?", 720, 905, 250, 70);
 		}
+	}
+}
+
+void Events::ZeraEvent() {
+	Engine::GetInstance().scene->DrawText(false);
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		++timer;
+		if (timer >= zeraDialogue.size()) {
+			Engine::GetInstance().scene->DrawText(false);
+			textActive = false;
+			currentEvent = ActiveEvent::NONE;
+			FireEventDone = true;
+			varReset();
+		}
+	}
+
+	if (textActive) {
+		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+
+		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
+		SDL_Rect pfpRect = { 0, 0, 178, 178 };
+		Engine::GetInstance().render.get()->DrawTexture(chatbox, 0, 0, SDL_FLIP_NONE, &chatboxRect, false, false);
+
+		switch (zeraDialogue[timer].character) {
+		case -1:
+			Engine::GetInstance().render.get()->DrawTexture(NyssaPFP, 486, 836, SDL_FLIP_NONE, &pfpRect, false, false);
+			break;
+		case (int)NPCs::ZERA:
+			Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::ZERA - 1], false, false);
+			break;
+		}
+
+
+		Engine::GetInstance().render.get()->DrawText(zeraDialogue[timer].text.c_str(), 720, 905, zeraDialogue[timer].text.length()*10, 70);
 	}
 }
