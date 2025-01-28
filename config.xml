@@ -224,7 +224,7 @@
 			</doorCave>
 			<events>
 				<event level="0">
-					<npc npcType="0" texture="Assets/Textures/fireAnim.png" level="0" x="848" y="576" w="32" h="32">
+					<npc npcType="0" name="fire" texture="Assets/Textures/fireAnim.png" level="0" x="848" y="576" w="32" h="32">
 						<animations>
 							<idle loop="true" speed="0.12">
 								<frame x="0" y="0" w="32" h="32"/>
@@ -238,6 +238,43 @@
 								<frame x="32" y="32" w="32" h="32"/>
 								<frame x="64" y="32" w="32" h="32"/>
 							</explosion>
+						</animations>
+					</npc>
+					<npc npcType="2" name="zera" texture="Assets/Textures/Sprites.png" level="0" x="2080" y="544" w="16" h="16">
+						<animations>
+							<idle loop="true" speed="0.12">
+								<frame x="0" y="80" w="16" h="16"/>
+								<frame x="16" y="80" w="16" h="16"/>
+							</idle>
+						</animations>
+					</npc>
+					<npc npcType="4" name="armguy" texture="Assets/Textures/Sprites.png" level="0" x="1760" y="1072" w="16" h="16">
+						<animations>
+							<idle loop="true" speed="0.12">
+								<frame x="0" y="112" w="16" h="16"/>
+								<frame x="16" y="112" w="16" h="16"/>
+							</idle>
+						</animations>
+					</npc>
+				</event>
+				<event level="1">
+					<npc npcType="3" name="francesk" texture="Assets/Textures/Sprites.png" level="1" x="992" y="768" w="16" h="16">
+						<animations>
+							<idle loop="true" speed="0.12">
+								<frame x="0" y="96" w="16" h="16"/>
+								<frame x="16" y="96" w="16" h="16"/>
+							</idle>
+						</animations>
+					</npc>
+				</event>
+				<event level="2">
+					<npc npcType="5" name="demon" texture="Assets/Textures/Sprites.png" level="2" x="1600" y="960" w="16" h="16">
+						<animations>
+							<idle loop="true" speed="0.12">
+								<frame x="0" y="128" w="16" h="16"/>
+								<frame x="16" y="128" w="16" h="16"/>
+								<frame x="32" y="128" w="16" h="16"/>
+							</idle>
 						</animations>
 					</npc>
 				</event>
