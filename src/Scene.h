@@ -19,7 +19,7 @@ enum class GameState {
 };
 
 enum class LEVELS {
-	LEVEL0, CAVE
+	LEVEL0, CAVE, MOUNTAINS
 };
 
 class Scene : public Module
@@ -60,7 +60,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void LoadLevel(LEVELS lvl);
+	void LoadLevel(int lvl);
 
 	GameState GetGameState() {
 		return state;

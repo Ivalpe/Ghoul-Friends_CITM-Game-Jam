@@ -106,6 +106,7 @@ bool Map::CleanUp()
 	posEnemy.clear();
 	posChest.clear();
 	posRandomEvent.clear();
+	posDoor.clear();
 
 	return true;
 }
@@ -134,6 +135,7 @@ bool Map::NewLevelCleanUp()
 	posEnemy.clear();
 	posChest.clear();
 	posRandomEvent.clear();
+	posDoor.clear();
 
 	return true;
 }
@@ -237,7 +239,15 @@ bool Map::Load(std::string path, std::string fileName)
 						}
 						else if (gid == 15) { //Door Cave
 							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
-							posDoor.emplace("Cave", mapCoord);
+							posDoor.emplace(1, mapCoord);
+						}
+						else if (gid == 16) { //Mountain
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
+							posDoor.emplace(2, mapCoord);
+						}
+						else if (gid == 17) { //Dangerous Cave
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
+							posDoor.emplace(3, mapCoord);
 						}
 					}
 				}
