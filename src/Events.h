@@ -54,4 +54,5 @@ private:
 public:
 	//bools
 	bool isFireExtinguished = false;
+	bool FireEventDone = false;
 };

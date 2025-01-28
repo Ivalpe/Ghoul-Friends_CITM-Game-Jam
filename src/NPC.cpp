@@ -52,6 +52,10 @@ bool NPC::Start() {
 		pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW / 2, texW / 2, bodyType::STATIC);
 	}
 
+	if (Engine::GetInstance().scene.get()->eventManager->FireEventDone) {
+		done = true;
+	}
+
 	//Assign collider type
 	pbody->ctype = ColliderType::NPC;
 	pbody->listener = this;

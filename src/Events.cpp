@@ -75,6 +75,7 @@ void Events::FireEvent() {
 			Engine::GetInstance().scene->DrawText(false);
 			textActive = false;
 			currentEvent = ActiveEvent::NONE;
+			FireEventDone = true;
 			varReset();
 		}
 
