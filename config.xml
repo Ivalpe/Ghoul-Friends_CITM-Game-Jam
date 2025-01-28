@@ -222,6 +222,26 @@
 					</idle>
 				</animations>
 			</doorCave>
+			<events>
+				<event level="0">
+					<npc npcType="0" texture="Assets/Textures/fireAnim.png" level="0" x="848" y="576" w="32" h="32">
+						<animations>
+							<idle loop="true" speed="0.12">
+								<frame x="0" y="0" w="32" h="32"/>
+								<frame x="32" y="0" w="32" h="32"/>
+								<frame x="64" y="0" w="32" h="32"/>
+								<frame x="96" y="0" w="32" h="32"/>
+								<frame x="128" y="0" w="32" h="32"/>
+							</idle>
+							<explosion loop="false" speed="0.12">
+								<frame x="0" y="32" w="32" h="32"/>
+								<frame x="32" y="32" w="32" h="32"/>
+								<frame x="64" y="32" w="32" h="32"/>
+							</explosion>
+						</animations>
+					</npc>
+				</event>
+			</events>
 		</entities>
 	</scene>
 </config>

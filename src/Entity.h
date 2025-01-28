@@ -14,6 +14,7 @@ enum class EntityType
 	MERCHANT,
 	DOOR,
 	COIN,
+	NPC,
 	UNKNOWN
 };
 

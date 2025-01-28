@@ -11,8 +11,11 @@
 #include "Item.h"
 #include "Coin.h"
 #include "Door.h"
+#include "Events.h"
+#include "NPC.h"
 
 struct SDL_Texture;
+class Events;
 
 enum class GameState {
 	MAINMENU, START, DEATH, PAUSESCREEN
@@ -92,7 +95,13 @@ public:
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
+	//check if an event is happening
+	bool eventHappening = false;
+	//manage events
+	Events* eventManager = nullptr;
+
 private:
+
 	bool quitGame = false;
 
 	SDL_Texture* drums;
