@@ -17,6 +17,7 @@
 #include "Chest.h"
 #include "Merchant.h"
 #include "GuiControlButton.h"
+#include "Coin.h"
 
 Scene::Scene() : Module()
 {
@@ -134,6 +135,8 @@ bool Scene::Update(float dt)
 	// Clear dead enemies from the list
 	for (auto it = enemyList.begin(); it != enemyList.end();) {
 		if ((*it)->IsDead()) {
+			int ran = rand() % 3 + 1;
+			CreateCoin((*it)->GetPosition(), ran);
 			Engine::GetInstance().physics->DeleteBody((*it)->getSensorBody());
 			Engine::GetInstance().physics->DeleteBody((*it)->getRangeBody());
 			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
@@ -143,11 +146,23 @@ bool Scene::Update(float dt)
 		else ++it;
 	}
 
+	// Clear items buyed
 	for (auto it = itemShopList.begin(); it != itemShopList.end();) {
 		if ((*it)->isBuyed()) {
 			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
 			Engine::GetInstance().entityManager->DestroyEntity(*it);
 			it = itemShopList.erase(it);
+		}
+		else ++it;
+	}
+
+	// Clear coins collected
+	for (auto it = coinsList.begin(); it != coinsList.end();) {
+		if ((*it)->isCollected()) {
+			Engine::GetInstance().physics->DeleteBody((*it)->getBody());
+			Engine::GetInstance().entityManager->DestroyEntity(*it);
+			it = coinsList.erase(it);
+			player->AddCoins(10);
 		}
 		else ++it;
 	}
@@ -297,14 +312,29 @@ bool Scene::PostUpdate()
 	return ret;
 }
 
+void Scene::CreateCoin(Vector2D pos, int quantity) {
+	for (size_t i = 0; i < quantity; i++)
+	{
+		Coin* coin = (Coin*)Engine::GetInstance().entityManager->CreateEntity(EntityType::COIN);
+		coin->Start();
+		int ran = rand() % 8 - 4;
+		int ran2 = rand() % 3 + 1;
+		pos.setX(pos.getX() + ran);
+		pos.setY(pos.getY() - ran2);
+		coin->SetPosition(pos);
+		coinsList.push_back(coin);
+	}
+}
+
+
 void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft) {
 	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ATTACKPLAYER);
 	power->SetParameters(configParameters.child("entities").child("arrow"));
 	if (directionLeft) power->Start(true);
 	else power->Start(false);
 
-	if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2});
-	else power->SetPosition({ pos.getX() + 20, pos.getY() + 2});
+	if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2 });
+	else power->SetPosition({ pos.getX() + 20, pos.getY() + 2 });
 
 	fireballList.push_back(power);
 }

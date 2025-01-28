@@ -9,6 +9,7 @@
 #include "Chest.h"
 #include "GuiControl.h"
 #include "Item.h"
+#include "Coin.h"
 
 struct SDL_Texture;
 
@@ -39,6 +40,8 @@ public:
 
 	// Called before all Updates
 	bool PostUpdate();
+
+	void CreateCoin(Vector2D pos, int quantity);
 
 	void CreateAttack(EntityType type, Vector2D pos, bool directionLeft);
 
@@ -76,6 +79,10 @@ public:
 		return player->GetPosition();
 	}
 
+	int GetPlayerCoins() {
+		return player->GetCoins();
+	}
+
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 private:
@@ -96,6 +103,7 @@ private:
 	Player* player;
 	GameState state;
 	std::vector<Power*> fireballList;
+	std::vector<Coin*> coinsList;
 	std::vector<Enemy*> enemyList;
 	std::vector<Chest*> chestList;
 	std::vector<Merchant*> eventsList;

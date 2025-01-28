@@ -47,6 +47,14 @@ public:
 		return position;
 	}
 
+	int GetCoins() {
+		return coins;
+	}
+
+	void AddCoins(int c) {
+		coins += c;
+	}
+
 	void SetPosition(Vector2D pos);
 
 public:
@@ -90,4 +98,5 @@ public:
 	int regenerationItems = 0;
 	bool regenerationActive = false;
 	float armor = 0;
+	int coins = 0;
 };

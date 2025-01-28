@@ -20,12 +20,15 @@ bool UIManager::Start() {
 bool UIManager::Update(float dt) {
 	float lifePlayer = Engine::GetInstance().scene->GetPlayerLife();
 	float maxLifePlayer = Engine::GetInstance().scene->GetPlayerMaxLife();
+	int coins = Engine::GetInstance().scene->GetPlayerCoins();
 	float barWidth = 50;
 	SDL_Rect barRect = { 0,0,68,8 };
 
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::START) {
 		//lifebar render
 		Engine::GetInstance().render.get()->DrawTexture(lifebar, 10, 10, SDL_FLIP_NONE, &barRect, false);
+		std::string coinText = "Coins: " + std::to_string(coins);
+		Engine::GetInstance().render->DrawText(coinText.c_str(), 10, 50, (coinText.size()) * 20, 60);
 
 		//Activate flashing animation when player is damaged
 		if (Engine::GetInstance().scene.get()->IsPlayerDamaged()) lifebarFlash = true;
