@@ -49,8 +49,12 @@ bool Enemy::Start() {
 	pbody->ctype = ColliderType::SKELETON;
 	pbody->listener = this;
 
+	//get life and damage values
+	life = parameters.attribute("life").as_int();
+	damage = parameters.attribute("damage").as_int();
+
 	//Assign damage that enemy does
-	pbody->damageDone = 10;
+	pbody->damageDone = damage - 3;
 
 	//Sensor
 	sensor = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY() + texH, texW * 12, texH, bodyType::KINEMATIC);
@@ -60,7 +64,7 @@ bool Enemy::Start() {
 	rangeAttack = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX() - 32, (int)position.getY() + texH, texW * 2, texH, bodyType::KINEMATIC);
 	rangeAttack->ctype = ColliderType::RANGE;
 	rangeAttack->listener = this;
-	rangeAttack->damageDone = 12;
+	rangeAttack->damageDone = damage;
 
 	pathfinding = new Pathfinding();
 	ResetPath();
@@ -87,30 +91,37 @@ bool Enemy::Update(float dt) {
 		coolFire = false;
 	}
 
-	if (currentAnimation == &walk) {
-		if (directionLeft) {
-			velocity.x = -speed;
-		}
-		else {
-			velocity.x = +speed;
-		}
-	}
-	if (type == EnemyType::SKELETON) {
-		if (followPlayer && !rangePlayer) {
-			MovementEnemy(dt);
-		}
-	}
-	else {
-		if (followPlayer && !coolFire) {
-			currentAnimation = &attack;
-			Engine::GetInstance().scene->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionEnemy::LEFT);
-			timer = fireRate;
-			coolFire = true;
-		}
+	if (life <= 0) {
+		currentAnimation = &die;
+		isDying = true;
 	}
 
-	if (rangePlayer) {
-		currentAnimation = &attack;
+	if (!isDying) {
+		if (currentAnimation == &walk) {
+			if (directionLeft) {
+				velocity.x = -speed;
+			}
+			else {
+				velocity.x = +speed;
+			}
+		}
+		if (type == EnemyType::SKELETON) {
+			if (followPlayer && !rangePlayer) {
+				MovementEnemy(dt);
+			}
+		}
+		else {
+			if (followPlayer && !coolFire) {
+				currentAnimation = &attack;
+				Engine::GetInstance().scene->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionEnemy::LEFT);
+				timer = fireRate;
+				coolFire = true;
+			}
+		}
+
+		if (rangePlayer) {
+			currentAnimation = &attack;
+		}
 	}
 
 	pbody->body->SetLinearVelocity(velocity);
@@ -201,8 +212,11 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::UNKNOWN:
 		break;
 	case ColliderType::ATTACKPLAYER:
-		if (physA->ctype != ColliderType::SENSOR)
-			currentAnimation = &die;
+		if (physA->ctype != ColliderType::SENSOR and !isDamaged) {
+			life -= 2;
+			LOG("ENEMY DAMAGE 2");
+			isDamaged = true;
+		}
 		break;
 	case ColliderType::PLAYER:
 		if (physA->ctype == ColliderType::SENSOR) {
@@ -229,6 +243,11 @@ void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 			rangePlayer = false;
 			currentAnimation->Reset();
 			currentAnimation = &idle;
+		}
+		break;
+	case ColliderType::ATTACKPLAYER:
+		if (physA->ctype != ColliderType::SENSOR) {
+			isDamaged = false;
 		}
 		break;
 	default:

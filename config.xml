@@ -105,7 +105,7 @@
 				</animations>
 			</player>
 			<enemies>
-				<skeleton w="16" h="16" texture="Assets/Textures/Skeleton.png" gravity="true">
+				<skeleton w="16" h="16" life="5" damage="10" texture="Assets/Textures/Skeleton.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.06">
 							<frame x="0" y="0" w="16" h="16" />
@@ -139,7 +139,7 @@
 						</die>
 					</animations>
 				</skeleton>
-				<skeletonArcher w="16" h="16" texture="Assets/Textures/Skeleton.png" gravity="true">
+				<skeletonArcher w="16" h="16" life="5" damage="15" texture="Assets/Textures/Skeleton.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.06">
 							<frame x="0" y="48" w="16" h="16" />
