@@ -10,6 +10,7 @@
 #include "GuiControl.h"
 #include "Item.h"
 #include "Coin.h"
+#include "Door.h"
 
 struct SDL_Texture;
 
@@ -116,6 +117,7 @@ private:
 	std::vector<Chest*> chestList;
 	std::vector<Merchant*> eventsList;
 	std::vector<Item*> itemShopList;
+	std::vector<Door*> doorList;
 	bool drawChestText = false;
 	pugi::xml_document textsDoc;
 	pugi::xml_node textsParameters;

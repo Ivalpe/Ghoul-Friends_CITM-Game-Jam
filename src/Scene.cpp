@@ -18,6 +18,8 @@
 #include "Merchant.h"
 #include "GuiControlButton.h"
 #include "Coin.h"
+#include "Door.h"
+#include <map>
 
 Scene::Scene() : Module()
 {
@@ -349,6 +351,7 @@ void Scene::AddItem(int item) {
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
+	std::map<const char*, Vector2D> listDoorMap;
 
 	switch (state) {
 	case GameState::MAINMENU:
@@ -394,6 +397,15 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 				i->Start();
 				i->SetPosition({ event.getX() - 16, event.getY() });
 				itemShopList.push_back(i);
+			}
+
+			listDoorMap = Engine::GetInstance().map->GetDoorList();
+			for (auto door : listDoorMap) {
+				Door* d = (Door*)Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR);
+				d->SetParameters(configParameters.child("entities").child("doorCave"));
+				d->Start();
+				d->SetPosition({ door.second.getX(), door.second.getY() });
+				doorList.push_back(d);
 			}
 
 			Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
