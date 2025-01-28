@@ -102,12 +102,45 @@ bool Map::CleanUp()
 	}
 	mapData.layers.clear();
 
+	posEnemy.clear();
+	posChest.clear();
+	posRandomEvent.clear();
+
+	return true;
+}
+
+bool Map::NewLevelCleanUp()
+{
+	LOG("Unloading map");
+
+	for (const auto& tileset : mapData.tilesets) {
+		delete tileset;
+	}
+	mapData.tilesets.clear();
+
+	for (const auto& layer : mapData.layers)
+	{
+		delete layer;
+	}
+	mapData.layers.clear();
+
+	for (auto c : collisions) {
+		Engine::GetInstance().physics->DeleteBody((c)->body);
+		delete c;
+	}
+	collisions.clear();
+
+	posEnemy.clear();
+	posChest.clear();
+	posRandomEvent.clear();
+
 	return true;
 }
 
 // Load new map
 bool Map::Load(std::string path, std::string fileName)
 {
+	mapData.layers.clear();
 	bool ret = false;
 
 	// Assigns the name of the map file and the path
@@ -185,6 +218,7 @@ bool Map::Load(std::string path, std::string fileName)
 							Vector2D mapCoord = MapToWorld(i, j);
 							PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
 							c1->ctype = ColliderType::PLATFORM;
+							//collisions.push_back(c1);
 						}
 						else if (gid == 12) { // Chest
 							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
@@ -211,6 +245,7 @@ bool Map::Load(std::string path, std::string fileName)
 
 			PhysBody* pb = Engine::GetInstance().physics.get()->CreateRectangle(tileNode.attribute("x").as_int() + (tileNode.attribute("width").as_int() / 2), tileNode.attribute("y").as_int() + (tileNode.attribute("height").as_int() / 2), tileNode.attribute("width").as_int(), h, STATIC);
 			pb->ctype = ColliderType::PLATFORM;
+			collisions.push_back(pb);
 		}
 
 		ret = true;

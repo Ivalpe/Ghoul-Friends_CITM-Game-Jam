@@ -2,6 +2,7 @@
 
 #include "Module.h"
 #include <list>
+#include "Physics.h"
 #include <vector>
 #include <map>
 
@@ -121,6 +122,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool NewLevelCleanUp();
+
 	// Load new map
 	bool Load(std::string path, std::string mapFileName);
 
@@ -164,6 +167,7 @@ public:
 private:
 	bool mapLoaded;
 	MapData mapData;
+	std::vector<PhysBody*> collisions;
 	std::vector<Vector2D> posEnemy;
 	std::vector<Vector2D> posChest;
 	std::vector<Vector2D> posRandomEvent;

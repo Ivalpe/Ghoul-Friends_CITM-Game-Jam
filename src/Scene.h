@@ -17,6 +17,10 @@ enum class GameState {
 	MAINMENU, START, DEATH, PAUSESCREEN
 };
 
+enum class LEVELS {
+	CAVE
+};
+
 class Scene : public Module
 {
 public:
@@ -54,6 +58,8 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	void LoadLevel(LEVELS lvl);
 
 	GameState GetGameState() {
 		return state;

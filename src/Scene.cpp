@@ -96,6 +96,90 @@ bool Scene::PreUpdate()
 	return true;
 }
 
+void Scene::LoadLevel(LEVELS lvl) {
+
+	//clear lists
+	for (auto f:fireballList) {
+		f->CleanUp();
+		Engine::GetInstance().physics->DeleteBody((f)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(f);
+	}
+	fireballList.clear();
+
+
+	for (auto c : coinsList) {
+		Engine::GetInstance().physics->DeleteBody((c)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(c);
+	}
+	coinsList.clear();
+	
+	for (auto e : enemyList) {
+		Engine::GetInstance().physics->DeleteBody((e)->getSensorBody());
+		Engine::GetInstance().physics->DeleteBody((e)->getRangeBody());
+		Engine::GetInstance().physics->DeleteBody((e)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(e);
+	}
+	enemyList.clear();
+
+	for (auto c : chestList) {
+		Engine::GetInstance().physics->DeleteBody((c)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(c);
+	}
+	chestList.clear();
+
+	Engine::GetInstance().map->NewLevelCleanUp();
+
+	switch (lvl) {
+	case LEVELS::CAVE:
+		Engine::GetInstance().map->Load("Assets/Maps/", "Cave.tmx");
+		player->SetPosition({320, 800});
+		break;
+	}
+
+	std::vector<Vector2D> listEnemy, listChest, listEvents;
+
+	listEnemy = Engine::GetInstance().map->GetEnemyList();
+	for (auto enemy : listEnemy) {
+		int ran = rand() % 10 + 1;
+		Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+		if (ran <= 5) {
+			en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
+			en->SetEnemyType(EnemyType::SKELETON);
+		}
+		else {
+			en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
+			en->SetEnemyType(EnemyType::SKELETON_ARCHER);
+		}
+		en->Start();
+		en->SetPosition({ enemy.getX(), enemy.getY() });
+		enemyList.push_back(en);
+	}
+
+	listChest = Engine::GetInstance().map->GetChestList();
+	for (auto chest : listChest) {
+		Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
+		ch->SetParameters(configParameters.child("entities").child("chest"));
+		ch->Start();
+		ch->SetPosition({ chest.getX(), chest.getY() });
+		chestList.push_back(ch);
+	}
+
+	listEvents = Engine::GetInstance().map->GetRandomEventList();
+	for (auto event : listEvents) {
+		Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
+		mc->SetParameters(configParameters.child("entities").child("merchant"));
+		mc->Start();
+		mc->SetPosition({ event.getX(), event.getY() - 16 });
+		eventsList.push_back(mc);
+		Item* i = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
+		int ran = rand() % 100 + 1;
+		i->SetTexture(ran);
+		i->Start();
+		i->SetPosition({ event.getX() - 16, event.getY() });
+		itemShopList.push_back(i);
+	}
+}
+
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
@@ -192,6 +276,10 @@ bool Scene::Update(float dt)
 			Engine::GetInstance().render->DrawTexture(item.first, x - Engine::GetInstance().render->camera.x / 4, 10 - Engine::GetInstance().render->camera.y / 4, SDL_FLIP_NONE);
 			x += 20;
 		}
+	}
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
+		LoadLevel(LEVELS::CAVE);
 	}
 
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
