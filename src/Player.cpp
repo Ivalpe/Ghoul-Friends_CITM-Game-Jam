@@ -140,7 +140,7 @@ bool Player::Update(float dt)
 			}
 
 			if (isAttacking) {
-				if (attack.currentFrame >= (18*attack.speed) and !coolFire) {
+				if (currentAnimation == &attack and attack.currentFrame >= (18*attack.speed) and !coolFire) {
 					Engine::GetInstance().scene.get()->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionPlayer::LEFT);
 					coolFire = true;
 				}
@@ -166,7 +166,7 @@ bool Player::Update(float dt)
 			if (isJumping == true)
 			{
 				velocity.y = pbody->body->GetLinearVelocity().y;
-				if (currentAnimation != &jumping) currentAnimation = &jumping;
+				if (currentAnimation != &jumping and !isAttacking) currentAnimation = &jumping;
 			}
 
 			if (regenerationActive) {
