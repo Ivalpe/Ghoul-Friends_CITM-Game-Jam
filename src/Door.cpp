@@ -51,6 +51,10 @@ bool Door::Update(float dt) {
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + 8, (int)position.getY() - 16, SDL_FLIP_NONE);
 
 	currentAnimation->Update();
+
+	if (canDoor && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+		Engine::GetInstance().scene->LoadLevel(LEVELS::CAVE);
+	}
 	return true;
 }
 
@@ -71,6 +75,8 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
+		canDoor = true;
+		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Caves"));
 		break;
 	default:
 		break;
@@ -81,6 +87,8 @@ void Door::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
+		canDoor = false;
+		Engine::GetInstance().scene->DrawText(false);
 		break;
 	default:
 		break;

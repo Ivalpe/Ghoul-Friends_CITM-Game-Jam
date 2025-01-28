@@ -51,4 +51,5 @@ private:
 	Animation door;
 	StateDoor stDoor;
 	PhysBody* pbody;
+	bool canDoor = false;
 };
