@@ -234,9 +234,16 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case 1:
 		listEnemy = Engine::GetInstance().map->GetEnemyList();
 		for (auto enemy : listEnemy) {
+			int ran = rand() % 10 + 1;
 			Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
-			en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
-			en->SetEnemyType(EnemyType::SKELETON);
+			if (ran <= 5) {
+				en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
+				en->SetEnemyType(EnemyType::SKELETON);
+			}
+			else {
+				en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
+				en->SetEnemyType(EnemyType::SKELETON_ARCHER);
+			}
 			en->Start();
 			en->SetPosition({ enemy.getX(), enemy.getY() });
 			enemyList.push_back(en);
@@ -286,15 +293,14 @@ bool Scene::PostUpdate()
 	return ret;
 }
 
-void Scene::CreateAttack() {
+void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft) {
 	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ATTACKPLAYER);
-	power->SetParameters(configParameters.child("entities").child("fireball"));
-	if (player->GetDirection() == DirectionPlayer::LEFT) power->Start(true);
+	power->SetParameters(configParameters.child("entities").child("arrow"));
+	if (directionLeft) power->Start(true);
 	else power->Start(false);
 
-	Vector2D playerPos = player->GetPosition();
-	if (player->GetDirection() == DirectionPlayer::LEFT) power->SetPosition({ playerPos.getX() - 16, playerPos.getY() });
-	else power->SetPosition({ playerPos.getX() + 20, playerPos.getY() });
+	if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2});
+	else power->SetPosition({ pos.getX() + 20, pos.getY() + 2});
 
 	fireballList.push_back(power);
 }

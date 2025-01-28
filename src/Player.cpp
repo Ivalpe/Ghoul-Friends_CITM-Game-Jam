@@ -141,7 +141,7 @@ bool Player::Update(float dt)
 
 			if (isAttacking) {
 				if (attack.currentFrame >= (18*attack.speed) and !coolFire) {
-					Engine::GetInstance().scene.get()->CreateAttack();
+					Engine::GetInstance().scene.get()->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionPlayer::LEFT);
 					coolFire = true;
 				}
 				if (attack.HasFinished()) {

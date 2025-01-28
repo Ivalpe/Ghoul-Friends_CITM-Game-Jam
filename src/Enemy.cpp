@@ -81,6 +81,12 @@ bool Enemy::Update(float dt) {
 
 	if (currentAnimation == &dmg && currentAnimation->HasFinished()) currentAnimation = &idle;
 
+	if (coolFire && timer > 0) timer--;
+
+	if (timer == 0) {
+		coolFire = false;
+	}
+
 	if (currentAnimation == &walk) {
 		if (directionLeft) {
 			velocity.x = -speed;
@@ -89,31 +95,23 @@ bool Enemy::Update(float dt) {
 			velocity.x = +speed;
 		}
 	}
-
-	if (followPlayer && !rangePlayer) {
-		MovementEnemy(dt);
+	if (type == EnemyType::SKELETON) {
+		if (followPlayer && !rangePlayer) {
+			MovementEnemy(dt);
+		}
+	}
+	else {
+		if (followPlayer && !coolFire) {
+			currentAnimation = &attack;
+			Engine::GetInstance().scene->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionEnemy::LEFT);
+			timer = fireRate;
+			coolFire = true;
+		}
 	}
 
 	if (rangePlayer) {
 		currentAnimation = &attack;
 	}
-
-	/*
-	tempChangeAnimation--;
-	if (tempChangeAnimation <= 0) {
-		if (currentAnimation == &walk) {
-			currentAnimation = &idle;
-			tempChangeAnimation = 120;
-			de = DirectionEnemy::RIGHT;
-		}
-		else if (currentAnimation == &idle) {
-			currentAnimation = &walk;
-			tempChangeAnimation = 20;
-			directionLeft = !directionLeft;
-			de = DirectionEnemy::LEFT;
-		}
-	}
-	*/
 
 	pbody->body->SetLinearVelocity(velocity);
 
@@ -121,7 +119,7 @@ bool Enemy::Update(float dt) {
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-	if (currentAnimation == &attack)
+	if (currentAnimation == &attack && type == EnemyType::SKELETON)
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 	else
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());

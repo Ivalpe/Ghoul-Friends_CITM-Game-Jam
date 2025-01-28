@@ -40,7 +40,7 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
-	void CreateAttack();
+	void CreateAttack(EntityType type, Vector2D pos, bool directionLeft);
 
 	void AddItem(int item);
 

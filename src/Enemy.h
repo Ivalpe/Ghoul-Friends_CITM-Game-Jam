@@ -19,7 +19,7 @@ enum class DirectionEnemy {
 };
 
 enum class EnemyType {
-	SKELETON,
+	SKELETON, SKELETON_ARCHER
 };
 
 
@@ -97,6 +97,9 @@ private:
 	bool dead, followPlayer, rangePlayer;
 	b2Vec2 velocity;
 	float speed;
+
+	int fireRate = 60, timer;
+	bool coolFire = false;
 
 	Pathfinding* pathfinding;
 	int tempChangeAnimation;

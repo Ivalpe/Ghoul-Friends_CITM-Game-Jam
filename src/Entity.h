@@ -8,6 +8,7 @@ enum class EntityType
 	PLAYER,
 	ITEM,
 	ATTACKPLAYER,
+	ARROW,
 	ENEMY,
 	CHEST,
 	MERCHANT,
