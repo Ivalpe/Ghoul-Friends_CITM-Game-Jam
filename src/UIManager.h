@@ -33,4 +33,8 @@ private:
 	SDL_Texture* lifebar;
 
 	std::vector<GuiControl*> mainMenu;
+	std::vector<GuiControl*> pause;
+
+	SDL_Texture* pauseScreen;
+	SDL_Texture* deathScreen;
 };

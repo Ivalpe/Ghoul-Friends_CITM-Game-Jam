@@ -14,7 +14,7 @@
 struct SDL_Texture;
 
 enum class GameState {
-	MAINMENU, START, DEATH
+	MAINMENU, START, DEATH, PAUSESCREEN
 };
 
 class Scene : public Module
@@ -86,6 +86,8 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 private:
+	bool quitGame = false;
+
 	SDL_Texture* drums;
 	SDL_Texture* book;
 	SDL_Texture* armor;
@@ -109,7 +111,8 @@ private:
 	std::vector<Merchant*> eventsList;
 	std::vector<Item*> itemShopList;
 	bool drawChestText = false;
-	pugi::xml_document textsParameters;
+	pugi::xml_document textsDoc;
+	pugi::xml_node textsParameters;
 	std::map<SDL_Texture*, int> itemsList;
 	pugi::char_t* searchText;
 };

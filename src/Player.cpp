@@ -81,6 +81,7 @@ bool Player::Update(float dt)
 		}
 
 		if (isDying) {
+			if(currentAnimation != &death) currentAnimation = &death;
 			if (death.HasFinished() and !hasDied) {
 				death.Reset();
 				isDying = false;
@@ -98,7 +99,7 @@ bool Player::Update(float dt)
 		}
 
 		if (isRespawning) {
-			//velocity = b2Vec2(0, jumpForce);
+			if (currentAnimation != &respawn) currentAnimation = &respawn;
 			if (respawn.HasFinished()) {
 				respawn.Reset();
 				isRespawning = false;
@@ -108,7 +109,7 @@ bool Player::Update(float dt)
 		}
 
 		//movement
-		if (!isRespawning and !isDying) {
+		if (!isRespawning and !isDying and !hasDied) {
 			velocity = b2Vec2(0, pbody->body->GetLinearVelocity().y);
 
 			// Move left
@@ -246,19 +247,19 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
 		break;
 	case ColliderType::SKELETON:
-		if (!isDying and !isRespawning) {
-			isDamaged = true;
+		if (!isDying and !isRespawning and !hasDied) {
 			damageReceived = physB->damageDone - (physB->damageDone * armor);
 			life -= damageReceived;
-			currentAnimation = &damage;
+			if (life > 0) isDamaged = true;
+			if(life > 0) currentAnimation = &damage;
 		}
 		break;
 	case ColliderType::RANGE:
-		if (!isDying and !isRespawning) {
-			isDamaged = true;
+		if (!isDying and !isRespawning and !hasDied) {
 			damageReceived = physB->damageDone - (physB->damageDone * armor);;
 			life -= damageReceived;
-			currentAnimation = &damage;
+			if (life > 0) isDamaged = true;
+			if (life > 0) currentAnimation = &damage;
 		}
 		break;
 	case ColliderType::UNKNOWN:

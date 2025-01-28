@@ -82,6 +82,10 @@ private:
 	const char* texturePath;
 	int texW, texH;
 	bool isDying = false;
+	bool isDamaged = false;
+
+	int life;
+	int damage;
 
 	EnemyType type;
 	pugi::xml_node parameters;

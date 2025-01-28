@@ -23,7 +23,9 @@ Scene::Scene() : Module()
 {
 	name = "scene";
 	state = GameState::MAINMENU;
-	textsParameters.load_file("texts.xml");
+	textsDoc.load_file("texts.xml");
+	textsParameters = textsDoc.child("texts");
+	
 	srand(time(NULL));
 }
 
@@ -61,6 +63,8 @@ bool Scene::Start()
 	const char* newGame = textsParameters.child("NewGame").attribute("text").as_string();
 	const char* settings = textsParameters.child("Settings").attribute("text").as_string();
 	const char* exit = textsParameters.child("Exit").attribute("text").as_string();
+	const char* resume = textsParameters.child("Continue").attribute("text").as_string();
+	const char* return2Menu = textsParameters.child("Return").attribute("text").as_string();
 
 	std::vector<const char*> names = { newGame, settings, exit };
 	int coordInitial = 360, interspace = 100;
@@ -71,6 +75,16 @@ bool Scene::Start()
 		Engine::GetInstance().uiManager.get()->Add(GuiClass::MAIN_MENU, button);
 		coordInitial += interspace;
 	}
+
+	coordInitial = 500, interspace = 100;
+	names = { resume, return2Menu, exit };
+	for (auto n : names) {
+		button = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, Engine::GetInstance().uiManager.get()->GetSize(GuiClass::PAUSE), n, { 600, coordInitial, 250,60 }, this, GuiClass::MAIN_MENU);
+		button->SetTexture(buttonTexture, buttonTexture, buttonPressed, buttonTexture);
+		Engine::GetInstance().uiManager.get()->Add(GuiClass::PAUSE, button);
+		coordInitial += interspace;
+	}
+
 	Engine::GetInstance().uiManager.get()->Show(GuiClass::MAIN_MENU, true);
 
 	return true;
@@ -248,54 +262,77 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
 
-	switch (control->id)
-	{
-	case 1:
-		listEnemy = Engine::GetInstance().map->GetEnemyList();
-		for (auto enemy : listEnemy) {
-			int ran = rand() % 10 + 1;
-			Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
-			if (ran <= 5) {
-				en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
-				en->SetEnemyType(EnemyType::SKELETON);
+	switch (state) {
+	case GameState::MAINMENU:
+		switch (control->id)
+		{
+		case 1:
+			listEnemy = Engine::GetInstance().map->GetEnemyList();
+			for (auto enemy : listEnemy) {
+				int ran = rand() % 10 + 1;
+				Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+				if (ran <= 5) {
+					en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
+					en->SetEnemyType(EnemyType::SKELETON);
+				}
+				else {
+					en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
+					en->SetEnemyType(EnemyType::SKELETON_ARCHER);
+				}
+				en->Start();
+				en->SetPosition({ enemy.getX(), enemy.getY() });
+				enemyList.push_back(en);
 			}
-			else {
-				en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
-				en->SetEnemyType(EnemyType::SKELETON_ARCHER);
+
+			listChest = Engine::GetInstance().map->GetChestList();
+			for (auto chest : listChest) {
+				Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
+				ch->SetParameters(configParameters.child("entities").child("chest"));
+				ch->Start();
+				ch->SetPosition({ chest.getX(), chest.getY() });
+				chestList.push_back(ch);
 			}
-			en->Start();
-			en->SetPosition({ enemy.getX(), enemy.getY() });
-			enemyList.push_back(en);
-		}
 
-		listChest = Engine::GetInstance().map->GetChestList();
-		for (auto chest : listChest) {
-			Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
-			ch->SetParameters(configParameters.child("entities").child("chest"));
-			ch->Start();
-			ch->SetPosition({ chest.getX(), chest.getY() });
-			chestList.push_back(ch);
-		}
+			listEvents = Engine::GetInstance().map->GetRandomEventList();
+			for (auto event : listEvents) {
+				Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
+				mc->SetParameters(configParameters.child("entities").child("merchant"));
+				mc->Start();
+				mc->SetPosition({ event.getX(), event.getY() - 16 });
+				eventsList.push_back(mc);
+				Item* i = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
+				int ran = rand() % 100 + 1;
+				i->SetTexture(ran);
+				i->Start();
+				i->SetPosition({ event.getX() - 16, event.getY() });
+				itemShopList.push_back(i);
+			}
 
-		listEvents = Engine::GetInstance().map->GetRandomEventList();
-		for (auto event : listEvents) {
-			Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
-			mc->SetParameters(configParameters.child("entities").child("merchant"));
-			mc->Start();
-			mc->SetPosition({ event.getX(), event.getY() - 16 });
-			eventsList.push_back(mc);
-			Item* i = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
-			int ran = rand() % 100 + 1;
-			i->SetTexture(ran);
-			i->Start();
-			i->SetPosition({ event.getX() - 16, event.getY() });
-			itemShopList.push_back(i);
+			Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
+			state = GameState::START;
+			break;
+		case 3:
+			quitGame = true;
+			break;
+		default:
+			break;
 		}
-
-		Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
-		state = GameState::START;
 		break;
-	default:
+	case GameState::PAUSESCREEN:
+		switch (control->id) {
+		case 1:
+			Engine::GetInstance().uiManager->Show(GuiClass::PAUSE, false);
+			state = GameState::START;
+			break;
+		case 2:
+			Engine::GetInstance().uiManager->Show(GuiClass::PAUSE, false);
+			Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, true);
+			state = GameState::MAINMENU;
+			break;
+		case 3:
+			quitGame = true;
+			break;
+		}
 		break;
 	}
 	return true;
@@ -306,8 +343,18 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (quitGame) ret = false;
+	else if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		switch (state) {
+		case GameState::MAINMENU:
+			ret = false;
+			break;
+		case GameState::START:
+			state = GameState::PAUSESCREEN;
+			Engine::GetInstance().uiManager.get()->Show(GuiClass::PAUSE, true);
+			break;
+		}
+	}
 
 	return ret;
 }

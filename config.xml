@@ -105,14 +105,16 @@
 				</animations>
 			</player>
 			<enemies>
-				<skeleton w="16" h="16" texture="Assets/Textures/Skeleton.png" gravity="true">
+				<skeleton w="16" h="16" life="5" damage="10" texture="Assets/Textures/Skeleton.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.06">
 							<frame x="0" y="0" w="16" h="16" />
 							<frame x="16" y="0" w="16" h="16" />
 						</idle>
 						<dmg loop="false" speed="0.06">
-							<frame x="64" y="64" w="16" h="32" />
+							<frame x="0" y="0" w="16" h="16" />
+							<frame x="48" y="0" w="16" h="16" />
+							<frame x="0" y="0" w="16" h="16" />
 						</dmg>
 						<attack loop="true" speed="0.20">
 							<frame x="0" y="16" w="32" h="16" />
@@ -139,14 +141,16 @@
 						</die>
 					</animations>
 				</skeleton>
-				<skeletonArcher w="16" h="16" texture="Assets/Textures/Skeleton.png" gravity="true">
+				<skeletonArcher w="16" h="16" life="5" damage="15" texture="Assets/Textures/Skeleton.png" gravity="true">
 					<animations>
 						<idle loop="true" speed="0.06">
 							<frame x="0" y="48" w="16" h="16" />
 							<frame x="16" y="48" w="16" h="16" />
 						</idle>
 						<dmg loop="false" speed="0.06">
-							<frame x="64" y="64" w="16" h="16" />
+							<frame x="0" y="48" w="16" h="16" />
+							<frame x="48" y="48" w="16" h="16" />
+							<frame x="0" y="48" w="16" h="16" />
 						</dmg>
 						<attack loop="true" speed="0.20">
 							<frame x="0" y="64" w="16" h="16" />
