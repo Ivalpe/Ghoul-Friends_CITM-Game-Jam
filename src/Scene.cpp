@@ -291,8 +291,16 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		switch (state) {
+		case GameState::MAINMENU:
+			ret = false;
+			break;
+		case GameState::START:
+			ret = false;
+			break;
+		}
+	}
 
 	return ret;
 }

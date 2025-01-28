@@ -13,6 +13,8 @@ UIManager::~UIManager() {}
 
 bool UIManager::Start() {
 	lifebar = Engine::GetInstance().textures.get()->Load("Assets/Textures/lifebar.png");
+	pauseScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/pauseScreen.png");
+	deathScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/deathScreen.png");
 
 	return true;
 }
@@ -54,6 +56,10 @@ bool UIManager::Update(float dt) {
 		Engine::GetInstance().render.get()->DrawTexture(lifebar, 54, 14, SDL_FLIP_NONE, &bar, false);
 		std::string lifePoints = std::to_string(Engine::GetInstance().scene.get()->GetPlayerLife());
 		Engine::GetInstance().render.get()->DrawText(lifePoints.c_str(), 80, 15, 100, 35);
+	}
+	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::DEATH) {
+		SDL_Rect screenRect = { 0,0,1920,1080 };
+		Engine::GetInstance().render.get()->DrawTexture(deathScreen, 0, 0, SDL_FLIP_NONE, &screenRect, false);
 	}
 
 	return true;
