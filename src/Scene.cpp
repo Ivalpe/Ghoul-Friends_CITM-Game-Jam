@@ -238,7 +238,7 @@ bool Scene::Update(float dt)
 		break;
 	case GameState::DEATH:
 		++deathTime;
-		if (currentLevel != LEVELS::LEVEL0) LoadLevel(0);
+		LoadLevel(0);
 		if (deathTime >= deathMaxTime) {
 			state = GameState::START;
 			player->startRespawn = true;
