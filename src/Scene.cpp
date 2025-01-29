@@ -72,20 +72,20 @@ bool Scene::Start()
 	const char* resume = textsParameters.child("Continue").attribute("text").as_string();
 	const char* return2Menu = textsParameters.child("Return").attribute("text").as_string();
 
-	std::vector<const char*> names = { newGame, settings, exit };
-	int coordInitial = 360, interspace = 100;
+	std::vector<const char*> names = { newGame, exit };
+	int coordInitial = 480, interspace = 120;
 	GuiControlButton* button;
 	for (auto n : names) {
-		button = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, Engine::GetInstance().uiManager.get()->GetSize(GuiClass::MAIN_MENU), n, { 480, coordInitial, 250,60 }, this, GuiClass::MAIN_MENU);
+		button = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, Engine::GetInstance().uiManager.get()->GetSize(GuiClass::MAIN_MENU), n, { 630, coordInitial, 250,60 }, this, GuiClass::MAIN_MENU);
 		button->SetTexture(buttonTexture, buttonTexture, buttonPressed, buttonTexture);
 		Engine::GetInstance().uiManager.get()->Add(GuiClass::MAIN_MENU, button);
 		coordInitial += interspace;
 	}
 
-	coordInitial = 500, interspace = 100;
+	coordInitial = 380, interspace = 120;
 	names = { resume, return2Menu, exit };
 	for (auto n : names) {
-		button = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, Engine::GetInstance().uiManager.get()->GetSize(GuiClass::PAUSE), n, { 600, coordInitial, 250,60 }, this, GuiClass::MAIN_MENU);
+		button = (GuiControlButton*)Engine::GetInstance().guiManager->CreateGuiControl(GuiControlType::BUTTON, Engine::GetInstance().uiManager.get()->GetSize(GuiClass::PAUSE), n, { 800, coordInitial, 250,60 }, this, GuiClass::MAIN_MENU);
 		button->SetTexture(buttonTexture, buttonTexture, buttonPressed, buttonTexture);
 		Engine::GetInstance().uiManager.get()->Add(GuiClass::PAUSE, button);
 		coordInitial += interspace;
@@ -476,7 +476,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
 			state = GameState::START;
 			break;
-		case 3:
+		case 2:
 			quitGame = true;
 			break;
 		default:
