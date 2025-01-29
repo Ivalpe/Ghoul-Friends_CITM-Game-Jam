@@ -17,12 +17,15 @@ void Events::LoadLevelEvents(int lvl) {
 	NyssaPFP = Engine::GetInstance().textures.get()->Load("Assets/Textures/talkingperssinalas.png");
 	npcPFPs = Engine::GetInstance().textures.get()->Load("Assets/Textures/npcsBig.png");
 
-	//temporary crow one
+	//crow 
+	npcPFPsRect.push_back({ 0, 504, 148, 148 });
+	//zera
 	npcPFPsRect.push_back({ 0, 0, 148, 148 });
-
-	npcPFPsRect.push_back({ 0, 0, 148, 148 });
+	//francesk
 	npcPFPsRect.push_back({ 0, 168, 148, 148 });
+	//arm guy
 	npcPFPsRect.push_back({ 147, 168, 148, 148 });
+	//demon
 	npcPFPsRect.push_back({ 0, 336, 148, 148 });
 
 
