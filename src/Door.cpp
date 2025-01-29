@@ -41,19 +41,20 @@ bool Door::Start() {
 }
 
 bool Door::Update(float dt) {
+	if (render) {
+		pbody->body->SetLinearVelocity({ 0,0 });
 
-	pbody->body->SetLinearVelocity({ 0,0 });
+		b2Transform pbodyPos = pbody->body->GetTransform();
+		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + 8, (int)position.getY() - 16, SDL_FLIP_NONE);
 
-	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + 8, (int)position.getY() - 16, SDL_FLIP_NONE);
+		currentAnimation->Update();
 
-	currentAnimation->Update();
-
-	if (canDoor && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
-		Engine::GetInstance().scene->LoadLevel(level);
+		if (canDoor && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+			Engine::GetInstance().scene->LoadLevel(level);
+		}
 	}
 	return true;
 }

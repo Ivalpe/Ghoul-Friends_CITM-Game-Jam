@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="250" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="442">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="250" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="444">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1386" columns="33">
   <image source="tileset.png" width="528" height="672"/>
   <wangsets>
@@ -95624,8 +95624,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile gid="100"/>
+   <tile gid="67"/>
+   <tile gid="104"/>
    <tile gid="101"/>
    <tile gid="101"/>
    <tile gid="101"/>
@@ -95874,7 +95874,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="100"/>
    <tile gid="101"/>
    <tile gid="101"/>
@@ -95882,6 +95881,7 @@
    <tile gid="101"/>
    <tile gid="101"/>
    <tile gid="101"/>
+   <tile gid="101"/>
    <tile gid="103"/>
    <tile gid="68"/>
    <tile gid="69"/>
@@ -96122,10 +96122,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
    <tile gid="67"/>
+   <tile gid="68"/>
    <tile gid="104"/>
+   <tile gid="101"/>
    <tile gid="101"/>
    <tile gid="101"/>
    <tile gid="101"/>
@@ -96372,9 +96372,9 @@
    <tile/>
    <tile/>
    <tile gid="67"/>
-   <tile gid="68"/>
-   <tile gid="68"/>
    <tile gid="104"/>
+   <tile gid="101"/>
+   <tile gid="101"/>
    <tile gid="101"/>
    <tile gid="101"/>
    <tile gid="101"/>
@@ -119750,7 +119750,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -125368,6 +125368,8 @@
   <object id="439" x="3424" y="1056" width="16" height="32"/>
   <object id="440" x="3440" y="1072" width="16" height="32"/>
   <object id="441" x="3456" y="1072" width="16" height="48"/>
+  <object id="442" x="1232" y="1312" width="16" height="32"/>
+  <object id="443" x="1200" y="1344" width="32" height="16"/>
  </objectgroup>
  <layer id="9" name="Navigation" width="250" height="100" visible="0">
   <properties>
@@ -145951,7 +145953,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
@@ -146201,7 +146203,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
@@ -146449,8 +146451,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="11"/>
+   <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>

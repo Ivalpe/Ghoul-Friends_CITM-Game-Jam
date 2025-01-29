@@ -131,8 +131,6 @@ bool Enemy::Update(float dt) {
 			}
 		}
 
-		//if (currentAnimation == &attack && currentAnimation.) 
-
 		if (rangePlayer) {
 			currentAnimation = &attack;
 			if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
