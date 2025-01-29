@@ -19,7 +19,7 @@ enum class DirectionEnemy {
 };
 
 enum class EnemyType {
-	SKELETON, SKELETON_ARCHER
+	SKELETON, SKELETON_ARCHER, SPIDER, DEMON
 };
 
 

@@ -163,7 +163,7 @@ void Scene::LoadLevel(int lvl) {
 		break;
 	case 2:
 		Engine::GetInstance().map->Load("Assets/Maps/", "Mountain.tmx");
-		player->SetPosition({ 3168, 772 });
+		player->SetPosition({ 184, 1000 });
 		currentLevel = LEVELS::MOUNTAINS;
 		break;
 	default:
@@ -177,15 +177,28 @@ void Scene::LoadLevel(int lvl) {
 
 	listEnemy = Engine::GetInstance().map->GetEnemyList();
 	for (auto enemy : listEnemy) {
-		int ran = rand() % 10 + 1;
-		Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
-		if (ran <= 5) {
-			en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
-			en->SetEnemyType(EnemyType::SKELETON);
+		Enemy* en;
+		if (currentLevel == LEVELS::LEVEL0) {
+			int ran = rand() % 10 + 1;
+			en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+			if (ran <= 5) {
+				en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
+				en->SetEnemyType(EnemyType::SKELETON);
+			}
+			else {
+				en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
+				en->SetEnemyType(EnemyType::SKELETON_ARCHER);
+			}
+		}
+		else if (currentLevel == LEVELS::CAVE) {
+			en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+			en->SetParameters(configParameters.child("entities").child("enemies").child("spider"));
+			en->SetEnemyType(EnemyType::SPIDER);
 		}
 		else {
-			en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
-			en->SetEnemyType(EnemyType::SKELETON_ARCHER);
+			en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
+			en->SetParameters(configParameters.child("entities").child("enemies").child("demon"));
+			en->SetEnemyType(EnemyType::DEMON);
 		}
 		en->Start();
 		en->SetPosition({ enemy.getX(), enemy.getY() });
@@ -348,6 +361,10 @@ bool Scene::Update(float dt)
 		AddItem(21);
 	}
 
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		AddItem(41);
+	}
+
 	return true;
 }
 
@@ -370,7 +387,7 @@ void Scene::AddItem(int item) {
 			itemsList.emplace(armor, 1);
 		}
 	}
-	else if (item >= 30 && item <= 59) {
+	else if (item >= 40 && item <= 59) {
 		auto it = itemsList.find(book);
 		if (it != itemsList.end()) {
 			it->second++;

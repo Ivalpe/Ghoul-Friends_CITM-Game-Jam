@@ -277,7 +277,7 @@ void Boss::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ATTACKPLAYER:
 		if (physA->ctype == ColliderType::BOSS) {
 			if (life > 0) currentAnimation = &dmg;
-			life -= physB->damageDone;
+			life -= physB->damageDone + (physB->damageDone * Engine::GetInstance().scene->PlayerExtraDamage());
 		}
 		break;
 	case ColliderType::PLAYER:

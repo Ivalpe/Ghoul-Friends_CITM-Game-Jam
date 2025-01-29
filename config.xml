@@ -175,9 +175,77 @@
 						</die>
 					</animations>
 				</skeletonArcher>
+				<spider w="16" h="16" life="5" damage="10" texture="Assets/Textures/Cave.png" gravity="true">
+					<animations>
+						<idle loop="true" speed="0.06">
+							<frame x="0" y="0" w="16" h="16" />
+						</idle>
+						<attack loop="true" speed="0.12">
+							<frame x="0" y="16" w="16" h="16" />
+							<frame x="16" y="16" w="16" h="16" />
+							<frame x="32" y="16" w="16" h="16" />
+						</attack>
+						<dmg loop="false" speed="0.06">
+							<frame x="0" y="48" w="16" h="16" />
+						</dmg>
+						<walk loop="true" speed="0.12">
+							<frame x="0" y="16" w="16" h="16" />
+							<frame x="16" y="16" w="16" h="16" />
+							<frame x="32" y="16" w="16" h="16" />
+						</walk>
+						<die loop="false" speed="0.20">
+							<frame x="0" y="32" w="16" h="16" />
+							<frame x="16" y="32" w="16" h="16" />
+							<frame x="32" y="32" w="16" h="16" />
+							<frame x="48" y="32" w="16" h="16" />
+							<frame x="64" y="32" w="16" h="16" />
+							<frame x="80" y="32" w="16" h="16" />
+						</die>
+					</animations>
+				</spider>
+				<demon w="16" h="16" life="5" damage="10" texture="Assets/Textures/Mountain.png" gravity="true">
+					<animations>
+						<idle loop="true" speed="0.06">
+							<frame x="0" y="0" w="16" h="16" />
+							<frame x="16" y="0" w="16" h="16" />
+						</idle>
+						<dmg loop="false" speed="0.06">
+							<frame x="0" y="48" w="16" h="16" />
+						</dmg>
+						<walk loop="true" speed="0.12">
+							<frame x="0" y="16" w="16" h="16" />
+							<frame x="16" y="16" w="16" h="16" />
+							<frame x="32" y="16" w="16" h="16" />
+						</walk>
+						<die loop="false" speed="0.20">
+							<frame x="0" y="32" w="16" h="16" />
+							<frame x="16" y="32" w="16" h="16" />
+							<frame x="32" y="32" w="16" h="16" />
+							<frame x="48" y="32" w="16" h="16" />
+							<frame x="64" y="32" w="16" h="16" />
+							<frame x="80" y="32" w="16" h="16" />
+							<frame x="96" y="32" w="16" h="16" />
+							<frame x="112" y="32" w="16" h="16" />
+							<frame x="128" y="32" w="16" h="16" />
+							<frame x="144" y="32" w="16" h="16" />
+							<frame x="160" y="32" w="16" h="16" />
+							<frame x="176" y="32" w="16" h="16" />
+							<frame x="192" y="32" w="16" h="16" />
+							<frame x="208" y="32" w="16" h="16" />
+							<frame x="224" y="32" w="16" h="16" />
+							<frame x="240" y="32" w="16" h="16" />
+						</die>
+						<attack loop="true" speed="0.20">
+							<frame x="0" y="16" w="32" h="16" />
+							<frame x="32" y="16" w="32" h="16" />
+							<frame x="64" y="16" w="32" h="16" />
+							<frame x="96" y="16" w="32" h="16" />
+						</attack>
+					</animations>
+				</demon>
 			</enemies>
 			<bosses>
-				<bossMountain life="5" damage="5" texture="Assets/Textures/Boss.png" w="32" h="32">
+				<bossMountain life="50" damage="5" texture="Assets/Textures/Boss.png" w="32" h="32">
 					<animations>
 						<idle loop="true" speed="0.06">
 							<frame x="0" y="0" w="32" h="32" />

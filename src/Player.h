@@ -55,6 +55,10 @@ public:
 		coins += c;
 	}
 
+	float GetExtraDamage() {
+		return extraDmg;
+	}
+
 	void SetPosition(Vector2D pos);
 
 public:
@@ -99,5 +103,6 @@ public:
 	int regenerationItems = 0;
 	bool regenerationActive = false;
 	float armor = 0;
+	float extraDmg = 0;
 	int coins = 0;
 };

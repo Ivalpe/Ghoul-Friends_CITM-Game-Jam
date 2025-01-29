@@ -98,6 +98,10 @@ public:
 		player->AddCoins(q);
 	}
 
+	float PlayerExtraDamage() {
+		return player->GetExtraDamage();
+	}
+
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	//check if an event is happening

@@ -116,6 +116,11 @@ bool Enemy::Update(float dt) {
 				MovementEnemy(dt);
 			}
 		}
+		else if (type == EnemyType::SPIDER || type == EnemyType::DEMON) {
+			if (followPlayer) {
+				MovementEnemy(dt);
+			}
+		}
 		else {
 			if (followPlayer && !coolFire) {
 				currentAnimation = &attack;
@@ -136,7 +141,7 @@ bool Enemy::Update(float dt) {
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
-	if (currentAnimation == &attack && type == EnemyType::SKELETON)
+	if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 	else
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
@@ -219,7 +224,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ATTACKPLAYER:
 		if (physA->ctype != ColliderType::SENSOR and !isDamaged) {
-			life -= physB->damageDone;
+			life -= physB->damageDone + (physB->damageDone * Engine::GetInstance().scene->PlayerExtraDamage());
 			LOG("ENEMY DAMAGE 2");
 			isDamaged = true;
 			currentAnimation = &dmg;

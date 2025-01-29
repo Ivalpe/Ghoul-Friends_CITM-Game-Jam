@@ -216,7 +216,7 @@ void Player::AddItem(int item) {
 		armor += 0.05;
 	}
 	else if (item >= 30 && item <= 59) { //Book
-
+		extraDmg += 0.10;
 	}
 	else if (item >= 40 && item <= 79) { //Life
 		maxLife += maxLife * (15 / 100.0f);
@@ -257,7 +257,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			if (physB->body->GetPosition().x > pbody->body->GetPosition().x)
 				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(-2.f, -0.2f), false);
 			else pbody->body->ApplyLinearImpulseToCenter(b2Vec2(2.f, -0.2f), false);
-			damageReceived = physB->damageDone - (physB->damageDone * armor);;
+			damageReceived = physB->damageDone - (physB->damageDone * armor);
 			life -= damageReceived;
 			if (life > 0) isDamaged = true;
 			if (life > 0) currentAnimation = &damage;
