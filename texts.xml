@@ -10,4 +10,6 @@
 	<Fire text="Pulsa F para apagar"/>
 	<ContinueDialogue text="Pulsa espacio para continuar"/>
 	<Interaction text="Pulsa F para interactuar"/>
+	<Arrow text="Pulsa E para disparar"/>
+	<Heal text="Pulsa F para user regeneracion"/>
 </texts>

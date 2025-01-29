@@ -170,7 +170,7 @@ void Scene::LoadLevel(int lvl) {
 		break;
 	}
 
-	eventManager->LoadLevelEvents((int)currentLevel);
+	eventManager->LoadLevelEvents(lvl);
 
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
 	std::map<int, Vector2D> listDoorMap, listBosses;
@@ -406,6 +406,7 @@ void Scene::AddItem(int item) {
 		}
 	}
 	else if (item >= 80 && item <= 100) {
+		regenItem = true;
 		auto it = itemsList.find(regeneration);
 		if (it != itemsList.end()) {
 			it->second++;

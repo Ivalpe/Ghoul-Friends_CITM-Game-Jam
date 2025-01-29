@@ -90,6 +90,10 @@ public:
 		return player->GetPosition();
 	}
 
+	DirectionPlayer GetPlayerDirection() {
+		return player->GetDirection();
+	}
+
 	int GetPlayerCoins() {
 		return player->GetCoins();
 	}
@@ -108,6 +112,8 @@ public:
 	bool eventHappening = false;
 	//manage events
 	Events* eventManager = nullptr;
+
+	bool regenItem = false;
 
 private:
 

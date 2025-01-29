@@ -43,14 +43,16 @@ bool NPC::Start() {
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	currentAnimation = &idle;
 
-	if (texW > 16) {
-		//Add a physics to an item - initialize the physics body
-		pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW, texW / 4, bodyType::STATIC);
+	if (type == NPCs::CROW) {
+		pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW, texW, bodyType::STATIC);
 	}
 	else {
-		//Add a physics to an item - initialize the physics body
-		pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW / 2, texW / 2, bodyType::STATIC);
+		if (texW > 16) pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW, texW / 4, bodyType::STATIC);
+		else pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW / 2, texW / 2, bodyType::STATIC);
 	}
+
+	render = true;
+	done = false;
 
 	switch (type) {
 	case NPCs::FIRE:
@@ -59,10 +61,29 @@ bool NPC::Start() {
 		}
 		break;
 	case NPCs::ZERA:
-		/*if (!Engine::GetInstance().scene.get()->eventManager->isFireExtinguished) {
+		if (!Engine::GetInstance().scene.get()->eventManager->isFireExtinguished) {
 			done = true;
 			render = false;
-		}*/
+		}
+		break;
+	case NPCs::CROW:
+		if (!Engine::GetInstance().scene.get()->eventManager->firstRespawn) {
+			done = true;
+			render = false;
+		}
+		break;
+	case NPCs::ARMGUY:
+		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone and Engine::GetInstance().scene.get()->eventManager->helpedMan) done = true;
+		break;
+	case NPCs::FRANCESK:
+		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
+		break;
+	case NPCs::DEMON:
+		if (Engine::GetInstance().scene.get()->eventManager->demonEventDone) done = true;
+		break;
+	default:
+		render = true;
+		done = false;
 		break;
 	}
 
@@ -90,6 +111,32 @@ bool NPC::Update(float dt) {
 			}
 		}
 		break;
+	case NPCs::ZERA:
+		if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished) {
+			render = true;
+			if (!Engine::GetInstance().scene.get()->eventManager->zeraEventDone) done = false;
+			else done = false;
+		}
+		break;
+	case NPCs::CROW:
+		if (Engine::GetInstance().scene.get()->eventManager->firstRespawn and !Engine::GetInstance().scene.get()->eventManager->crowEventDone) {
+			done = false;
+			render = true;
+		}
+		else {
+			done = true;
+			render = false;
+		}
+		break;
+	case NPCs::ARMGUY:
+		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone and Engine::GetInstance().scene.get()->eventManager->helpedMan) done = true;
+		break;
+	case NPCs::FRANCESK:
+		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
+		break;
+	case NPCs::DEMON:
+		if (Engine::GetInstance().scene.get()->eventManager->demonEventDone) done = true;
+		break;
 	}
 
 	if (isActive and Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
@@ -113,6 +160,26 @@ bool NPC::Update(float dt) {
 				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ZERA_EVENT;
 			}
 			break;
+		case NPCs::ARMGUY:
+			if (!done) {
+				isActive = false;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ARM_EVENT;
+			}
+			break;
+		case NPCs::FRANCESK:
+			if (!done) {
+				isActive = false;
+				done = true;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::FRAN_EVENT;
+			}
+			break;
+		case NPCs::DEMON:
+			if (!done) {
+				isActive = false;
+				done = true;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::DEMON_EVENT;
+			}
+			break;
 		}
 	}
 
@@ -121,8 +188,13 @@ bool NPC::Update(float dt) {
 	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
 
 	if (render) {
-		if(texW > 16) Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() - texW/2, flipType, &currentAnimation->GetCurrentFrame());
-		else Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		if (type == NPCs::CROW) {
+			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX()-4, (int)position.getY() - texW/2, flipType, &currentAnimation->GetCurrentFrame());
+		}
+		else {
+			if (texW > 16) Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() - texW / 2, flipType, &currentAnimation->GetCurrentFrame());
+			else Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		}
 	}
 	currentAnimation->Update();
 
@@ -150,6 +222,9 @@ void NPC::OnCollision(PhysBody* physA, PhysBody* physB) {
 		case NPCs::FIRE:
 			if(!Engine::GetInstance().scene.get()->eventManager->isFireExtinguished and currentAnimation != &var) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Fire"));
 			break;
+		case NPCs::CROW:
+			if(!done) Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::CROW_EVENT;
+			break;
 		default:
 			if(!done) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Interaction"));
 			break;
@@ -169,6 +244,8 @@ void NPC::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 		case NPCs::FIRE:
 			if (!done) currentAnimation = &var;
 			Engine::GetInstance().scene->DrawText(false);
+			break;
+		case NPCs::CROW:
 			break;
 		default:
 			Engine::GetInstance().scene->DrawText(false);

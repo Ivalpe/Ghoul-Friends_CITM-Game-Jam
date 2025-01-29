@@ -410,46 +410,160 @@
 							</explosion>
 						</animations>
 					</npc>
+					<npc npcType="1" name="crow" texture="Assets/Textures/Sprites.png" level="0" x="272" y="208" w="16" h="16">
+						<animations>
+							<idle loop="true" speed="0.05">
+								<frame x="32" y="80" w="16" h="16"/>
+								<frame x="48" y="80" w="16" h="16"/>
+							</idle>
+						</animations>
+						<dialogues>
+							<dialogue character="1" text="Ah, espera un momento."/>
+							<dialogue character="-1" text="Que?"/>
+							<dialogue character="1" text="Aqui arriba."/>
+							<dialogue character="-1" text="Quien eres tu?"/>
+							<dialogue character="1" text="Solo un cuervo que puede detectar cuando alguien necesita ayuda."/>
+							<dialogue character="1" text="Necesitaras algo para protegerte si no quieres que eso pase otra vez."/>
+							<dialogue character="-1" text="Como sa-?"/>
+							<dialogue character="1" text="Esto deberia ayudarte."/>
+							<dialogue character="1" text="Perfecto, ahora podras atravesar todos los terrenos."/>
+							<dialogue character="-1" text="Si, pero ... no se hacia donde ir."/>
+							<dialogue character="-1" text="Estoy buscando algo ..."/>
+							<dialogue character="-1" text="no se exactamente que."/>
+							<dialogue character="-1" text="Se que es algo que tiene increibles propiedades."/>
+							<dialogue character="1" text="Ah, podrias estar buscando una flor."/>
+							<dialogue character="1" text="Era una leyenda en estas zonas sobre ella."/>
+							<dialogue character="1" text="Nadie sabe exactamente que hace."/>
+							<dialogue character="-1" text="Hm ..."/>
+							<dialogue character="-1" text="Sabrias donde encontrarla?"/>
+							<dialogue character="1" text="Por seguro, no. Podria estar en las cuevas? Los bosques?"/>
+							<dialogue character="1" text="Tendras que explorar."/>
+							<dialogue character="1" text="Seguro podras encontrar algun sitio para obtener más recursos."/>
+							<dialogue character="-1" text="Al menos es un punto de inicio."/>
+							<dialogue character="-1" text="Gracias."/>
+						</dialogues>
+					</npc>
 					<npc npcType="2" name="zera" texture="Assets/Textures/Sprites.png" level="0" x="2080" y="544" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="80" w="16" h="16"/>
 								<frame x="16" y="80" w="16" h="16"/>
 							</idle>
 						</animations>
 						<dialogues>
-							<dialogue character="2" text="hola"/>
-							<dialogue character="-1" text="holiss"/>
+							<dialogue character="2" text="Oh? Ha desaparecido el hombre de huesos?"/>
+							<dialogue character="2" text="Se puede explorar ahora?"/>
+							<dialogue character="2" text="Ah! Hola!"/>
+							<dialogue character="-1" text="Hola, que haces aqui fuera?"/>
+							<dialogue character="2" text="Queria salir a jugar pero el hombre de huesos estaba bloqueando el camino."/>
+							<dialogue character="2" text="Gracias por liberar el camino, por cierto!"/>
+							<dialogue character="2" text="Tu quien eres ..? No creo que te haya visto antes."/>
+							<dialogue character="-1" text="No, pensaria que no. No soy de por aqui."/>
+							<dialogue character="-1" text="Soy Nyssa."/>
+							<dialogue character="2" text="Hola Nyssa. No eres de aqui-?"/>
+							<dialogue character="2" text="Oh! Eres un angel, verdad? Pareces un angel."/>
+							<dialogue character="-1" text="Gracias."/>
+							<dialogue character="-1" text="… sabes que ha pasado por aqui?"/>
+							<dialogue character="2" text="Huh ..?"/>
+							<dialogue character="2" text="Que quieres decir?"/>
+							<dialogue character="-1" text="Me tengo que ir pero espero encontrarte otra vez, uh…"/>
+							<dialogue character="2" text="Zera. Espero verte otra vez tambien, Nyssa!"/>
 						</dialogues>
 					</npc>
 					<npc npcType="4" name="armguy" texture="Assets/Textures/Sprites.png" level="0" x="1760" y="1072" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="112" w="16" h="16"/>
 								<frame x="16" y="112" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="-1" text="Ah! Que te ha pasado? Estas bien?"/>
+							<dialogue character="4" text="Ah ... No me habia dado cuenta que estabas ahi ..."/>
+							<dialogue character="-1" text="Quien- que te ha hecho esto ..?"/>
+							<dialogue character="4" text="Algo ... no se que era ... una criatura."/>
+							<dialogue character="4" text="Era enorme ..."/>
+							<dialogue character="-1" text="Te ha atacado ..?"/>
+							<dialogue character="4" text="Me ha mordido, si ..."/>
+							<dialogue character="4" text="No se si siente el brazo ..."/>
+							<dialogue character="-1" text="Me gustaria poder ayudar ..."/>
+							<dialogue character="-1" text="Ah, tengo una idea!"/>
+							<dialogue character="4" text="Oh ... Se siente mucho mejor ..."/>
+							<dialogue character="4" text="Muchas gracias."/>
+							<dialogue character="-1" text="De nada, espero te ayude."/>
+							<dialogue character="4" text="Si ..."/>
+							<dialogue character="4" text="Todo ha sido tan raro desde ..."/>
+							<dialogue character="-1" text="..."/>
+							<dialogue character="-1" text="Desde ..?"/>
+							<dialogue character="4" text="Desde que llego el mago en capucha."/>
+							<dialogue character="4" text="Creo que nadie lo ha visto desde entonces."/>
+							<dialogue character="4" text="Pero nunca habia visto una criatura como la que me ataco ..."/>
+							<dialogue character="4" text="Quien sabe que mas podria pasar?"/>
+							<dialogue character="4" text="Ah ... De momento me enfocare en retomar mis fuerzas. Gracias."/>
+							<dialogue character="-1" text="De nada ..."/>
+							<dialogue character="-1" text="Elymas es un mago con capucha ..."/>
+							<dialogue character="-1" text="Pero ..."/>
+							<dialogue character="-1" text="No ... No, no podria ser ... El no haria esto ..."/>
+							<dialogue character="-1" text="Tengo que encontrar lo que necesita para salvar este lugar."/>
+						</dialogues>
 					</npc>
 				</event>
 				<event level="1">
 					<npc npcType="3" name="francesk" texture="Assets/Textures/Sprites.png" level="1" x="992" y="768" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="96" w="16" h="16"/>
 								<frame x="16" y="96" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="3" text="Mm ... Mhm ..."/>
+							<dialogue character="-1" text="Hola ..?"/>
+							<dialogue character="3" text="Ah! Hola."/>
+							<dialogue character="3" text="Perdon estaba distraido."/>
+							<dialogue character="-1" text="No pasa nada."/>
+							<dialogue character="-1" text="Que haces aqui?"/>
+							<dialogue character="3" text="Recolectando recursos."/>
+							<dialogue character="3" text="Paso tiempo buscando recursos para llevar a mi pueblo."/>
+							<dialogue character="3" text="Tu que haces aqui?"/>
+							<dialogue character="-1" text="Ah, yo tambien estoy buscando algo."/>
+							<dialogue character="3" text="Pues si necesitas algo, aqui estare."/>
+							<dialogue character="-1" text="No piensas ... irte pronto ..?"/>
+							<dialogue character="3" text="Nah, tiendo a pasar mucho tiempo aqui..."/>
+						</dialogues>
 					</npc>
 				</event>
 				<event level="2">
 					<npc npcType="5" name="demon" texture="Assets/Textures/Sprites.png" level="2" x="1600" y="960" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="128" w="16" h="16"/>
 								<frame x="16" y="128" w="16" h="16"/>
 								<frame x="32" y="128" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="5" text="Puedes pasar si quieres ..."/>
+							<dialogue character="5" text="No te voy ha herir."/>
+							<dialogue character="-1" text="..."/>
+							<dialogue character="-1" text="Que haces aqui entonces?"/>
+							<dialogue character="5" text="Observando."/>
+							<dialogue character="-1" text="Ah ..."/>
+							<dialogue character="-1" text="Realmente no me vas a pelear?"/>
+							<dialogue character="5" text="No."/>
+							<dialogue character="5" text="Me he dado cuenta que esto no es lo que quiero."/>
+							<dialogue character="5" text="Solo veo como las cosas han empeorado desde que llegamos,"/>
+							<dialogue character="5" text="desde que mi creador nos creo."/>
+							<dialogue character="-1" text="Que quieres decir?"/>
+							<dialogue character="5" text="Esta vista empeora cada dia ..."/>
+							<dialogue character="5" text="No quiero que esto sea mi proposito."/>
+							<dialogue character="5" text="Aunque no sea lo que mi creador quisiera."/>
+							<dialogue character="5" text="Esto no es lo correcto."/>
+							<dialogue character="-1" text="Y que haras ahora ..?"/>
+							<dialogue character="5" text="Pues eso tendre que averiguarlo."/>
+							<dialogue character="5" text="Pero sera mi camino."/>
+							<dialogue character="-1" text="Pues ... Te deseo suerte encontrandolo."/>
+						</dialogues>
 					</npc>
 				</event>
 			</events>
