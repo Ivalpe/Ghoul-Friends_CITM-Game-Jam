@@ -160,23 +160,24 @@ bool Enemy::Update(float dt) {
 			rangeAttack->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
 
 			if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;
-		}
-		else {
-			if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
-				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
-			else
-				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+
 			if (followPlayer && !coolFire) {
 				currentAnimation = &attack;
 				Engine::GetInstance().scene->CreateAttack(EntityType::ARROW, position, GetDirection() == DirectionEnemy::LEFT);
 				timer = fireRate;
 				coolFire = true;
 			}
-		}
 
-		if (rangePlayer) {
-			currentAnimation = &attack;
-			if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
+			if (rangePlayer) {
+				currentAnimation = &attack;
+				if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
+			}
+		}
+		else {
+			if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+			else
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 		}
 		break;
 	case GameState::PAUSESCREEN:
