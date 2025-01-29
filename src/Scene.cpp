@@ -188,8 +188,7 @@ void Scene::LoadLevel(int lvl) {
 	itemShopList.clear();
 
 	for (auto i : doorList) {
-		i->position.setX(-100);
-		i->position.setY(-100);
+		i->dontRender();
 	}
 
 	eventManager->CleanUp();

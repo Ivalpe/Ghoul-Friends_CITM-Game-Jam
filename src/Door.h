@@ -42,6 +42,10 @@ public:
 		return pbody->body;
 	}
 
+	void dontRender() {
+		render = false;
+	}
+
 private:
 
 	pugi::xml_node parameters;
@@ -54,4 +58,5 @@ private:
 	PhysBody* pbody;
 	bool canDoor = false;
 	int level;
+	bool render = true;
 };
