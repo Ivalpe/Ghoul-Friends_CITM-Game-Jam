@@ -161,14 +161,14 @@ bool Enemy::Update(float dt) {
 
 			if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;
 
-			if (followPlayer && !coolFire) {
-				currentAnimation = &attack;
-				Engine::GetInstance().scene->CreateAttack(EntityType::ARROW, position, GetDirection() == DirectionEnemy::LEFT);
-				timer = fireRate;
-				coolFire = true;
-			}
-
-			if (rangePlayer) {
+			if (type == EnemyType::SKELETON_ARCHER) {
+				if (followPlayer && !coolFire) {
+					currentAnimation = &attack;
+					Engine::GetInstance().scene->CreateAttack(EntityType::ARROW, position, GetDirection() == DirectionEnemy::LEFT);
+					timer = fireRate;
+					coolFire = true;
+				}
+			}else if (rangePlayer) {
 				currentAnimation = &attack;
 				if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
 			}
