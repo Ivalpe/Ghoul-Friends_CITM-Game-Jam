@@ -390,6 +390,7 @@ void Scene::AddItem(int item) {
 		}
 	}
 	else if (item >= 80 && item <= 100) {
+		regenItem = true;
 		auto it = itemsList.find(regeneration);
 		if (it != itemsList.end()) {
 			it->second++;

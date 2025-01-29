@@ -73,7 +73,7 @@ bool NPC::Start() {
 		}
 		break;
 	case NPCs::ARMGUY:
-		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone) done = true;
+		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone and Engine::GetInstance().scene.get()->eventManager->helpedMan) done = true;
 		break;
 	case NPCs::FRANCESK:
 		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
@@ -129,7 +129,7 @@ bool NPC::Update(float dt) {
 		}
 		break;
 	case NPCs::ARMGUY:
-		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone) done = true;
+		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone and Engine::GetInstance().scene.get()->eventManager->helpedMan) done = true;
 		break;
 	case NPCs::FRANCESK:
 		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
@@ -163,7 +163,6 @@ bool NPC::Update(float dt) {
 		case NPCs::ARMGUY:
 			if (!done) {
 				isActive = false;
-				done = true;
 				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ARM_EVENT;
 			}
 			break;

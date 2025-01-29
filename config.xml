@@ -354,8 +354,33 @@
 							</idle>
 						</animations>
 						<dialogues>
-							<dialogue character="4" text="hola"/>
-							<dialogue character="-1" text="holiss"/>
+							<dialogue character="-1" text="Ah! Que te ha pasado? Estas bien?"/>
+							<dialogue character="4" text="Ah ... No me habia dado cuenta que estabas ahi ..."/>
+							<dialogue character="-1" text="Quien- que te ha hecho esto ..?"/>
+							<dialogue character="4" text="Algo ... no se que era ... una criatura."/>
+							<dialogue character="4" text="Era enorme ..."/>
+							<dialogue character="-1" text="Te ha atacado ..?"/>
+							<dialogue character="4" text="Me ha mordido, si ..."/>
+							<dialogue character="4" text="No se si siente el brazo ..."/>
+							<dialogue character="-1" text="Me gustaria poder ayudar ..."/>
+							<dialogue character="-1" text="Ah, tengo una idea!"/>
+							<dialogue character="4" text="Oh ... Se siente mucho mejor ..."/>
+							<dialogue character="4" text="Muchas gracias."/>
+							<dialogue character="-1" text="De nada, espero te ayude."/>
+							<dialogue character="4" text="Si ..."/>
+							<dialogue character="4" text="Todo ha sido tan raro desde ..."/>
+							<dialogue character="-1" text="..."/>
+							<dialogue character="-1" text="Desde ..?"/>
+							<dialogue character="4" text="Desde que llego el mago en capucha."/>
+							<dialogue character="4" text="Creo que nadie lo ha visto desde entonces."/>
+							<dialogue character="4" text="Pero nunca habia visto una criatura como la que me ataco ..."/>
+							<dialogue character="4" text="Quien sabe que mas podria pasar?"/>
+							<dialogue character="4" text="Ah ... De momento me enfocare en retomar mis fuerzas. Gracias."/>
+							<dialogue character="-1" text="De nada ..."/>
+							<dialogue character="-1" text="Elymas es un mago con capucha ..."/>
+							<dialogue character="-1" text="Pero ..."/>
+							<dialogue character="-1" text="No ... No, no podria ser ... El no haria esto ..."/>
+							<dialogue character="-1" text="Tengo que encontrar lo que necesita para salvar este lugar."/>
 						</dialogues>
 					</npc>
 				</event>

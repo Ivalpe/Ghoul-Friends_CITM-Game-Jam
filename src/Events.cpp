@@ -259,9 +259,32 @@ void Events::ZeraEvent() {
 void Events::ArmGuyEvent() {
 	Engine::GetInstance().scene->DrawText(false);
 
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		++timer;
-		if (timer >= armGuyDialogue.size()) {
+	if (timer == 0) {
+		if (armGuyEventDone) timer = 8;
+	}
+
+	if (timer >= 9) {
+		if (Engine::GetInstance().scene.get()->regenItem) {
+			if (timer == 9) {
+				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+					++timer;
+				}
+			}
+			else {
+				if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+					++timer;
+					if (timer >= armGuyDialogue.size()) {
+						Engine::GetInstance().scene->DrawText(false);
+						textActive = false;
+						currentEvent = ActiveEvent::NONE;
+						armGuyEventDone = true;
+						helpedMan = true;
+						varReset();
+					}
+				}
+			}
+		}
+		else {
 			Engine::GetInstance().scene->DrawText(false);
 			textActive = false;
 			currentEvent = ActiveEvent::NONE;
@@ -269,9 +292,22 @@ void Events::ArmGuyEvent() {
 			varReset();
 		}
 	}
+	else {
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			++timer;
+			if (timer >= armGuyDialogue.size()) {
+				Engine::GetInstance().scene->DrawText(false);
+				textActive = false;
+				currentEvent = ActiveEvent::NONE;
+				armGuyEventDone = true;
+				varReset();
+			}
+		}
+	}
 
 	if (textActive) {
-		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+		if(timer != 9) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+		else Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Heal"));
 
 		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
 		SDL_Rect pfpRect = { 0, 0, 178, 178 };
@@ -287,7 +323,7 @@ void Events::ArmGuyEvent() {
 		}
 
 
-		Engine::GetInstance().render.get()->DrawText(armGuyDialogue[timer].text.c_str(), 720, 905, armGuyDialogue[timer].text.length() * 10, 70);
+		Engine::GetInstance().render.get()->DrawText(armGuyDialogue[timer].text.c_str(), 680, 905, armGuyDialogue[timer].text.length() * 10, 70);
 	}
 }
 

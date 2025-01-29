@@ -105,6 +105,8 @@ public:
 	//manage events
 	Events* eventManager = nullptr;
 
+	bool regenItem = false;
+
 private:
 
 	bool quitGame = false;
