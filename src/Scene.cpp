@@ -170,7 +170,7 @@ void Scene::LoadLevel(int lvl) {
 		break;
 	}
 
-	eventManager->LoadLevelEvents((int)currentLevel);
+	eventManager->LoadLevelEvents(lvl);
 
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
 	std::map<int, Vector2D> listDoorMap, listBosses;

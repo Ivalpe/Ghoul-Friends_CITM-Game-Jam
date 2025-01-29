@@ -34,52 +34,49 @@ void Events::LoadLevelEvents(int lvl) {
 		if (levelNode.attribute("level").as_int() == lvl) levelEvents = levelNode;
 	}
 
-	switch (lvl) {
-	case (int)LEVELS::LEVEL0:
-		for (pugi::xml_node npcNode = levelEvents.child("npc"); npcNode != NULL; npcNode = npcNode.next_sibling("npc")) {
-			int type = npcNode.attribute("npcType").as_int();
-			
+	
+	for (pugi::xml_node npcNode = levelEvents.child("npc"); npcNode != NULL; npcNode = npcNode.next_sibling("npc")) {
+		int type = npcNode.attribute("npcType").as_int();
+
+		switch (type) {
+		case (int)NPCs::FIRE:
+			fire = (NPC*)Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC);
+			fire->SetParameters(npcNode);
+			fire->SetNPCType((NPCs)type);
+			fire->Start();
+			break;
+		default:
+			NPC* n = (NPC*)Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC);
+			n->SetParameters(npcNode);
+			n->SetNPCType((NPCs)type);
+			n->Start();
+			npcs.push_back(n);
+			break;
+		}
+
+		for (pugi::xml_node dialogueNode = npcNode.child("dialogues").child("dialogue"); dialogueNode != NULL; dialogueNode = dialogueNode.next_sibling("dialogue")) {
+			Dialogue diag;
+			diag.character = dialogueNode.attribute("character").as_int();
+			diag.text = dialogueNode.attribute("text").as_string();
+
 			switch (type) {
-			case (int)NPCs::FIRE:
-				fire = (NPC*)Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC);
-				fire->SetParameters(npcNode);
-				fire->SetNPCType((NPCs)type);
-				fire->Start();
+			case (int)NPCs::ZERA:
+				zeraDialogue.push_back(diag);
 				break;
-			default:
-				NPC* n = (NPC*)Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC);
-				n->SetParameters(npcNode);
-				n->SetNPCType((NPCs)type);
-				n->Start();
-				npcs.push_back(n);
+			case (int)NPCs::CROW:
+				crowDialogue.push_back(diag);
 				break;
-			}
-
-			for (pugi::xml_node dialogueNode = npcNode.child("dialogues").child("dialogue"); dialogueNode != NULL; dialogueNode = dialogueNode.next_sibling("dialogue")) {
-				Dialogue diag;
-				diag.character = dialogueNode.attribute("character").as_int();
-				diag.text = dialogueNode.attribute("text").as_string();
-
-				switch (type) {
-				case (int)NPCs::ZERA:
-					zeraDialogue.push_back(diag);
-					break;
-				case (int)NPCs::CROW:
-					crowDialogue.push_back(diag);
-					break;
-				case (int)NPCs::ARMGUY:
-					armGuyDialogue.push_back(diag);
-					break;
-				case (int)NPCs::FRANCESK:
-					franceskDialogue.push_back(diag);
-					break;
-				case (int)NPCs::DEMON:
-					demonDialogue.push_back(diag);
-					break;
-				}
+			case (int)NPCs::ARMGUY:
+				armGuyDialogue.push_back(diag);
+				break;
+			case (int)NPCs::FRANCESK:
+				franceskDialogue.push_back(diag);
+				break;
+			case (int)NPCs::DEMON:
+				demonDialogue.push_back(diag);
+				break;
 			}
 		}
-		break;
 	}
 }
 
@@ -126,6 +123,15 @@ void Events::Update() {
 			break;
 		case ActiveEvent::CROW_EVENT:
 			CrowEvent();
+			break;
+		case ActiveEvent::ARM_EVENT:
+			ArmGuyEvent();
+			break;
+		case ActiveEvent::FRAN_EVENT:
+			FranEvent();
+			break;
+		case ActiveEvent::DEMON_EVENT:
+			DemonEvent();
 			break;
 		}
 	}
@@ -238,5 +244,112 @@ void Events::ZeraEvent() {
 
 
 		Engine::GetInstance().render.get()->DrawText(zeraDialogue[timer].text.c_str(), 720, 905, zeraDialogue[timer].text.length()*10, 70);
+	}
+}
+
+void Events::ArmGuyEvent() {
+	Engine::GetInstance().scene->DrawText(false);
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		++timer;
+		if (timer >= armGuyDialogue.size()) {
+			Engine::GetInstance().scene->DrawText(false);
+			textActive = false;
+			currentEvent = ActiveEvent::NONE;
+			armGuyEventDone = true;
+			varReset();
+		}
+	}
+
+	if (textActive) {
+		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+
+		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
+		SDL_Rect pfpRect = { 0, 0, 178, 178 };
+		Engine::GetInstance().render.get()->DrawTexture(chatbox, 0, 0, SDL_FLIP_NONE, &chatboxRect, false, false);
+
+		switch (armGuyDialogue[timer].character) {
+		case -1:
+			Engine::GetInstance().render.get()->DrawTexture(NyssaPFP, 486, 836, SDL_FLIP_NONE, &pfpRect, false, false);
+			break;
+		case (int)NPCs::ARMGUY:
+			Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::ARMGUY - 1], false, false);
+			break;
+		}
+
+
+		Engine::GetInstance().render.get()->DrawText(armGuyDialogue[timer].text.c_str(), 720, 905, armGuyDialogue[timer].text.length() * 10, 70);
+	}
+}
+
+//cave
+void Events::FranEvent() {
+	Engine::GetInstance().scene->DrawText(false);
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		++timer;
+		if (timer >= franceskDialogue.size()) {
+			Engine::GetInstance().scene->DrawText(false);
+			textActive = false;
+			currentEvent = ActiveEvent::NONE;
+			franEventDone = true;
+			varReset();
+		}
+	}
+
+	if (textActive) {
+		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+
+		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
+		SDL_Rect pfpRect = { 0, 0, 178, 178 };
+		Engine::GetInstance().render.get()->DrawTexture(chatbox, 0, 0, SDL_FLIP_NONE, &chatboxRect, false, false);
+
+		switch (franceskDialogue[timer].character) {
+		case -1:
+			Engine::GetInstance().render.get()->DrawTexture(NyssaPFP, 486, 836, SDL_FLIP_NONE, &pfpRect, false, false);
+			break;
+		case (int)NPCs::FRANCESK:
+			Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::FRANCESK - 1], false, false);
+			break;
+		}
+
+
+		Engine::GetInstance().render.get()->DrawText(franceskDialogue[timer].text.c_str(), 720, 905, franceskDialogue[timer].text.length() * 10, 70);
+	}
+}
+
+//mountain
+void Events::DemonEvent() {
+	Engine::GetInstance().scene->DrawText(false);
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		++timer;
+		if (timer >= demonDialogue.size()) {
+			Engine::GetInstance().scene->DrawText(false);
+			textActive = false;
+			currentEvent = ActiveEvent::NONE;
+			demonEventDone = true;
+			varReset();
+		}
+	}
+
+	if (textActive) {
+		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+
+		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
+		SDL_Rect pfpRect = { 0, 0, 178, 178 };
+		Engine::GetInstance().render.get()->DrawTexture(chatbox, 0, 0, SDL_FLIP_NONE, &chatboxRect, false, false);
+
+		switch (demonDialogue[timer].character) {
+		case -1:
+			Engine::GetInstance().render.get()->DrawTexture(NyssaPFP, 486, 836, SDL_FLIP_NONE, &pfpRect, false, false);
+			break;
+		case (int)NPCs::DEMON:
+			Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::DEMON - 1], false, false);
+			break;
+		}
+
+
+		Engine::GetInstance().render.get()->DrawText(demonDialogue[timer].text.c_str(), 720, 905, demonDialogue[timer].text.length() * 10, 70);
 	}
 }

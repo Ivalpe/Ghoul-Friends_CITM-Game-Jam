@@ -3,7 +3,7 @@
 #include "NPC.h"
 
 enum class ActiveEvent {
-	NONE, FIRE_EVENT, ZERA_EVENT, CROW_EVENT
+	NONE, FIRE_EVENT, ZERA_EVENT, CROW_EVENT, ARM_EVENT, FRAN_EVENT, DEMON_EVENT
 };
 
 struct Dialogue {
@@ -45,9 +45,11 @@ public:
 	void FireEvent();
 	void CrowEvent();
 	void ZeraEvent();
+	void ArmGuyEvent();
 	//cave
-
+	void FranEvent();
 	//mountain
+	void DemonEvent();
 
 private:
 	pugi::xml_node eventNode;
@@ -72,6 +74,7 @@ public:
 	bool zeraEventDone = false;
 	bool helpedMan = false;
 	bool armGuyEventDone = false;
+	bool franEventDone = false;
 	bool demonEventDone = false;
 	bool bossEventDone = false;
 	bool firstRespawn = false;

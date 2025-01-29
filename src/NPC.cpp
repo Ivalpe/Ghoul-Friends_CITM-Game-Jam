@@ -51,6 +51,9 @@ bool NPC::Start() {
 		else pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)position.getX(), (int)position.getY() + texW / 2, texW / 2, bodyType::STATIC);
 	}
 
+	render = true;
+	done = false;
+
 	switch (type) {
 	case NPCs::FIRE:
 		if (Engine::GetInstance().scene.get()->eventManager->FireEventDone) {
@@ -68,6 +71,19 @@ bool NPC::Start() {
 			done = true;
 			render = false;
 		}
+		break;
+	case NPCs::ARMGUY:
+		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone) done = true;
+		break;
+	case NPCs::FRANCESK:
+		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
+		break;
+	case NPCs::DEMON:
+		if (Engine::GetInstance().scene.get()->eventManager->demonEventDone) done = true;
+		break;
+	default:
+		render = true;
+		done = false;
 		break;
 	}
 
@@ -133,6 +149,27 @@ bool NPC::Update(float dt) {
 				isActive = false;
 				done = true;
 				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ZERA_EVENT;
+			}
+			break;
+		case NPCs::ARMGUY:
+			if (!done) {
+				isActive = false;
+				done = true;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ARM_EVENT;
+			}
+			break;
+		case NPCs::FRANCESK:
+			if (!done) {
+				isActive = false;
+				done = true;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::FRAN_EVENT;
+			}
+			break;
+		case NPCs::DEMON:
+			if (!done) {
+				isActive = false;
+				done = true;
+				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::DEMON_EVENT;
 			}
 			break;
 		}

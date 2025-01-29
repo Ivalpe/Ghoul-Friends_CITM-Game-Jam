@@ -317,6 +317,10 @@
 								<frame x="16" y="112" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="4" text="hola"/>
+							<dialogue character="-1" text="holiss"/>
+						</dialogues>
 					</npc>
 				</event>
 				<event level="1">
@@ -327,6 +331,10 @@
 								<frame x="16" y="96" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="3" text="hola"/>
+							<dialogue character="-1" text="holiss"/>
+						</dialogues>
 					</npc>
 				</event>
 				<event level="2">
@@ -338,6 +346,10 @@
 								<frame x="32" y="128" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="5" text="hola"/>
+							<dialogue character="-1" text="holiss"/>
+						</dialogues>
 					</npc>
 				</event>
 			</events>
