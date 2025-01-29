@@ -37,5 +37,6 @@ private:
 
 	SDL_Texture* pauseScreen;
 	SDL_Texture* menuScreen;
+	SDL_Texture* logo;
 	SDL_Texture* deathScreen;
 };

@@ -19,7 +19,7 @@ struct SDL_Texture;
 class Events;
 
 enum class GameState {
-	MAINMENU, START, DEATH, PAUSESCREEN
+	MAINMENU, START, DEATH, PAUSESCREEN, FINISH
 };
 
 enum class LEVELS {
@@ -108,6 +108,10 @@ public:
 		return player->GetExtraDamage();
 	}
 
+	void DrawFinish() {
+		drawFinish = true;
+	}
+
 	void PlayAudio(int audio);
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
@@ -132,6 +136,7 @@ private:
 	SDL_Texture* buttonTexture;
 	SDL_Texture* buttonPressed;
 	SDL_Texture* buttonShop;
+	SDL_Texture* imgFinal;
 
 	int audioBow; // 1
 	int audioBowHit; // 2
@@ -163,4 +168,5 @@ private:
 	pugi::xml_node textsParameters;
 	std::map<SDL_Texture*, int> itemsList;
 	pugi::char_t* searchText;
+	bool drawFinish = false;
 };

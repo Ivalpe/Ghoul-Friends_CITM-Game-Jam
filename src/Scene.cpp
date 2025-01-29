@@ -88,13 +88,14 @@ bool Scene::Start()
 	buttonTexture = Engine::GetInstance().textures.get()->Load("Assets/Menus/Button.png");
 	buttonPressed = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonPressed.png");
 	buttonShop = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonShop.png");
+	imgFinal = Engine::GetInstance().textures.get()->Load("Assets/Menus/Final.png");
 
 	audioBow = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("audioBow").attribute("path").as_string());
 	audioBowHit = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("audioBowHit").attribute("path").as_string());
 	jumpPlayer = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("jumpPlayer").attribute("path").as_string());
 	spiderDeath = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("spiderDeath").attribute("path").as_string());
 	swordSwing = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("sword").attribute("path").as_string());
-	
+
 	fireball = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("fireball").attribute("path").as_string());
 
 	const char* newGame = textsParameters.child("NewGame").attribute("text").as_string();
@@ -355,6 +356,10 @@ bool Scene::Update(float dt)
 			player->startRespawn = true;
 		}
 		break;
+	case GameState::FINISH:
+		Engine::GetInstance().render.get()->DrawTexture(imgFinal, 0, 0, SDL_FLIP_NONE, NULL, false, false);
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) quitGame = true;
+		break;
 	default:
 		break;
 	}
@@ -403,6 +408,9 @@ bool Scene::Update(float dt)
 		else ++it;
 	}
 
+	if (drawFinish)
+		state = GameState::FINISH;
+
 	if (drawChestText) {
 		std::string text = textsParameters.child(searchText).attribute("text").as_string();
 		Engine::GetInstance().render->DrawText(text.c_str(), 1920 / 2, 768 / 2 + 32, text.size() * 10, 40);
@@ -429,10 +437,13 @@ bool Scene::Update(float dt)
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 		AddItem(21);
 	}
-
 	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		AddItem(41);
 	}
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+		player->CanShoot(true);
+	}
+
 
 	return true;
 }

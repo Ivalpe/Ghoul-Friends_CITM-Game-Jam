@@ -34,6 +34,10 @@ public:
 		this->parameters = parameters;
 	}
 
+	void CanShoot(bool s) {
+		canShot = s;
+	}
+
 	// L08 TODO 6: Define OnCollision function for the player. 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
