@@ -90,6 +90,10 @@ public:
 		return player->GetPosition();
 	}
 
+	DirectionPlayer GetPlayerDirection() {
+		return player->GetDirection();
+	}
+
 	int GetPlayerCoins() {
 		return player->GetCoins();
 	}

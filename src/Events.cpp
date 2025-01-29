@@ -180,19 +180,28 @@ void Events::FireEvent() {
 void Events::CrowEvent() {
 	Engine::GetInstance().scene->DrawText(false);
 
-	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		++timer;
-		if (timer >= crowDialogue.size()) {
-			Engine::GetInstance().scene->DrawText(false);
-			textActive = false;
-			currentEvent = ActiveEvent::NONE;
-			crowEventDone = true;
-			varReset();
+	if (timer == 7) {
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+			++timer;
+			Engine::GetInstance().scene.get()->CreateAttack(EntityType::ATTACKPLAYER, Engine::GetInstance().scene.get()->GetPlayerPosition(), Engine::GetInstance().scene.get()->GetPlayerDirection() == DirectionPlayer::LEFT);
+		}
+	}
+	else {
+		if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			++timer;
+			if (timer >= crowDialogue.size()) {
+				Engine::GetInstance().scene->DrawText(false);
+				textActive = false;
+				currentEvent = ActiveEvent::NONE;
+				crowEventDone = true;
+				varReset();
+			}
 		}
 	}
 
 	if (textActive) {
-		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+		if(timer != 7) Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+		else Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Arrow"));
 
 		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
 		SDL_Rect pfpRect = { 0, 0, 178, 178 };
@@ -203,12 +212,12 @@ void Events::CrowEvent() {
 			Engine::GetInstance().render.get()->DrawTexture(NyssaPFP, 486, 836, SDL_FLIP_NONE, &pfpRect, false, false);
 			break;
 		case (int)NPCs::CROW:
-			Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::CROW - 1], false, false);
+			if(timer != 0) Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::CROW - 1], false, false);
 			break;
 		}
 
 
-		Engine::GetInstance().render.get()->DrawText(crowDialogue[timer].text.c_str(), 720, 905, crowDialogue[timer].text.length() * 10, 70);
+		Engine::GetInstance().render.get()->DrawText(crowDialogue[timer].text.c_str(), 680, 905, crowDialogue[timer].text.length() * 10, 70);
 	}
 }
 

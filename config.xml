@@ -294,8 +294,29 @@
 							</idle>
 						</animations>
 						<dialogues>
-							<dialogue character="1" text="hola"/>
-							<dialogue character="-1" text="holiss"/>
+							<dialogue character="1" text="Ah, espera un momento."/>
+							<dialogue character="-1" text="Que?"/>
+							<dialogue character="1" text="Aqui arriba."/>
+							<dialogue character="-1" text="Quien eres tu?"/>
+							<dialogue character="1" text="Solo un cuervo que puede detectar cuando alguien necesita ayuda."/>
+							<dialogue character="1" text="Necesitaras algo para protegerte si no quieres que eso pase otra vez."/>
+							<dialogue character="-1" text="Como sa-?"/>
+							<dialogue character="1" text="Esto deberia ayudarte."/>
+							<dialogue character="1" text="Perfecto, ahora podras atravesar todos los terrenos."/>
+							<dialogue character="-1" text="Si, pero ... no se hacia donde ir."/>
+							<dialogue character="-1" text="Estoy buscando algo ..."/>
+							<dialogue character="-1" text="no se exactamente que."/>
+							<dialogue character="-1" text="Se que es algo que tiene increibles propiedades."/>
+							<dialogue character="1" text="Ah, podrias estar buscando una flor."/>
+							<dialogue character="1" text="Era una leyenda en estas zonas sobre ella."/>
+							<dialogue character="1" text="Nadie sabe exactamente que hace."/>
+							<dialogue character="-1" text="Hm ..."/>
+							<dialogue character="-1" text="Sabrias donde encontrarla?"/>
+							<dialogue character="1" text="Por seguro, no. Podria estar en las cuevas? Los bosques?"/>
+							<dialogue character="1" text="Tendras que explorar."/>
+							<dialogue character="1" text="Seguro podras encontrar algun sitio para obtener más recursos."/>
+							<dialogue character="-1" text="Al menos es un punto de inicio."/>
+							<dialogue character="-1" text="Gracias."/>
 						</dialogues>
 					</npc>
 					<npc npcType="2" name="zera" texture="Assets/Textures/Sprites.png" level="0" x="2080" y="544" w="16" h="16">
