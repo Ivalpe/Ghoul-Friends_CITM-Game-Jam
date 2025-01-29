@@ -52,6 +52,29 @@ bool Scene::Awake()
 	return ret;
 }
 
+void Scene::PlayAudio(int audio) {
+	switch (audio) {
+	case 1:
+		Engine::GetInstance().audio.get()->PlayFx(audioBow);
+		break;
+	case 2:
+		Engine::GetInstance().audio.get()->PlayFx(audioBowHit);
+		break;
+	case 3:
+		Engine::GetInstance().audio.get()->PlayFx(jumpPlayer);
+		break;
+	case 4:
+		Engine::GetInstance().audio.get()->PlayFx(spiderDeath);
+		break;
+	case 5:
+		Engine::GetInstance().audio.get()->PlayFx(fireball);
+		break;
+	case 6:
+		Engine::GetInstance().audio.get()->PlayFx(swordSwing);
+		break;
+	}
+}
+
 // Called before the first frame
 bool Scene::Start()
 {
@@ -65,6 +88,14 @@ bool Scene::Start()
 	buttonTexture = Engine::GetInstance().textures.get()->Load("Assets/Menus/Button.png");
 	buttonPressed = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonPressed.png");
 	buttonShop = Engine::GetInstance().textures.get()->Load("Assets/Menus/ButtonShop.png");
+
+	audioBow = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("audioBow").attribute("path").as_string());
+	audioBowHit = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("audioBowHit").attribute("path").as_string());
+	jumpPlayer = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("jumpPlayer").attribute("path").as_string());
+	spiderDeath = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("spiderDeath").attribute("path").as_string());
+	swordSwing = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("sword").attribute("path").as_string());
+	
+	fireball = Engine::GetInstance().audio.get()->LoadFx(configParameters.child("audio").child("fireball").attribute("path").as_string());
 
 	const char* newGame = textsParameters.child("NewGame").attribute("text").as_string();
 	const char* settings = textsParameters.child("Settings").attribute("text").as_string();
@@ -543,15 +574,20 @@ void Scene::CreateCoin(Vector2D pos, int quantity) {
 
 void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Vec2 speed) {
 	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(type);
-	if (type == EntityType::ATTACKPLAYER)
+	if (type == EntityType::ATTACKPLAYER) {
+		PlayAudio(1);
 		power->SetParameters(configParameters.child("entities").child("arrow"), TypePower::ATTACKPLAYER);
-	else if (type == EntityType::ARROW)
+	}
+	else if (type == EntityType::ARROW) {
+		PlayAudio(1);
 		power->SetParameters(configParameters.child("entities").child("arrow"), TypePower::ARROW);
+	}
 	else if (type == EntityType::BOSSTRIDENT)
 		power->SetParameters(configParameters.child("entities").child("bossTrident"), TypePower::ARROW);
 	else if (type == EntityType::FIRESHOOTER)
 		power->SetParameters(configParameters.child("entities").child("fireShooter"), TypePower::FIRESHOOTER);
 	else if (type == EntityType::FIREBALL) {
+		PlayAudio(5);
 		power->SetParameters(configParameters.child("entities").child("fireball"), TypePower::FIREBALL);
 		power->SetSpeed(speed);
 	}
@@ -572,8 +608,8 @@ void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Ve
 		else power->SetPosition({ pos.getX() + 8, pos.getY() - 14 });
 	}
 	else if (type == EntityType::FIREBALL) {
-		if (directionLeft) power->SetPosition({ pos.getX() + 16, pos.getY() + 16 });
-		else power->SetPosition({ pos.getX() + 16, pos.getY() + 16 });
+		if (directionLeft) power->SetPosition({ pos.getX() + 16, pos.getY() + 32 });
+		else power->SetPosition({ pos.getX() + 16, pos.getY() + 32 });
 	}
 
 

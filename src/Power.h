@@ -69,6 +69,7 @@ private:
 	bool hasPlayedFire = false;
 	TypePower typePower;
 
+
 	Timer explosionTimer;
 	float explosionTime;
 	Timer fireTimer;

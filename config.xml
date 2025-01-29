@@ -18,6 +18,14 @@
 		<levels>
 			<map path="Assets/Maps/" name="Level0.tmx" number="0" ix="73" iy="232" />
 		</levels>
+		<audio>
+			<audioBow path="Assets/Audio/Fx/Bow Attack 2.ogg" />
+			<audioBowHit path="Assets/Audio/Fx/Bow Impact Hit 3.ogg" />
+			<jumpPlayer path="Assets/Audio/Fx/Dirt Jump.ogg" />
+			<fireball path="Assets/Audio/Fx/Fireball 2.ogg" />
+			<spiderDeath path="Assets/Audio/Fx/mine 3.ogg" />
+			<sword path="Assets/Audio/Fx/Sword Attack 1.ogg" />
+		</audio>
 		<entities>
 			<player dx="52" dy="175" dlevel="1" ix="89" iy="264" w="16" h="16" texture="Assets/Textures/playerAnimations.png">
 				<animations>

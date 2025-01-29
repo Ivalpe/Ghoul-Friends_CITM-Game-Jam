@@ -98,6 +98,7 @@ bool Enemy::Update(float dt) {
 	}
 
 	if (life <= 0) {
+		if (type == EnemyType::SPIDER && currentAnimation == &die) Engine::GetInstance().scene->PlayAudio(4);
 		currentAnimation = &die;
 		isDying = true;
 	}
@@ -130,8 +131,11 @@ bool Enemy::Update(float dt) {
 			}
 		}
 
+		//if (currentAnimation == &attack && currentAnimation.) 
+
 		if (rangePlayer) {
 			currentAnimation = &attack;
+			if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
 		}
 	}
 
