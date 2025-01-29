@@ -73,6 +73,10 @@ public:
 		return rangeAttack->body;
 	}
 
+	b2Body* getActiveBody() {
+		return sensorActive->body;
+	}
+
 	DirectionBoss GetDirection() {
 		return de;
 	}

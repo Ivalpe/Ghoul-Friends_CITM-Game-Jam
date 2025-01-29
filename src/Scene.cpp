@@ -127,6 +127,16 @@ void Scene::LoadLevel(int lvl) {
 	}
 	enemyList.clear();
 
+	for (auto b : bossList) {
+		Engine::GetInstance().physics->DeleteBody((b)->getLeftSensorBody());
+		Engine::GetInstance().physics->DeleteBody((b)->getRightSensorBody());
+		Engine::GetInstance().physics->DeleteBody((b)->getRangeBody());
+		Engine::GetInstance().physics->DeleteBody((b)->getActiveBody());
+		Engine::GetInstance().physics->DeleteBody((b)->getBody());
+		Engine::GetInstance().entityManager->DestroyEntity(b);
+	}
+	bossList.clear();
+
 	for (auto c : chestList) {
 		Engine::GetInstance().physics->DeleteBody((c)->getBody());
 		Engine::GetInstance().entityManager->DestroyEntity(c);
@@ -145,6 +155,11 @@ void Scene::LoadLevel(int lvl) {
 		Engine::GetInstance().entityManager->DestroyEntity(i);
 	}
 	itemShopList.clear();
+
+	for (auto i : doorList) {
+		i->position.setX(-100);
+		i->position.setY(-100);
+	}
 
 	eventManager->CleanUp();
 	Engine::GetInstance().map->NewLevelCleanUp();
@@ -336,7 +351,7 @@ bool Scene::Update(float dt)
 
 	if (drawChestText) {
 		std::string text = textsParameters.child(searchText).attribute("text").as_string();
-		Engine::GetInstance().render->DrawText(text.c_str(), 60, 60, text.size() * 10, 40);
+		Engine::GetInstance().render->DrawText(text.c_str(), 1920 / 2, 768 / 2 + 32, text.size() * 10, 40);
 	}
 
 	int x = 100;
@@ -429,66 +444,9 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		switch (control->id)
 		{
 		case 1:
-			listEnemy = Engine::GetInstance().map->GetEnemyList();
-			for (auto enemy : listEnemy) {
-				int ran = rand() % 10 + 1;
-				Enemy* en = (Enemy*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY);
-				if (ran <= 5) {
-					en->SetParameters(configParameters.child("entities").child("enemies").child("skeleton"));
-					en->SetEnemyType(EnemyType::SKELETON);
-				}
-				else {
-					en->SetParameters(configParameters.child("entities").child("enemies").child("skeletonArcher"));
-					en->SetEnemyType(EnemyType::SKELETON_ARCHER);
-				}
-				en->Start();
-				en->SetPosition({ enemy.getX(), enemy.getY() });
-				enemyList.push_back(en);
-			}
-
-			listChest = Engine::GetInstance().map->GetChestList();
-			for (auto chest : listChest) {
-				Chest* ch = (Chest*)Engine::GetInstance().entityManager->CreateEntity(EntityType::CHEST);
-				ch->SetParameters(configParameters.child("entities").child("chest"));
-				ch->Start();
-				ch->SetPosition({ chest.getX(), chest.getY() });
-				chestList.push_back(ch);
-			}
-
-			listEvents = Engine::GetInstance().map->GetRandomEventList();
-			for (auto event : listEvents) {
-				Merchant* mc = (Merchant*)Engine::GetInstance().entityManager->CreateEntity(EntityType::MERCHANT);
-				mc->SetParameters(configParameters.child("entities").child("merchant"));
-				mc->Start();
-				mc->SetPosition({ event.getX(), event.getY() - 16 });
-				eventsList.push_back(mc);
-				Item* i = (Item*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM);
-				int ran = rand() % 100 + 1;
-				i->SetTexture(ran);
-				i->Start();
-				i->SetPosition({ event.getX() - 16, event.getY() });
-				itemShopList.push_back(i);
-			}
-
-			listDoorMap = Engine::GetInstance().map->GetDoorList();
-			for (auto door : listDoorMap) {
-				Door* d = (Door*)Engine::GetInstance().entityManager->CreateEntity(EntityType::DOOR);
-				d->SetParameters(configParameters.child("entities").child("doorCave"), door.first);
-				d->Start();
-				d->SetPosition({ door.second.getX(), door.second.getY() });
-				doorList.push_back(d);
-			}
-
-			listBosses = Engine::GetInstance().map->GetBossList();
-			for (auto boss : listBosses) {
-				Boss* b = (Boss*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOSS);
-				b->SetParameters(configParameters.child("entities").child("bosses").child("bossMountain"));
-				b->Start();
-				b->SetPosition({ boss.second.getX(), boss.second.getY() });
-				bossList.push_back(b);
-			}
-
-			eventManager->LoadLevelEvents((int)currentLevel);
+			itemsList.clear();
+			LoadLevel(0);
+			player->Restart();
 
 			Engine::GetInstance().uiManager->Show(GuiClass::MAIN_MENU, false);
 			state = GameState::START;
@@ -578,7 +536,7 @@ void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Ve
 
 	if (type == EntityType::ATTACKPLAYER || type == EntityType::ARROW) {
 		if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2 });
-		else power->SetPosition({ pos.getX() + 20, pos.getY() });
+		else power->SetPosition({ pos.getX() + 24, pos.getY() });
 	}
 	else if (type == EntityType::BOSSTRIDENT) {
 		if (directionLeft) power->SetPosition({ pos.getX() - 30, pos.getY() + 16 });
