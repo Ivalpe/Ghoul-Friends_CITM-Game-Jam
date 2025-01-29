@@ -61,6 +61,10 @@ bool Player::Update(float dt)
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 	b2Transform pbodyPos;
 
+	if (Engine::GetInstance().scene.get()->eventManager->firstRespawn and !canShot) {
+		canShot = true;
+	}
+
 	switch (Engine::GetInstance().scene.get()->GetGameState())
 	{
 	case GameState::START:
@@ -99,6 +103,7 @@ bool Player::Update(float dt)
 			currentAnimation = &respawn;
 			if (!Engine::GetInstance().scene.get()->eventManager->firstRespawn and !Engine::GetInstance().scene.get()->eventManager->crowEventDone) {
 				Engine::GetInstance().scene.get()->eventManager->firstRespawn = true;
+				canShot = true;
 			}
 		}
 
@@ -138,7 +143,7 @@ bool Player::Update(float dt)
 				coolFire = false;
 			}
 
-			if (!coolFire && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+			if (!coolFire && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_E) == KEY_REPEAT && canShot) {
 				isAttacking = true;
 				currentAnimation = &attack;
 				timer = fireRate;
