@@ -9,6 +9,7 @@
 #include "Coin.h"
 #include "Door.h"
 #include "NPC.h"
+#include "Boss.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -100,6 +101,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::NPC:
 		entity = new NPC();
+		break;
+	case EntityType::BOSS:
+		entity = new Boss();
 		break;
 	default:
 		break;

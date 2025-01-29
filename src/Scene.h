@@ -13,6 +13,7 @@
 #include "Door.h"
 #include "Events.h"
 #include "NPC.h"
+#include "Boss.h"
 
 struct SDL_Texture;
 class Events;
@@ -130,6 +131,7 @@ private:
 	std::vector<Merchant*> eventsList;
 	std::vector<Item*> itemShopList;
 	std::vector<Door*> doorList;
+	std::vector<Boss*> bossList;
 	bool drawChestText = false;
 	pugi::xml_document textsDoc;
 	pugi::xml_node textsParameters;

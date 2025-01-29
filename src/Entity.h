@@ -15,6 +15,7 @@ enum class EntityType
 	DOOR,
 	COIN,
 	NPC,
+	BOSS,
 	UNKNOWN
 };
 

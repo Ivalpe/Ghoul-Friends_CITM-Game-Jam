@@ -243,6 +243,10 @@ bool Map::Load(std::string path, std::string fileName)
 							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
 							posDoor.emplace(3, mapCoord);
 						}
+						else if (gid == 18) { //Boss Mountain
+							Vector2D mapCoord = { (float)i * 16, (float)j * 16 };
+							posBoss.emplace(1, mapCoord);
+						}
 					}
 				}
 			}
