@@ -242,7 +242,7 @@ bool Boss::Update(float dt) {
 	b2Vec2 enemyPos = pbody->body->GetPosition();
 	sensorLeft->body->SetTransform({ enemyPos.x - PIXEL_TO_METERS(16 * 6), PIXEL_TO_METERS(768) }, 0);
 	sensorRight->body->SetTransform({ enemyPos.x + PIXEL_TO_METERS(16 * 6), PIXEL_TO_METERS(768) }, 0);
-	sensorActive->body->SetTransform({ PIXEL_TO_METERS(3184), PIXEL_TO_METERS(768) }, 0);
+	sensorActive->body->SetTransform({ PIXEL_TO_METERS(3184), PIXEL_TO_METERS(720) }, 0);
 	rangeAttack->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
 
 	if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;

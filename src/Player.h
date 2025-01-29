@@ -59,6 +59,17 @@ public:
 		return extraDmg;
 	}
 
+	void Restart() {
+		life = 100;
+		maxLife = 100;
+		fireRate = 60;
+		armor = 0;
+		extraDmg = 0;
+		coins = 0;
+		regenerationItems = 0;
+		regenerationActive = false;
+	}
+
 	void SetPosition(Vector2D pos);
 
 public:
