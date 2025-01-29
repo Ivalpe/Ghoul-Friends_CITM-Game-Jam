@@ -216,7 +216,7 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ATTACKPLAYER:
 		if (physA->ctype != ColliderType::SENSOR and !isDamaged) {
-			life -= 2;
+			life -= physB->damageDone;
 			LOG("ENEMY DAMAGE 2");
 			isDamaged = true;
 			currentAnimation = &dmg;

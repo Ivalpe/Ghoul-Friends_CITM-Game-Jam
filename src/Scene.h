@@ -52,7 +52,7 @@ public:
 
 	void CreateCoin(Vector2D pos, int quantity);
 
-	void CreateAttack(EntityType type, Vector2D pos, bool directionLeft);
+	void CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Vec2 speed = { 0,0 });
 
 	void AddItem(int item);
 

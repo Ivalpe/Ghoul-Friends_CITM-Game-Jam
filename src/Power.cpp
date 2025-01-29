@@ -38,33 +38,86 @@ bool Power::Start(bool inv) {
 	currentAnimation = &idle;
 
 	//Assign collider type
-	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
-	pbody->ctype = ColliderType::ATTACKPLAYER;
+	if (typePower == TypePower::FIRESHOOTER) {
+		pbody = Engine::GetInstance().physics.get()->CreateCircleSensor((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
+		pbody->ctype = ColliderType::ATTACKENEMY;
+	}
+	else if (typePower == TypePower::ARROW) {
+		pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
+		pbody->ctype = ColliderType::ATTACKPLAYER;
+	}
+	else {
+		pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
+		pbody->ctype = ColliderType::ATTACKENEMY;
+	}
+
 
 	pbody->listener = this;
 
+	//get life and damage values
+	damage = parameters.attribute("damage").as_int();
+
+	//Assign damage that enemy does
+	pbody->damageDone = damage;
+
 	// Set the gravity of the body
 	pbody->body->SetGravityScale(0);
+
+	switch (typePower)
+	{
+	case TypePower::FIREBALL:
+		maxTime = 120;
+		break;
+	case TypePower::FIRESHOOTER:
+		maxTime = 240;
+		break;
+	}
 
 	return true;
 }
 
 bool Power::Update(float dt) {
-	if (true) {
-		//if (!Engine::GetInstance().scene.get()->IsPause()) {
+	switch (typePower)
+	{
+	case TypePower::ARROW:
+		if (true) {
+			//if (!Engine::GetInstance().scene.get()->IsPause()) {
+			if (statePower == StatePower::DIE && currentAnimation->HasFinished()) colision = true;
+			else if (statePower == StatePower::DIE) pbody->body->SetLinearVelocity({ 0, 0 });
+			else {
+				float speed = inverted ? -10.0f : 10.0f;
+				pbody->body->SetLinearVelocity({ speed, 0 });
+			}
+		}
+		else {
+			pbody->body->SetLinearVelocity({ 0,0 });
+			b2Transform pbodyPos = pbody->body->GetTransform();
+			position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+			position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+		}
+		break;
+	case TypePower::FIRESHOOTER:
+		if (statePower == StatePower::DIE && currentAnimation->HasFinished()) colision = true;
+		pbody->body->SetLinearVelocity({ 0,0 });
+		coolShoot++;
+		if (coolShoot == 60) {
+			Engine::GetInstance().scene->CreateAttack(EntityType::FIREBALL, position, inverted, speed);
+			if (inverted) speed.Set(speed.x - 1, speed.y - 1);
+			else  speed.Set(speed.x + 1, speed.y + 1);
+			coolShoot = 0;
+		}
+		break;
+	case TypePower::FIREBALL:
 		if (statePower == StatePower::DIE && currentAnimation->HasFinished()) colision = true;
 		else if (statePower == StatePower::DIE) pbody->body->SetLinearVelocity({ 0, 0 });
 		else {
-			float speed = inverted ? -10.0f : 10.0f;
-			pbody->body->SetLinearVelocity({ speed, 0 });
+			pbody->body->SetLinearVelocity(speedFireball);
 		}
+		break;
+	default:
+		break;
 	}
-	else {
-		pbody->body->SetLinearVelocity({ 0,0 });
-		b2Transform pbodyPos = pbody->body->GetTransform();
-		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
-	}
+
 
 
 	if (statePower == StatePower::IDLE) currentAnimation = &idle;
@@ -111,7 +164,11 @@ Vector2D Power::GetPosition() {
 }
 void Power::OnCollision(PhysBody* physA, PhysBody* physB) {
 
-	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGE && physB->ctype != ColliderType::MERCHANT) {
+	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGE
+		&& physB->ctype != ColliderType::MERCHANT && physB->ctype != ColliderType::RANGELEFT && physB->ctype != ColliderType::RANGERIGHT
+		&& physB->ctype != ColliderType::ACTIVEBOSS &&
+		((pbody->ctype == ColliderType::ATTACKENEMY && physB->ctype != ColliderType::ATTACKENEMY) ||
+			(pbody->ctype == ColliderType::ATTACKPLAYER && physB->ctype != ColliderType::ATTACKPLAYER))) {
 		statePower = StatePower::DIE;
 		currentAnimation = &explode;
 

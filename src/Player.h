@@ -95,6 +95,7 @@ public:
 	Vector2D respawnPos;
 
 	int coolHealth = 60 * 5;
+	int coolDmg = 60;
 	int regenerationItems = 0;
 	bool regenerationActive = false;
 	float armor = 0;

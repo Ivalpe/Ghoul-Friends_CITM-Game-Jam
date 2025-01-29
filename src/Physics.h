@@ -31,10 +31,14 @@ enum class ColliderType {
 	SKELETON,
 	SENSOR,
 	RANGE,
+	RANGELEFT,
+	RANGERIGHT,
+	ACTIVEBOSS,
 	COIN,
 	MERCHANT,
 	NPC,
 	BOSS,
+	ATTACKENEMY,
 	UNKNOWN
 	// ..
 };

@@ -17,7 +17,7 @@ enum class DirectionPower {
 };
 
 enum class TypePower {
-	FIREBALL, BIGFIREBALL, MELEEATTACKBOSS
+	FIREBALL, FIRESHOOTER, ARROW
 };
 
 class Power : public Entity
@@ -35,8 +35,13 @@ public:
 
 	bool CleanUp();
 
-	void SetParameters(pugi::xml_node par) {
+	void SetParameters(pugi::xml_node par, TypePower tp) {
 		parameters = par;
+		typePower = tp;
+	}
+
+	void SetSpeed(b2Vec2 speed) {
+		speedFireball = speed;
 	}
 
 	void SetPosition(Vector2D pos);
@@ -62,6 +67,7 @@ private:
 	StatePower statePower;
 	PhysBody* pbody;
 	bool hasPlayedFire = false;
+	TypePower typePower;
 
 	Timer explosionTimer;
 	float explosionTime;
@@ -70,7 +76,10 @@ private:
 
 	bool colision;
 	bool inverted;
+	int damage;
 
-	int tempAttack = 1;
+	int coolShoot = 0;
 	int maxTime = 120;
+	b2Vec2 speed = { 0, 5. };
+	b2Vec2 speedFireball;
 };

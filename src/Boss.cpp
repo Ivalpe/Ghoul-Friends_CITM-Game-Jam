@@ -56,14 +56,19 @@ bool Boss::Start() {
 	pbody->damageDone = damage - 3;
 
 	//Sensor
-	sensorLeft = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), texW * 6, texH, bodyType::KINEMATIC);
-	sensorLeft->ctype = ColliderType::SENSOR;
+	sensorLeft = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), texW * 6, texH * 3, bodyType::KINEMATIC);
+	sensorLeft->ctype = ColliderType::RANGELEFT;
 	sensorLeft->listener = this;
 
 	//Sensor
-	sensorRight = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), texW * 6, texH, bodyType::KINEMATIC);
-	sensorRight->ctype = ColliderType::SENSOR;
+	sensorRight = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), texW * 6, texH * 3, bodyType::KINEMATIC);
+	sensorRight->ctype = ColliderType::RANGERIGHT;
 	sensorRight->listener = this;
+
+	//Sensor
+	sensorActive = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), texW * 2, texH * 6, bodyType::KINEMATIC);
+	sensorActive->ctype = ColliderType::ACTIVEBOSS;
+	sensorActive->listener = this;
 
 	rangeAttack = Engine::GetInstance().physics.get()->CreateRectangleSensor((int)position.getX(), (int)position.getY(), 32, texH, bodyType::KINEMATIC);
 	rangeAttack->ctype = ColliderType::RANGE;
@@ -82,6 +87,9 @@ void Boss::SetBossType(BossType et) {
 
 bool Boss::Update(float dt) {
 
+	if (de == DirectionBoss::LEFT) flipType = SDL_FLIP_NONE;
+	else flipType = SDL_FLIP_HORIZONTAL;
+
 	if (currentAnimation == &dmg && currentAnimation->HasFinished()) {
 		currentAnimation = &idle;
 		dmg.Reset();
@@ -90,92 +98,137 @@ bool Boss::Update(float dt) {
 	if (life <= 0) {
 		currentAnimation = &die;
 		isDying = true;
+		velocity = { 0,0 };
 	}
 
-	if (!isDying and !isDamaged) {
-
+	if (life <= 0 && currentAnimation->HasFinished()) {
+		dead = true;
 	}
 
-	timer++;
-	switch (stBoss)
-	{
-	case StateBoss::IDLE:
-		velocity = b2Vec2(0, 0);
-		if (currentAnimation != &idle) currentAnimation = &idle;
-		if (timer == 60) {
-			if (lastStBoss == StateBoss::FLYDOWN) {
-				lastStBoss = stBoss;
-				stBoss = StateBoss::FLYRIGHT;
-			}
-			else if (lastStBoss == StateBoss::FLYRIGHT) {
-				lastStBoss = stBoss;
-				stBoss = StateBoss::FLYUP;
-			}
-			else  stBoss = StateBoss::FLYUP;
-			timer = 0;
+	if (bossActive && currentAnimation != &dmg && currentAnimation != &die) {
+		int ran = rand() % 10 + 1;
+		timer++;
+		switch (stBoss)
+		{
+		case StateBoss::IDLE:
+			velocity = b2Vec2(0, -GRAVITY_Y);
+			if (currentAnimation != &idle) currentAnimation = &idle;
+			if (timer == 60) {
+				if (lastStBoss == StateBoss::FLYDOWN) {
+					lastStBoss = stBoss;
+					stBoss = StateBoss::FLYRIGHT;
+				}
+				else if (lastStBoss == StateBoss::FLYRIGHT) {
+					lastStBoss = stBoss;
+					stBoss = StateBoss::FLYUP;
+				}
+				timer = 0;
 
-		}
-		break;
-	case StateBoss::FLYUP:
-		velocity = b2Vec2(0, -GRAVITY_Y);
-		velocity.y = -speed;
-		if (currentAnimation != &fly) currentAnimation = &fly;
-		if (timer == 60) {
-			lastStBoss = stBoss;
-			stBoss = StateBoss::FLYIDLE;
-			timer = 0;
-		}
-		break;
-	case StateBoss::FLYDOWN:
-		velocity = b2Vec2(0, -GRAVITY_Y);
-		velocity.y = +speed;
-		if (currentAnimation != &fly) currentAnimation = &fly;
-		if (timer == 60) {
-			lastStBoss = stBoss;
-			stBoss = StateBoss::IDLE;
-			timer = 0;
-		}
-		break;
-	case StateBoss::FLYIDLE:
-		velocity = b2Vec2(0, 0);
-		if (currentAnimation != &fly) currentAnimation = &fly;
-		if (timer == 60) {
-			if (lastStBoss == StateBoss::FLYUP) {
-				stBoss = StateBoss::FLYLEFT;
-				lastStBoss = stBoss;
 			}
-			else if (lastStBoss == StateBoss::FLYLEFT) {
-				stBoss = StateBoss::FLYDOWN;
+			break;
+		case StateBoss::FLYUP:
+			velocity.y = -speed;
+			if (currentAnimation != &fly) currentAnimation = &fly;
+			if (timer == 40) {
 				lastStBoss = stBoss;
+				if (ran <= 4) stBoss = StateBoss::FLYIDLE;
+				else stBoss = StateBoss::SUMMONFIRE;
+				timer = 0;
 			}
-			timer = 0;
+			break;
+		case StateBoss::FLYDOWN:
+			velocity.y = +speed;
+			if (currentAnimation != &fly) currentAnimation = &fly;
+			if (timer == 40) {
+				lastStBoss = stBoss;
+				if (ran <= 4) stBoss = StateBoss::IDLE;
+				else stBoss = StateBoss::TRIDENT;
+				timer = 0;
+			}
+			break;
+		case StateBoss::FLYIDLE:
+			velocity = b2Vec2(0, 0);
+			if (currentAnimation != &fly) currentAnimation = &fly;
+			if (timer == 60) {
+				if (lastStBoss == StateBoss::FLYUP) {
+					stBoss = StateBoss::FLYLEFT;
+					lastStBoss = stBoss;
+				}
+				else if (lastStBoss == StateBoss::FLYLEFT) {
+					stBoss = StateBoss::FLYDOWN;
+					lastStBoss = stBoss;
+				}
+				timer = 0;
+			}
+			break;
+		case StateBoss::FLYLEFT:
+			velocity = b2Vec2(0, 0);
+			velocity.x = -speed * 2;
+			if (currentAnimation != &fly) currentAnimation = &fly;
+			if (timer == 80) {
+				lastStBoss = stBoss;
+				if (ran <= 4) stBoss = StateBoss::FLYIDLE;
+				else stBoss = StateBoss::SUMMONFIRE;
+				timer = 0;
+			}
+			break;
+		case StateBoss::FLYRIGHT:
+			velocity = b2Vec2(0, 0);
+			velocity.x = +speed * 2;
+			if (currentAnimation != &fly) currentAnimation = &fly;
+			if (timer == 80) {
+				lastStBoss = stBoss;
+				if (ran <= 4) stBoss = StateBoss::IDLE;
+				else stBoss = StateBoss::TRIDENT;
+				timer = 0;
+			}
+			break;
+		case StateBoss::SUMMONFIRE:
+			velocity = b2Vec2(0, 0);
+			if (currentAnimation != &summonFire) {
+				summonFire.Reset();
+				currentAnimation = &summonFire;
+			}
+			if (timer == 60) {
+				Engine::GetInstance().scene->CreateAttack(EntityType::FIRESHOOTER, position, lastStBoss == StateBoss::FLYUP);
+				if (lastStBoss == StateBoss::FLYUP) {
+					stBoss = StateBoss::FLYLEFT;
+					lastStBoss = stBoss;
+				}
+				else if (lastStBoss == StateBoss::FLYLEFT) {
+					stBoss = StateBoss::FLYDOWN;
+					lastStBoss = stBoss;
+				}
+				timer = 0;
+			}
+			break;
+		case StateBoss::TRIDENT:
+			velocity = b2Vec2(0, -GRAVITY_Y);
+			if (currentAnimation != &attackTrident) {
+				attackTrident.Reset();
+				currentAnimation = &attackTrident;
+			}
+			if (timer == 55) Engine::GetInstance().scene->CreateAttack(EntityType::BOSSTRIDENT, position, de == DirectionBoss::LEFT);
+			if (timer == 60) {
+				if (lastStBoss == StateBoss::FLYDOWN) {
+					lastStBoss = stBoss;
+					stBoss = StateBoss::FLYRIGHT;
+				}
+				else if (lastStBoss == StateBoss::FLYRIGHT) {
+					lastStBoss = stBoss;
+					stBoss = StateBoss::FLYUP;
+				}
+				else  stBoss = StateBoss::FLYUP;
+				timer = 0;
+
+			}
+			break;
+		default:
+			break;
 		}
-		break;
-	case StateBoss::FLYLEFT:
-		velocity = b2Vec2(0, 0);
-		velocity.x = -speed;
-		if (currentAnimation != &fly) currentAnimation = &fly;
-		if (timer == 120) {
-			lastStBoss = stBoss;
-			stBoss = StateBoss::FLYIDLE;
-			timer = 0;
-		}
-		break;
-	case StateBoss::FLYRIGHT:
-		velocity = b2Vec2(0, 0);
-		velocity.x = +speed;
-		if (currentAnimation != &fly) currentAnimation = &fly;
-		if (timer == 120) {
-			lastStBoss = stBoss;
-			stBoss = StateBoss::IDLE;
-			timer = 0;
-		}
-		break;
-	default:
-		break;
 	}
 
-	//pbody->body->SetLinearVelocity(velocity);
+	pbody->body->SetLinearVelocity(velocity);
 
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
@@ -187,8 +240,9 @@ bool Boss::Update(float dt) {
 	pbody->body->SetLinearVelocity(velocity);
 
 	b2Vec2 enemyPos = pbody->body->GetPosition();
-	sensorLeft->body->SetTransform({ PIXEL_TO_METERS(3248), PIXEL_TO_METERS(768) }, 0);
-	sensorRight->body->SetTransform({ PIXEL_TO_METERS(3440), PIXEL_TO_METERS(768) }, 0);
+	sensorLeft->body->SetTransform({ enemyPos.x - PIXEL_TO_METERS(16 * 6), PIXEL_TO_METERS(768) }, 0);
+	sensorRight->body->SetTransform({ enemyPos.x + PIXEL_TO_METERS(16 * 6), PIXEL_TO_METERS(768) }, 0);
+	sensorActive->body->SetTransform({ PIXEL_TO_METERS(3184), PIXEL_TO_METERS(768) }, 0);
 	rangeAttack->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
 
 	if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;
@@ -215,13 +269,24 @@ Vector2D Boss::GetPosition() {
 }
 
 void Boss::OnCollision(PhysBody* physA, PhysBody* physB) {
+	int ran;
 	switch (physB->ctype)
 	{
 	case ColliderType::UNKNOWN:
 		break;
 	case ColliderType::ATTACKPLAYER:
+		if (physA->ctype == ColliderType::BOSS) {
+			if (life > 0) currentAnimation = &dmg;
+			life -= physB->damageDone;
+		}
 		break;
 	case ColliderType::PLAYER:
+		if (physA->ctype == ColliderType::ACTIVEBOSS)
+			bossActive = true;
+		else if (physA->ctype == ColliderType::RANGELEFT)
+			de = DirectionBoss::LEFT;
+		else if (physA->ctype == ColliderType::RANGERIGHT)
+			de = DirectionBoss::RIGHT;
 		break;
 	default:
 		break;

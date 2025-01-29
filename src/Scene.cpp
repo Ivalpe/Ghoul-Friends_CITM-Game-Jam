@@ -542,14 +542,39 @@ void Scene::CreateCoin(Vector2D pos, int quantity) {
 }
 
 
-void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft) {
-	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(EntityType::ATTACKPLAYER);
-	power->SetParameters(configParameters.child("entities").child("arrow"));
+void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Vec2 speed) {
+	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(type);
+	if (type == EntityType::ATTACKPLAYER)
+		power->SetParameters(configParameters.child("entities").child("arrow"), TypePower::ARROW);
+	else if (type == EntityType::BOSSTRIDENT)
+		power->SetParameters(configParameters.child("entities").child("bossTrident"), TypePower::ARROW);
+	else if (type == EntityType::FIRESHOOTER)
+		power->SetParameters(configParameters.child("entities").child("fireShooter"), TypePower::FIRESHOOTER);
+	else if (type == EntityType::FIREBALL) {
+		power->SetParameters(configParameters.child("entities").child("fireball"), TypePower::FIREBALL);
+		power->SetSpeed(speed);
+	}
+
 	if (directionLeft) power->Start(true);
 	else power->Start(false);
 
-	if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2 });
-	else power->SetPosition({ pos.getX() + 20, pos.getY() + 2 });
+	if (type == EntityType::ATTACKPLAYER) {
+		if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2 });
+		else power->SetPosition({ pos.getX() + 20, pos.getY() });
+	}
+	else if (type == EntityType::BOSSTRIDENT) {
+		if (directionLeft) power->SetPosition({ pos.getX() - 30, pos.getY() + 16 });
+		else power->SetPosition({ pos.getX() + 30, pos.getY() + 16 });
+	}
+	else if (type == EntityType::FIRESHOOTER) {
+		if (directionLeft) power->SetPosition({ pos.getX() + 24, pos.getY() - 14 });
+		else power->SetPosition({ pos.getX() + 8, pos.getY() - 14 });
+	}
+	else if (type == EntityType::FIREBALL) {
+		if (directionLeft) power->SetPosition({ pos.getX() + 16, pos.getY() + 16 });
+		else power->SetPosition({ pos.getX() + 16, pos.getY() + 16 });
+	}
+
 
 	fireballList.push_back(power);
 }

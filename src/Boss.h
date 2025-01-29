@@ -11,7 +11,7 @@ struct SDL_Texture;
 #define ENEMY_SPEED			1
 
 enum class StateBoss {
-	IDLE, FLYUP, FLYDOWN, FLYIDLE, FLYLEFT, FLYRIGHT
+	IDLE, FLYUP, FLYDOWN, FLYIDLE, FLYLEFT, FLYRIGHT, SUMMONFIRE, TRIDENT
 };
 
 enum class DirectionBoss {
@@ -94,11 +94,13 @@ private:
 	Animation idle, fly, summonFire, attackTrident, dmg, die;
 	DirectionBoss de;
 	SDL_RendererFlip flipType;
-	StateBoss stBoss, lastStBoss;
+	StateBoss stBoss, lastStBoss = StateBoss::FLYRIGHT;
 
 	PhysBody* pbody;
 	PhysBody* sensorLeft;
 	PhysBody* sensorRight;
+	PhysBody* sensorActive;
+	bool bossActive;
 	PhysBody* rangeAttack;
 	bool dead, followPlayer, rangePlayer;
 	b2Vec2 velocity;

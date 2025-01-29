@@ -16,6 +16,9 @@ enum class EntityType
 	COIN,
 	NPC,
 	BOSS,
+	BOSSTRIDENT,
+	FIRESHOOTER,
+	FIREBALL,
 	UNKNOWN
 };
 

@@ -44,7 +44,7 @@ bool Player::Start() {
 	attack.LoadAnimations(parameters.child("animations").child("shoot"));
 	running.LoadAnimations(parameters.child("animations").child("run"));
 	jumping.LoadAnimations(parameters.child("animations").child("jump"));
-	
+
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
 	pbody->listener = this;
@@ -65,6 +65,8 @@ bool Player::Update(float dt)
 	case GameState::START:
 		isMoving = false;
 
+		if (coolDmg > 0) coolDmg--;
+
 		//damage reset
 		if (isDamaged) {
 			if (damage.HasFinished()) {
@@ -81,14 +83,14 @@ bool Player::Update(float dt)
 		}
 
 		if (isDying) {
-			if(currentAnimation != &death) currentAnimation = &death;
+			if (currentAnimation != &death) currentAnimation = &death;
 			if (death.HasFinished() and !hasDied) {
 				death.Reset();
 				isDying = false;
 				hasDied = true;
 				life = maxLife;
 			}
-		} 
+		}
 
 		if (startRespawn and hasDied) {
 			SetPosition(respawnPos);
@@ -141,7 +143,7 @@ bool Player::Update(float dt)
 			}
 
 			if (isAttacking) {
-				if (currentAnimation == &attack and attack.currentFrame >= (18*attack.speed) and !coolFire) {
+				if (currentAnimation == &attack and attack.currentFrame >= (18 * attack.speed) and !coolFire) {
 					Engine::GetInstance().scene.get()->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionPlayer::LEFT);
 					coolFire = true;
 				}
@@ -182,10 +184,10 @@ bool Player::Update(float dt)
 			if (life <= 0) life = 0;
 		}
 
-
 		pbodyPos = pbody->body->GetTransform();
 		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
 		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
 
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 		currentAnimation->Update();
@@ -247,19 +249,18 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		Engine::GetInstance().physics.get()->DeletePhysBody(physB); // Deletes the body of the item from the physics world
 		break;
 	case ColliderType::SKELETON:
-		if (!isDying and !isRespawning and !hasDied) {
-			damageReceived = physB->damageDone - (physB->damageDone * armor);
-			life -= damageReceived;
-			if (life > 0) isDamaged = true;
-			if(life > 0) currentAnimation = &damage;
-		}
-		break;
 	case ColliderType::RANGE:
-		if (!isDying and !isRespawning and !hasDied) {
+	case ColliderType::ATTACKENEMY:
+	case ColliderType::BOSS:
+		if (!isDying and !isRespawning and !hasDied && coolDmg == 0) {
+			if (physB->body->GetPosition().x > pbody->body->GetPosition().x)
+				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(-2.f, -0.2f), false);
+			else pbody->body->ApplyLinearImpulseToCenter(b2Vec2(2.f, -0.2f), false);
 			damageReceived = physB->damageDone - (physB->damageDone * armor);;
 			life -= damageReceived;
 			if (life > 0) isDamaged = true;
 			if (life > 0) currentAnimation = &damage;
+			coolDmg = 60;
 		}
 		break;
 	case ColliderType::UNKNOWN:
