@@ -327,8 +327,23 @@
 							</idle>
 						</animations>
 						<dialogues>
-							<dialogue character="2" text="hola"/>
-							<dialogue character="-1" text="holiss"/>
+							<dialogue character="2" text="Oh? Ha desaparecido el hombre de huesos?"/>
+							<dialogue character="2" text="Se puede explorar ahora?"/>
+							<dialogue character="2" text="Ah! Hola!"/>
+							<dialogue character="-1" text="Hola, que haces aqui fuera?"/>
+							<dialogue character="2" text="Queria salir a jugar pero el hombre de huesos estaba bloqueando el camino."/>
+							<dialogue character="2" text="Gracias por liberar el camino, por cierto!"/>
+							<dialogue character="2" text="Tu quien eres ..? No creo que te haya visto antes."/>
+							<dialogue character="-1" text="No, pensaria que no. No soy de por aqui."/>
+							<dialogue character="-1" text="Soy Nyssa."/>
+							<dialogue character="2" text="Hola Nyssa. No eres de aqui-?"/>
+							<dialogue character="2" text="Oh! Eres un angel, verdad? Pareces un angel."/>
+							<dialogue character="-1" text="Gracias."/>
+							<dialogue character="-1" text="… sabes que ha pasado por aqui?"/>
+							<dialogue character="2" text="Huh ..?"/>
+							<dialogue character="2" text="Que quieres decir?"/>
+							<dialogue character="-1" text="Me tengo que ir pero espero encontrarte otra vez, uh…"/>
+							<dialogue character="2" text="Zera. Espero verte otra vez tambien, Nyssa!"/>
 						</dialogues>
 					</npc>
 					<npc npcType="4" name="armguy" texture="Assets/Textures/Sprites.png" level="0" x="1760" y="1072" w="16" h="16">

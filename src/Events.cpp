@@ -252,7 +252,7 @@ void Events::ZeraEvent() {
 		}
 
 
-		Engine::GetInstance().render.get()->DrawText(zeraDialogue[timer].text.c_str(), 720, 905, zeraDialogue[timer].text.length()*10, 70);
+		Engine::GetInstance().render.get()->DrawText(zeraDialogue[timer].text.c_str(), 680, 905, zeraDialogue[timer].text.length()*10, 70);
 	}
 }
 
