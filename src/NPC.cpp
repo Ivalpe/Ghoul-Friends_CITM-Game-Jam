@@ -128,6 +128,15 @@ bool NPC::Update(float dt) {
 			render = false;
 		}
 		break;
+	case NPCs::ARMGUY:
+		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone) done = true;
+		break;
+	case NPCs::FRANCESK:
+		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
+		break;
+	case NPCs::DEMON:
+		if (Engine::GetInstance().scene.get()->eventManager->demonEventDone) done = true;
+		break;
 	}
 
 	if (isActive and Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
