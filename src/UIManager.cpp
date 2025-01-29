@@ -16,6 +16,7 @@ bool UIManager::Start() {
 	pauseScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/pauseScreen.png");
 	deathScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/deathScreen.png");
 	menuScreen = Engine::GetInstance().textures.get()->Load("Assets/Textures/menu.png");
+	logo = Engine::GetInstance().textures.get()->Load("Assets/Menus/LogoGrey.png");
 
 	return true;
 }
@@ -28,9 +29,8 @@ bool UIManager::Update(float dt) {
 	SDL_Rect screenRect = { 0,0,1920,1080};
 	SDL_Rect barRect = { 0,0,68,8 };
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::MAINMENU) {
-		
 		Engine::GetInstance().render.get()->DrawTexture(menuScreen, 0,0, SDL_FLIP_NONE, NULL, false,false);
-		
+		Engine::GetInstance().render.get()->DrawTexture(logo, 0, 1080 - 285, SDL_FLIP_NONE, NULL, false, false);	
 	}
 
 	if (Engine::GetInstance().scene.get()->GetGameState() == GameState::START) {

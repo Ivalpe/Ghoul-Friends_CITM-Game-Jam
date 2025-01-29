@@ -26,6 +26,7 @@ bool Boss::Start() {
 	followPlayer = false;
 	rangePlayer = false;
 	speed = 1.9f;
+	dead = false;
 
 	//Initilize textures
 	texture = Engine::GetInstance().textures.get()->Load(parameters.attribute("texture").as_string());
@@ -40,6 +41,9 @@ bool Boss::Start() {
 	dmg.LoadAnimations(parameters.child("animations").child("dmg"));
 	die.LoadAnimations(parameters.child("animations").child("die"));
 	currentAnimation = &idle;
+
+	imgFinal = Engine::GetInstance().textures.get()->Load("Assets/Menus/Final.png");
+
 
 	//Add a physics to an item - initialize the physics body
 	pbody = Engine::GetInstance().physics.get()->CreateCircle((int)position.getX(), (int)position.getY() + texW, texW / 2, bodyType::DYNAMIC);
@@ -86,7 +90,7 @@ void Boss::SetBossType(BossType et) {
 }
 
 bool Boss::Update(float dt) {
-
+  
 	switch (Engine::GetInstance().scene.get()->GetGameState()) {
 	case GameState::START:
 		if (!Engine::GetInstance().scene.get()->eventHappening) {

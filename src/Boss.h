@@ -81,6 +81,10 @@ public:
 		return de;
 	}
 
+	bool IsFinish() {
+		return finishGame;
+	}
+
 private:
 
 	SDL_Texture* texture;
@@ -97,6 +101,7 @@ private:
 	Animation* currentAnimation = nullptr;
 	Animation idle, fly, summonFire, attackTrident, dmg, die;
 	DirectionBoss de;
+	SDL_Texture* imgFinal; 
 	SDL_RendererFlip flipType;
 	StateBoss stBoss, lastStBoss = StateBoss::FLYRIGHT;
 
@@ -107,6 +112,7 @@ private:
 	bool bossActive;
 	PhysBody* rangeAttack;
 	bool dead, followPlayer, rangePlayer;
+	bool finishGame = false;
 	b2Vec2 velocity;
 	float speed;
 
