@@ -122,7 +122,7 @@ void Events::CleanUp() {
 }
 
 void Events::Update() {
-	Engine::GetInstance().scene->DrawText(false);
+	
 
 	if (currentEvent != ActiveEvent::NONE) Engine::GetInstance().scene.get()->eventHappening = true;
 	else Engine::GetInstance().scene.get()->eventHappening = false;
