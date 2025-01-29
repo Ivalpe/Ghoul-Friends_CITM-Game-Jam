@@ -170,6 +170,7 @@ bool Player::Update(float dt)
 			//Jump
 			if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
 				// Apply an initial upward force
+				Engine::GetInstance().scene->PlayAudio(3);
 				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpForce), true);
 				isJumping = true;
 			}

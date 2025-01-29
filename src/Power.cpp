@@ -30,8 +30,6 @@ bool Power::Start(bool inv) {
 	texH = parameters.attribute("h").as_int();
 
 	//Load animations
-
-
 	idle.LoadAnimations(parameters.child("animations").child("idle"));
 	explode.LoadAnimations(parameters.child("animations").child("explode"));
 	fire.LoadAnimations(parameters.child("animations").child("fire"));
@@ -171,12 +169,10 @@ void Power::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 	if (statePower != StatePower::DIE && physB->ctype != ColliderType::SENSOR && physB->ctype != ColliderType::RANGE
 		&& physB->ctype != ColliderType::MERCHANT && physB->ctype != ColliderType::RANGELEFT && physB->ctype != ColliderType::RANGERIGHT
-		&& physB->ctype != ColliderType::ACTIVEBOSS &&
-		((pbody->ctype == ColliderType::ATTACKENEMY && physB->ctype != ColliderType::ATTACKENEMY) ||
-			(pbody->ctype == ColliderType::ATTACKPLAYER && physB->ctype != ColliderType::ATTACKPLAYER))) {
+		&& physB->ctype != ColliderType::ACTIVEBOSS ) {
 		statePower = StatePower::DIE;
 		currentAnimation = &explode;
-
+		if (type == EntityType::ARROW ||type == EntityType::ATTACKPLAYER) Engine::GetInstance().scene->PlayAudio(2);
 		pbody->body->SetLinearVelocity({ 0, 0 });
 		LOG("Fireball collided, starting explosion animation.");
 	}

@@ -106,6 +106,8 @@ public:
 		return player->GetExtraDamage();
 	}
 
+	void PlayAudio(int audio);
+
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	//check if an event is happening
@@ -127,6 +129,13 @@ private:
 	SDL_Texture* buttonTexture;
 	SDL_Texture* buttonPressed;
 	SDL_Texture* buttonShop;
+
+	int audioBow; // 1
+	int audioBowHit; // 2
+	int jumpPlayer; // 3
+	int spiderDeath; //4
+	int fireball; // 5
+	int swordSwing; // 6
 
 	//death screen timer
 	int deathTime = 0;
