@@ -70,7 +70,7 @@ bool UIManager::Update(float dt) {
 	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::PAUSESCREEN) {
 
 		SDL_Rect pauseRect = { 0,0,960, 850 };
-		Engine::GetInstance().render.get()->DrawTexture(pauseScreen, 100, 100, SDL_FLIP_NONE, &pauseRect, false, false);
+		Engine::GetInstance().render.get()->DrawTexture(pauseScreen, 500, 100, SDL_FLIP_NONE, &pauseRect, false, false);
 	}
 	else if (Engine::GetInstance().scene.get()->GetGameState() == GameState::DEATH) {
 		
