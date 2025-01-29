@@ -77,7 +77,17 @@ void Door::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLAYER:
 		canDoor = true;
-		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Caves"));
+		switch (Engine::GetInstance().scene->GetCurrentLevel())
+		{
+		case LEVELS::LEVEL0:
+			Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Caves"));
+			break;
+		case LEVELS::CAVE:
+			Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("Mountain"));
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;

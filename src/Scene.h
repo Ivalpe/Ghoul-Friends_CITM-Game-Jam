@@ -112,6 +112,10 @@ public:
 		drawFinish = true;
 	}
 
+	LEVELS GetCurrentLevel() {
+		return currentLevel;
+	}
+
 	void PlayAudio(int audio);
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
