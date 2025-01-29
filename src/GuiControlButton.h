@@ -25,6 +25,8 @@ public:
 
 private:
 
+	int cursorAudio, selectAudio;
+
 	bool canClick = true;
 	bool drawBasic = false;
 

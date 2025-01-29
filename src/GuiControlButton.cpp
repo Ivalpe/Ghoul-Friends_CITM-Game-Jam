@@ -9,6 +9,8 @@ GuiControlButton::GuiControlButton(int id, SDL_Rect bounds, const char* text) : 
 	this->text = text;
 	posHitbox.setY(bounds.y);
 	drawBasic = false;
+	cursorAudio = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/UI/JDSherbert - Pixel UI SFX Pack - Cursor 1 (Square).ogg");
+	selectAudio = Engine::GetInstance().audio.get()->LoadFx("Assets/Audio/UI/JDSherbert - Pixel UI SFX Pack - Select 1 (Sine).ogg");
 }
 
 GuiControlButton::~GuiControlButton()
@@ -30,10 +32,16 @@ bool GuiControlButton::Update(float dt)
 			//If the position of the mouse if inside the bounds of the button 
 			if (mousePos.getX() > posHitbox.getX() / 4 && mousePos.getX() < (posHitbox.getX() + bounds.w) / 4 && mousePos.getY() > posHitbox.getY() / 4 && mousePos.getY() < (posHitbox.getY() + bounds.h) / 4) {
 
-				state = GuiControlState::FOCUSED;
+				if (state != GuiControlState::FOCUSED) {
+					state = GuiControlState::FOCUSED;
+					Engine::GetInstance().audio.get()->PlayFx(cursorAudio);
+				}
 
-				if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+				if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 					state = GuiControlState::PRESSED;
+					Engine::GetInstance().audio.get()->PlayFx(selectAudio);
+				}
+
 
 				if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 					NotifyObserver();
