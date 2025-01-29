@@ -352,7 +352,6 @@ bool Scene::Update(float dt)
 }
 
 void Scene::AddItem(int item) {
-
 	if (item >= 0 && item <= 19) {
 		auto it = itemsList.find(drums);
 		if (it != itemsList.end()) {
@@ -545,6 +544,8 @@ void Scene::CreateCoin(Vector2D pos, int quantity) {
 void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Vec2 speed) {
 	Power* power = (Power*)Engine::GetInstance().entityManager->CreateEntity(type);
 	if (type == EntityType::ATTACKPLAYER)
+		power->SetParameters(configParameters.child("entities").child("arrow"), TypePower::ATTACKPLAYER);
+	else if (type == EntityType::ARROW)
 		power->SetParameters(configParameters.child("entities").child("arrow"), TypePower::ARROW);
 	else if (type == EntityType::BOSSTRIDENT)
 		power->SetParameters(configParameters.child("entities").child("bossTrident"), TypePower::ARROW);
@@ -558,7 +559,7 @@ void Scene::CreateAttack(EntityType type, Vector2D pos, bool directionLeft, b2Ve
 	if (directionLeft) power->Start(true);
 	else power->Start(false);
 
-	if (type == EntityType::ATTACKPLAYER) {
+	if (type == EntityType::ATTACKPLAYER || type == EntityType::ARROW) {
 		if (directionLeft) power->SetPosition({ pos.getX() - 16, pos.getY() + 2 });
 		else power->SetPosition({ pos.getX() + 20, pos.getY() });
 	}

@@ -252,6 +252,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::RANGE:
 	case ColliderType::ATTACKENEMY:
 	case ColliderType::BOSS:
+	case ColliderType::ARROW:
 		if (!isDying and !isRespawning and !hasDied && coolDmg == 0) {
 			if (physB->body->GetPosition().x > pbody->body->GetPosition().x)
 				pbody->body->ApplyLinearImpulseToCenter(b2Vec2(-2.f, -0.2f), false);

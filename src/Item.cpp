@@ -60,8 +60,9 @@ bool Item::Update(float dt)
 
 	Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY(), SDL_FLIP_NONE);
 
-	if (canBuy && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+	if (canBuy && Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN && Engine::GetInstance().scene->GetPlayerCoins() >= 50) {
 		Engine::GetInstance().scene->AddItem(item);
+		Engine::GetInstance().scene->AddPlayerCoins(-50);
 		buyed = true;
 	}
 

@@ -17,7 +17,7 @@ enum class DirectionPower {
 };
 
 enum class TypePower {
-	FIREBALL, FIRESHOOTER, ARROW
+	FIREBALL, FIRESHOOTER, ARROW, ATTACKPLAYER
 };
 
 class Power : public Entity

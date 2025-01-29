@@ -44,6 +44,10 @@ bool Power::Start(bool inv) {
 	}
 	else if (typePower == TypePower::ARROW) {
 		pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
+		pbody->ctype = ColliderType::ARROW;
+	}
+	else if (typePower == TypePower::ATTACKPLAYER) {
+		pbody = Engine::GetInstance().physics.get()->CreateCircle((int)(position.getX()), (int)(position.getY()), texH / 3, bodyType::DYNAMIC);
 		pbody->ctype = ColliderType::ATTACKPLAYER;
 	}
 	else {
@@ -80,6 +84,7 @@ bool Power::Update(float dt) {
 	switch (typePower)
 	{
 	case TypePower::ARROW:
+	case TypePower::ATTACKPLAYER:
 		if (true) {
 			//if (!Engine::GetInstance().scene.get()->IsPause()) {
 			if (statePower == StatePower::DIE && currentAnimation->HasFinished()) colision = true;

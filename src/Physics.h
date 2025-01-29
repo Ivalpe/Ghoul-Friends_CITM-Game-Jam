@@ -28,6 +28,7 @@ enum class ColliderType {
 	ITEM,
 	PLATFORM,
 	ATTACKPLAYER,
+	ARROW,
 	SKELETON,
 	SENSOR,
 	RANGE,

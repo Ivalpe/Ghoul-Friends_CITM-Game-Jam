@@ -81,6 +81,9 @@ void Enemy::SetEnemyType(EnemyType et) {
 
 bool Enemy::Update(float dt) {
 
+	if (de == DirectionEnemy::LEFT) flipType = SDL_FLIP_NONE;
+	else flipType = SDL_FLIP_HORIZONTAL;
+
 	velocity = b2Vec2(0, -GRAVITY_Y);
 
 	if (currentAnimation == &dmg && currentAnimation->HasFinished()) {
@@ -116,7 +119,7 @@ bool Enemy::Update(float dt) {
 		else {
 			if (followPlayer && !coolFire) {
 				currentAnimation = &attack;
-				Engine::GetInstance().scene->CreateAttack(EntityType::ATTACKPLAYER, position, GetDirection() == DirectionEnemy::LEFT);
+				Engine::GetInstance().scene->CreateAttack(EntityType::ARROW, position, GetDirection() == DirectionEnemy::LEFT);
 				timer = fireRate;
 				coolFire = true;
 			}
@@ -223,6 +226,10 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		}
 		break;
 	case ColliderType::PLAYER:
+		if (physB->body->GetPosition().x > pbody->body->GetPosition().x)
+			de = DirectionEnemy::RIGHT;
+		else
+			de = DirectionEnemy::LEFT;
 		if (physA->ctype == ColliderType::SENSOR) {
 			followPlayer = true;
 		}
@@ -242,6 +249,7 @@ void Enemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLAYER:
 		if (physA->ctype == ColliderType::SENSOR) {
 			followPlayer = false;
+			currentAnimation = &idle;
 		}
 		if (physA->ctype == ColliderType::RANGE) {
 			rangePlayer = false;

@@ -94,6 +94,10 @@ public:
 		return player->GetCoins();
 	}
 
+	void AddPlayerCoins(int q) {
+		player->AddCoins(q);
+	}
+
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	//check if an event is happening
