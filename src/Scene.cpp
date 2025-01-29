@@ -261,6 +261,26 @@ void Scene::LoadLevel(int lvl) {
 		b->SetPosition({ boss.second.getX(), boss.second.getY() });
 		bossList.push_back(b);
 	}
+
+	menuMusic = false;
+	switch (lvl) {
+	case 0:
+		Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/1 Exploration LOOP TomMusic.ogg");
+		break;
+	case 1:
+		Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/9 Searching Further LOOP TomMusic.ogg");
+		break;
+	case 2:
+		Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/5 A Safe Space LOOP TomMusic.ogg");
+		break;
+	}
+}
+
+void Scene::PlayBossMusic() {
+	if (!bossMusic) {
+		Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/7 The Wilderness LOOP TomMusic.ogg");
+		bossMusic = true;
+	}
 }
 
 // Called each loop iteration
@@ -273,6 +293,10 @@ bool Scene::Update(float dt)
 	switch (state)
 	{
 	case GameState::MAINMENU:
+		if (!menuMusic) {
+			Engine::GetInstance().audio.get()->PlayMusic("Assets/Audio/Music/10 Terminus FULL LOOP TomMusic.ogg");
+			menuMusic = true;
+		}
 		break;
 	case GameState::START:
 		Engine::GetInstance().render.get()->camera.x = ((player->position.getX() * -1) + 200) * 4;

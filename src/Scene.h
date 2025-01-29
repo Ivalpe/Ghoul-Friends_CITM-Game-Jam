@@ -98,6 +98,8 @@ public:
 		return player->GetCoins();
 	}
 
+	void PlayBossMusic();
+ 
 	void AddPlayerCoins(int q) {
 		player->AddCoins(q);
 	}
@@ -116,7 +118,8 @@ public:
 	bool regenItem = false;
 
 private:
-
+	bool menuMusic = false;
+	bool bossMusic = false;
 	bool quitGame = false;
 
 	SDL_Texture* drums;

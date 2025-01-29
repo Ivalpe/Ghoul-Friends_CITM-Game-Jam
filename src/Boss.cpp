@@ -281,8 +281,10 @@ void Boss::OnCollision(PhysBody* physA, PhysBody* physB) {
 		}
 		break;
 	case ColliderType::PLAYER:
-		if (physA->ctype == ColliderType::ACTIVEBOSS)
+		if (physA->ctype == ColliderType::ACTIVEBOSS) {
 			bossActive = true;
+			Engine::GetInstance().scene.get()->PlayBossMusic();
+		}
 		else if (physA->ctype == ColliderType::RANGELEFT)
 			de = DirectionBoss::LEFT;
 		else if (physA->ctype == ColliderType::RANGERIGHT)
