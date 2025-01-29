@@ -96,107 +96,124 @@ bool NPC::Start() {
 
 bool NPC::Update(float dt) {
 
-	switch (type) {
-	case NPCs::FIRE:
-		if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished == true and currentAnimation != &var) render = false;
+	b2Transform pbodyPos;
 
-		if (currentAnimation == &var) {
-			if (var.HasFinished() and !done) {
-				done = true;
-				Engine::GetInstance().scene->DrawText(false);
-				var.Reset();
-				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::FIRE_EVENT;
-				if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished == false) currentAnimation = &idle;
-				else render = false;
-			}
-		}
-		break;
-	case NPCs::ZERA:
-		if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished) {
-			render = true;
-			if (!Engine::GetInstance().scene.get()->eventManager->zeraEventDone) done = false;
-			else done = false;
-		}
-		break;
-	case NPCs::CROW:
-		if (Engine::GetInstance().scene.get()->eventManager->firstRespawn and !Engine::GetInstance().scene.get()->eventManager->crowEventDone) {
-			done = false;
-			render = true;
-		}
-		else {
-			done = true;
-			render = false;
-		}
-		break;
-	case NPCs::ARMGUY:
-		if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone and Engine::GetInstance().scene.get()->eventManager->helpedMan) done = true;
-		break;
-	case NPCs::FRANCESK:
-		if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
-		break;
-	case NPCs::DEMON:
-		if (Engine::GetInstance().scene.get()->eventManager->demonEventDone) done = true;
-		break;
-	}
-
-	if (isActive and Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+	switch (Engine::GetInstance().scene.get()->GetGameState()) {
+	case GameState::START:
 		switch (type) {
 		case NPCs::FIRE:
-			if (!done) {
-				Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
-				currentAnimation = &var;
-				isActive = false;
-			}
-			else {
-				render = false;
-				Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
+			if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished == true and currentAnimation != &var) render = false;
+
+			if (currentAnimation == &var) {
+				if (var.HasFinished() and !done) {
+					done = true;
+					Engine::GetInstance().scene->DrawText(false);
+					var.Reset();
+					Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::FIRE_EVENT;
+					if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished == false) currentAnimation = &idle;
+					else render = false;
+				}
 			}
 			break;
 		case NPCs::ZERA:
-			if (!done) {
-				Engine::GetInstance().scene.get()->eventManager->zeraApproached = true;
-				isActive = false;
+			if (Engine::GetInstance().scene.get()->eventManager->isFireExtinguished) {
+				render = true;
+				if (!Engine::GetInstance().scene.get()->eventManager->zeraEventDone) done = false;
+				else done = false;
+			}
+			break;
+		case NPCs::CROW:
+			if (Engine::GetInstance().scene.get()->eventManager->firstRespawn and !Engine::GetInstance().scene.get()->eventManager->crowEventDone) {
+				done = false;
+				render = true;
+			}
+			else {
 				done = true;
-				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ZERA_EVENT;
+				render = false;
 			}
 			break;
 		case NPCs::ARMGUY:
-			if (!done) {
-				isActive = false;
-				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ARM_EVENT;
-			}
+			if (Engine::GetInstance().scene.get()->eventManager->armGuyEventDone and Engine::GetInstance().scene.get()->eventManager->helpedMan) done = true;
 			break;
 		case NPCs::FRANCESK:
-			if (!done) {
-				isActive = false;
-				done = true;
-				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::FRAN_EVENT;
-			}
+			if (Engine::GetInstance().scene.get()->eventManager->franEventDone) done = true;
 			break;
 		case NPCs::DEMON:
-			if (!done) {
-				isActive = false;
-				done = true;
-				Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::DEMON_EVENT;
-			}
+			if (Engine::GetInstance().scene.get()->eventManager->demonEventDone) done = true;
 			break;
 		}
-	}
 
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+		if (isActive and Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+			switch (type) {
+			case NPCs::FIRE:
+				if (!done) {
+					Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
+					currentAnimation = &var;
+					isActive = false;
+				}
+				else {
+					render = false;
+					Engine::GetInstance().scene.get()->eventManager->isFireExtinguished = true;
+				}
+				break;
+			case NPCs::ZERA:
+				if (!done) {
+					Engine::GetInstance().scene.get()->eventManager->zeraApproached = true;
+					isActive = false;
+					done = true;
+					Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ZERA_EVENT;
+				}
+				break;
+			case NPCs::ARMGUY:
+				if (!done) {
+					isActive = false;
+					Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::ARM_EVENT;
+				}
+				break;
+			case NPCs::FRANCESK:
+				if (!done) {
+					isActive = false;
+					done = true;
+					Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::FRAN_EVENT;
+				}
+				break;
+			case NPCs::DEMON:
+				if (!done) {
+					isActive = false;
+					done = true;
+					Engine::GetInstance().scene.get()->eventManager->currentEvent = ActiveEvent::DEMON_EVENT;
+				}
+				break;
+			}
+		}
 
-	if (render) {
-		if (type == NPCs::CROW) {
-			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX()-4, (int)position.getY() - texW/2, flipType, &currentAnimation->GetCurrentFrame());
+		pbodyPos = pbody->body->GetTransform();
+		position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+		position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
+		if (render) {
+			if (type == NPCs::CROW) {
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() - 4, (int)position.getY() - texW / 2, flipType, &currentAnimation->GetCurrentFrame());
+			}
+			else {
+				if (texW > 16) Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() - texW / 2, flipType, &currentAnimation->GetCurrentFrame());
+				else Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+			}
 		}
-		else {
-			if (texW > 16) Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() - texW / 2, flipType, &currentAnimation->GetCurrentFrame());
-			else Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		currentAnimation->Update();
+		break;
+	case GameState::PAUSESCREEN:
+		if (render) {
+			if (type == NPCs::CROW) {
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() - 4, (int)position.getY() - texW / 2, flipType, &currentAnimation->GetCurrentFrame());
+			}
+			else {
+				if (texW > 16) Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() - texW / 2, flipType, &currentAnimation->GetCurrentFrame());
+				else Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+			}
 		}
+		break;
 	}
-	currentAnimation->Update();
 
 	return true;
 }

@@ -81,80 +81,112 @@ void Enemy::SetEnemyType(EnemyType et) {
 
 bool Enemy::Update(float dt) {
 
-	if (de == DirectionEnemy::LEFT) flipType = SDL_FLIP_NONE;
-	else flipType = SDL_FLIP_HORIZONTAL;
+	switch (Engine::GetInstance().scene.get()->GetGameState()) {
+	case GameState::START:
+		if (!Engine::GetInstance().scene.get()->eventHappening) {
+			if (de == DirectionEnemy::LEFT) flipType = SDL_FLIP_NONE;
+			else flipType = SDL_FLIP_HORIZONTAL;
 
-	velocity = b2Vec2(0, -GRAVITY_Y);
+			velocity = b2Vec2(0, -GRAVITY_Y);
 
-	if (currentAnimation == &dmg && currentAnimation->HasFinished()) {
-		currentAnimation = &idle;
-		dmg.Reset();
-	}
-
-	if (coolFire && timer > 0) timer--;
-
-	if (timer == 0) {
-		coolFire = false;
-	}
-
-	if (life <= 0) {
-		if (type == EnemyType::SPIDER && currentAnimation == &die) Engine::GetInstance().scene->PlayAudio(4);
-		currentAnimation = &die;
-		isDying = true;
-	}
-
-	if (!isDying and !isDamaged) {
-		if (currentAnimation == &walk) {
-			if (directionLeft) {
-				velocity.x = -speed;
+			if (currentAnimation == &dmg && currentAnimation->HasFinished()) {
+				currentAnimation = &idle;
+				dmg.Reset();
 			}
-			else {
-				velocity.x = +speed;
+
+			if (coolFire && timer > 0) timer--;
+
+			if (timer == 0) {
+				coolFire = false;
 			}
-		}
-		if (type == EnemyType::SKELETON) {
-			if (followPlayer && !rangePlayer) {
-				MovementEnemy(dt);
+
+			if (life <= 0) {
+				if (type == EnemyType::SPIDER && currentAnimation == &die) Engine::GetInstance().scene->PlayAudio(4);
+				currentAnimation = &die;
+				isDying = true;
 			}
-		}
-		else if (type == EnemyType::SPIDER || type == EnemyType::DEMON) {
-			if (followPlayer) {
-				MovementEnemy(dt);
+
+			if (!isDying and !isDamaged) {
+				if (currentAnimation == &walk) {
+					if (directionLeft) {
+						velocity.x = -speed;
+					}
+					else {
+						velocity.x = +speed;
+					}
+				}
+				if (type == EnemyType::SKELETON) {
+					if (followPlayer && !rangePlayer) {
+						MovementEnemy(dt);
+					}
+				}
+				else if (type == EnemyType::SPIDER || type == EnemyType::DEMON) {
+					if (followPlayer) {
+						MovementEnemy(dt);
+					}
+				}
+				else {
+					if (followPlayer && !coolFire) {
+						currentAnimation = &attack;
+						Engine::GetInstance().scene->CreateAttack(EntityType::ARROW, position, GetDirection() == DirectionEnemy::LEFT);
+						timer = fireRate;
+						coolFire = true;
+					}
+				}
+
+				//if (currentAnimation == &attack && currentAnimation.) 
+
+				if (rangePlayer) {
+					currentAnimation = &attack;
+					if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
+				}
 			}
-		}
-		else {
+
+			pbody->body->SetLinearVelocity(velocity);
+
+			b2Transform pbodyPos = pbody->body->GetTransform();
+			position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
+			position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
+
+			if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+			else
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+
+			currentAnimation->Update();
+
+			b2Vec2 enemyPos = pbody->body->GetPosition();
+			sensor->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
+			rangeAttack->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
+
+			if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;
+
 			if (followPlayer && !coolFire) {
 				currentAnimation = &attack;
 				Engine::GetInstance().scene->CreateAttack(EntityType::ARROW, position, GetDirection() == DirectionEnemy::LEFT);
 				timer = fireRate;
 				coolFire = true;
 			}
-		}
 
-		if (rangePlayer) {
-			currentAnimation = &attack;
-			if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
+			if (rangePlayer) {
+				currentAnimation = &attack;
+				if (type == EnemyType::SKELETON) Engine::GetInstance().scene->PlayAudio(6);
+			}
 		}
+		else {
+			if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+			else
+				Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		}
+		break;
+	case GameState::PAUSESCREEN:
+		if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
+			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		else
+			Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
+		break;
 	}
-
-	pbody->body->SetLinearVelocity(velocity);
-
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.setX(METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2);
-	position.setY(METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2);
-
-	if (currentAnimation == &attack && (type == EnemyType::SKELETON || type == EnemyType::DEMON))
-		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX() + (flipType == SDL_FLIP_NONE ? -16 : 0), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
-	else
-		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
-
-	currentAnimation->Update();
-
-	b2Vec2 enemyPos = pbody->body->GetPosition();
-	sensor->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
-	rangeAttack->body->SetTransform({ enemyPos.x, enemyPos.y }, 0);
-
-	if (currentAnimation == &die && currentAnimation->HasFinished()) dead = true;
 	return true;
 }
 

@@ -201,12 +201,15 @@ bool Player::Update(float dt)
 
 		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 		currentAnimation->Update();
+
+		pbody->body->SetLinearVelocity(velocity);
+		break;
+	case GameState::PAUSESCREEN:
+		Engine::GetInstance().render.get()->DrawTexture(texture, (int)position.getX(), (int)position.getY() + 1, flipType, &currentAnimation->GetCurrentFrame());
 		break;
 	default:
 		break;
 	}
-
-	pbody->body->SetLinearVelocity(velocity);
 
 	return true;
 }
