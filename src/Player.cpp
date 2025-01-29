@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "Events.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -96,6 +97,9 @@ bool Player::Update(float dt)
 			isRespawning = true;
 			startRespawn = false;
 			currentAnimation = &respawn;
+			if (!Engine::GetInstance().scene.get()->eventManager->firstRespawn and !Engine::GetInstance().scene.get()->eventManager->crowEventDone) {
+				Engine::GetInstance().scene.get()->eventManager->firstRespawn = true;
+			}
 		}
 
 		if (isRespawning) {

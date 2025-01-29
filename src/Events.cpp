@@ -64,6 +64,18 @@ void Events::LoadLevelEvents(int lvl) {
 				case (int)NPCs::ZERA:
 					zeraDialogue.push_back(diag);
 					break;
+				case (int)NPCs::CROW:
+					crowDialogue.push_back(diag);
+					break;
+				case (int)NPCs::ARMGUY:
+					armGuyDialogue.push_back(diag);
+					break;
+				case (int)NPCs::FRANCESK:
+					franceskDialogue.push_back(diag);
+					break;
+				case (int)NPCs::DEMON:
+					demonDialogue.push_back(diag);
+					break;
 				}
 			}
 		}
@@ -83,9 +95,24 @@ void Events::CleanUp() {
 		Engine::GetInstance().entityManager->DestroyEntity(n);
 	}
 	npcs.clear();
+
+	SDL_DestroyTexture(chatbox);
+	SDL_DestroyTexture(NyssaPFP);
+	SDL_DestroyTexture(npcPFPs);
+
+	crowDialogue.clear();
+	zeraDialogue.clear();
+	armGuyDialogue.clear();
+	franceskDialogue.clear();
+	demonDialogue.clear();
+	bossDialogue.clear();
+
+	npcPFPsRect.clear();
 }
 
 void Events::Update() {
+	Engine::GetInstance().scene->DrawText(false);
+
 	if (currentEvent != ActiveEvent::NONE) Engine::GetInstance().scene.get()->eventHappening = true;
 	else Engine::GetInstance().scene.get()->eventHappening = false;
 
@@ -96,6 +123,9 @@ void Events::Update() {
 			break;
 		case ActiveEvent::ZERA_EVENT:
 			ZeraEvent();
+			break;
+		case ActiveEvent::CROW_EVENT:
+			CrowEvent();
 			break;
 		}
 	}
@@ -141,6 +171,41 @@ void Events::FireEvent() {
 	}
 }
 
+void Events::CrowEvent() {
+	Engine::GetInstance().scene->DrawText(false);
+
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		++timer;
+		if (timer >= crowDialogue.size()) {
+			Engine::GetInstance().scene->DrawText(false);
+			textActive = false;
+			currentEvent = ActiveEvent::NONE;
+			crowEventDone = true;
+			varReset();
+		}
+	}
+
+	if (textActive) {
+		Engine::GetInstance().scene->DrawText(true, const_cast<pugi::char_t*>("ContinueDialogue"));
+
+		SDL_Rect chatboxRect = { 0, 0, 1920, 1080 };
+		SDL_Rect pfpRect = { 0, 0, 178, 178 };
+		Engine::GetInstance().render.get()->DrawTexture(chatbox, 0, 0, SDL_FLIP_NONE, &chatboxRect, false, false);
+
+		switch (crowDialogue[timer].character) {
+		case -1:
+			Engine::GetInstance().render.get()->DrawTexture(NyssaPFP, 486, 836, SDL_FLIP_NONE, &pfpRect, false, false);
+			break;
+		case (int)NPCs::CROW:
+			Engine::GetInstance().render.get()->DrawTexture(npcPFPs, 500, 870, SDL_FLIP_NONE, &npcPFPsRect[(int)NPCs::CROW - 1], false, false);
+			break;
+		}
+
+
+		Engine::GetInstance().render.get()->DrawText(crowDialogue[timer].text.c_str(), 720, 905, crowDialogue[timer].text.length() * 10, 70);
+	}
+}
+
 void Events::ZeraEvent() {
 	Engine::GetInstance().scene->DrawText(false);
 
@@ -150,7 +215,7 @@ void Events::ZeraEvent() {
 			Engine::GetInstance().scene->DrawText(false);
 			textActive = false;
 			currentEvent = ActiveEvent::NONE;
-			FireEventDone = true;
+			zeraEventDone = true;
 			varReset();
 		}
 	}

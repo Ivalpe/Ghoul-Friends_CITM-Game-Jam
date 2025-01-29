@@ -3,7 +3,7 @@
 #include "NPC.h"
 
 enum class ActiveEvent {
-	NONE, FIRE_EVENT, ZERA_EVENT
+	NONE, FIRE_EVENT, ZERA_EVENT, CROW_EVENT
 };
 
 struct Dialogue {
@@ -43,6 +43,7 @@ public:
 	//events
 	//lvl 0
 	void FireEvent();
+	void CrowEvent();
 	void ZeraEvent();
 	//cave
 
@@ -73,6 +74,8 @@ public:
 	bool armGuyEventDone = false;
 	bool demonEventDone = false;
 	bool bossEventDone = false;
+	bool firstRespawn = false;
+	bool crowEventDone = false;
 
 	//dialogues
 	std::vector<Dialogue> crowDialogue;

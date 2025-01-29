@@ -286,17 +286,21 @@
 							</explosion>
 						</animations>
 					</npc>
-					<npc npcType="1" name="crow" texture="Assets/Textures/Sprites.png" level="0" x="" y="" w="16" h="16">
+					<npc npcType="1" name="crow" texture="Assets/Textures/Sprites.png" level="0" x="272" y="208" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="32" y="80" w="16" h="16"/>
 								<frame x="48" y="80" w="16" h="16"/>
 							</idle>
 						</animations>
+						<dialogues>
+							<dialogue character="1" text="hola"/>
+							<dialogue character="-1" text="holiss"/>
+						</dialogues>
 					</npc>
 					<npc npcType="2" name="zera" texture="Assets/Textures/Sprites.png" level="0" x="2080" y="544" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="80" w="16" h="16"/>
 								<frame x="16" y="80" w="16" h="16"/>
 							</idle>
@@ -308,7 +312,7 @@
 					</npc>
 					<npc npcType="4" name="armguy" texture="Assets/Textures/Sprites.png" level="0" x="1760" y="1072" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="112" w="16" h="16"/>
 								<frame x="16" y="112" w="16" h="16"/>
 							</idle>
@@ -318,7 +322,7 @@
 				<event level="1">
 					<npc npcType="3" name="francesk" texture="Assets/Textures/Sprites.png" level="1" x="992" y="768" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="96" w="16" h="16"/>
 								<frame x="16" y="96" w="16" h="16"/>
 							</idle>
@@ -328,7 +332,7 @@
 				<event level="2">
 					<npc npcType="5" name="demon" texture="Assets/Textures/Sprites.png" level="2" x="1600" y="960" w="16" h="16">
 						<animations>
-							<idle loop="true" speed="0.12">
+							<idle loop="true" speed="0.05">
 								<frame x="0" y="128" w="16" h="16"/>
 								<frame x="16" y="128" w="16" h="16"/>
 								<frame x="32" y="128" w="16" h="16"/>
