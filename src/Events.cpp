@@ -359,7 +359,7 @@ void Events::FranEvent() {
 		}
 
 
-		Engine::GetInstance().render.get()->DrawText(franceskDialogue[timer].text.c_str(), 720, 905, franceskDialogue[timer].text.length() * 10, 70);
+		Engine::GetInstance().render.get()->DrawText(franceskDialogue[timer].text.c_str(), 680, 905, franceskDialogue[timer].text.length() * 10, 70);
 	}
 }
 
@@ -395,6 +395,6 @@ void Events::DemonEvent() {
 		}
 
 
-		Engine::GetInstance().render.get()->DrawText(demonDialogue[timer].text.c_str(), 720, 905, demonDialogue[timer].text.length() * 10, 70);
+		Engine::GetInstance().render.get()->DrawText(demonDialogue[timer].text.c_str(), 680, 905, demonDialogue[timer].text.length() * 10, 70);
 	}
 }

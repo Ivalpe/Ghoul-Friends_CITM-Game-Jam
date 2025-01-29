@@ -393,8 +393,19 @@
 							</idle>
 						</animations>
 						<dialogues>
-							<dialogue character="3" text="hola"/>
-							<dialogue character="-1" text="holiss"/>
+							<dialogue character="3" text="Mm ... Mhm ..."/>
+							<dialogue character="-1" text="Hola ..?"/>
+							<dialogue character="3" text="Ah! Hola."/>
+							<dialogue character="3" text="Perdon estaba distraido."/>
+							<dialogue character="-1" text="No pasa nada."/>
+							<dialogue character="-1" text="Que haces aqui?"/>
+							<dialogue character="3" text="Recolectando recursos."/>
+							<dialogue character="3" text="Paso tiempo buscando recursos para llevar a mi pueblo."/>
+							<dialogue character="3" text="Tu que haces aqui?"/>
+							<dialogue character="-1" text="Ah, yo tambien estoy buscando algo."/>
+							<dialogue character="3" text="Pues si necesitas algo, aqui estare."/>
+							<dialogue character="-1" text="No piensas ... irte pronto ..?"/>
+							<dialogue character="3" text="Nah, tiendo a pasar mucho tiempo aqui..."/>
 						</dialogues>
 					</npc>
 				</event>
@@ -408,8 +419,26 @@
 							</idle>
 						</animations>
 						<dialogues>
-							<dialogue character="5" text="hola"/>
-							<dialogue character="-1" text="holiss"/>
+							<dialogue character="5" text="Puedes pasar si quieres ..."/>
+							<dialogue character="5" text="No te voy ha herir."/>
+							<dialogue character="-1" text="..."/>
+							<dialogue character="-1" text="Que haces aqui entonces?"/>
+							<dialogue character="5" text="Observando."/>
+							<dialogue character="-1" text="Ah ..."/>
+							<dialogue character="-1" text="Realmente no me vas a pelear?"/>
+							<dialogue character="5" text="No."/>
+							<dialogue character="5" text="Me he dado cuenta que esto no es lo que quiero."/>
+							<dialogue character="5" text="Solo veo como las cosas han empeorado desde que llegamos,"/>
+							<dialogue character="5" text="desde que mi creador nos creo."/>
+							<dialogue character="-1" text="Que quieres decir?"/>
+							<dialogue character="5" text="Esta vista empeora cada dia ..."/>
+							<dialogue character="5" text="No quiero que esto sea mi proposito."/>
+							<dialogue character="5" text="Aunque no sea lo que mi creador quisiera."/>
+							<dialogue character="5" text="Esto no es lo correcto."/>
+							<dialogue character="-1" text="Y que haras ahora ..?"/>
+							<dialogue character="5" text="Pues eso tendre que averiguarlo."/>
+							<dialogue character="5" text="Pero sera mi camino."/>
+							<dialogue character="-1" text="Pues ... Te deseo suerte encontrandolo."/>
 						</dialogues>
 					</npc>
 				</event>
