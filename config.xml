@@ -438,7 +438,7 @@
 							<dialogue character="-1" text="Sabrias donde encontrarla?"/>
 							<dialogue character="1" text="Por seguro, no. Podria estar en las cuevas? Los bosques?"/>
 							<dialogue character="1" text="Tendras que explorar."/>
-							<dialogue character="1" text="Seguro podras encontrar algun sitio para obtener más recursos."/>
+							<dialogue character="1" text="Seguro podras encontrar algun sitio para obtener mas recursos."/>
 							<dialogue character="-1" text="Al menos es un punto de inicio."/>
 							<dialogue character="-1" text="Gracias."/>
 						</dialogues>
@@ -463,10 +463,10 @@
 							<dialogue character="2" text="Hola Nyssa. No eres de aqui-?"/>
 							<dialogue character="2" text="Oh! Eres un angel, verdad? Pareces un angel."/>
 							<dialogue character="-1" text="Gracias."/>
-							<dialogue character="-1" text="… sabes que ha pasado por aqui?"/>
+							<dialogue character="-1" text="... sabes que ha pasado por aqui?"/>
 							<dialogue character="2" text="Huh ..?"/>
 							<dialogue character="2" text="Que quieres decir?"/>
-							<dialogue character="-1" text="Me tengo que ir pero espero encontrarte otra vez, uh…"/>
+							<dialogue character="-1" text="Me tengo que ir pero espero encontrarte otra vez, uh ..."/>
 							<dialogue character="2" text="Zera. Espero verte otra vez tambien, Nyssa!"/>
 						</dialogues>
 					</npc>
