@@ -20,6 +20,7 @@
 #include "Coin.h"
 #include "Door.h"
 #include <map>
+#include "Boss.h"
 
 Scene::Scene() : Module()
 {
@@ -160,7 +161,7 @@ void Scene::LoadLevel(int lvl) {
 		break;
 	case 2:
 		Engine::GetInstance().map->Load("Assets/Maps/", "Mountain.tmx");
-		player->SetPosition({ 320, 800 });
+		player->SetPosition({ 3168, 772 });
 		currentLevel = LEVELS::MOUNTAINS;
 		break;
 	default:
@@ -170,7 +171,7 @@ void Scene::LoadLevel(int lvl) {
 	eventManager->LoadLevelEvents((int)currentLevel);
 
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
-	std::map<int, Vector2D> listDoorMap;
+	std::map<int, Vector2D> listDoorMap, listBosses;
 
 	listEnemy = Engine::GetInstance().map->GetEnemyList();
 	for (auto enemy : listEnemy) {
@@ -220,6 +221,15 @@ void Scene::LoadLevel(int lvl) {
 		d->Start();
 		d->SetPosition({ door.second.getX(), door.second.getY() });
 		doorList.push_back(d);
+	}
+
+	listBosses = Engine::GetInstance().map->GetBossList();
+	for (auto boss : listBosses) {
+		Boss* b = (Boss*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOSS);
+		b->SetParameters(configParameters.child("entities").child("bosses").child("bossMountain"));
+		b->Start();
+		b->SetPosition({ boss.second.getX(), boss.second.getY() });
+		bossList.push_back(b);
 	}
 }
 
@@ -393,7 +403,7 @@ void Scene::AddItem(int item) {
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	std::vector<Vector2D> listEnemy, listChest, listEvents;
-	std::map<int, Vector2D> listDoorMap;
+	std::map<int, Vector2D> listDoorMap, listBosses;
 	int level;
 
 	switch (state) {
@@ -449,6 +459,15 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 				d->Start();
 				d->SetPosition({ door.second.getX(), door.second.getY() });
 				doorList.push_back(d);
+			}
+
+			listBosses = Engine::GetInstance().map->GetBossList();
+			for (auto boss : listBosses) {
+				Boss* b = (Boss*)Engine::GetInstance().entityManager->CreateEntity(EntityType::BOSS);
+				b->SetParameters(configParameters.child("entities").child("bosses").child("bossMountain"));
+				b->Start();
+				b->SetPosition({ boss.second.getX(), boss.second.getY() });
+				bossList.push_back(b);
 			}
 
 			eventManager->LoadLevelEvents((int)currentLevel);

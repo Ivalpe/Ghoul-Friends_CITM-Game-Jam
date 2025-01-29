@@ -24,7 +24,7 @@ enum bodyType {
 };
 
 enum class ColliderType {
-	PLAYER, 
+	PLAYER,
 	ITEM,
 	PLATFORM,
 	ATTACKPLAYER,
@@ -34,6 +34,7 @@ enum class ColliderType {
 	COIN,
 	MERCHANT,
 	NPC,
+	BOSS,
 	UNKNOWN
 	// ..
 };

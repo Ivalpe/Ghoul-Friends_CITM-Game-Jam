@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="250" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="907">
- <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="4368" columns="33">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="250" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="908">
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1386" columns="33">
   <image source="tileset.png" width="528" height="672"/>
   <wangsets>
    <wangset name="Earth" type="corner" tile="105">
@@ -62263,8 +62263,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="77"/>
+   <tile gid="79"/>
    <tile/>
    <tile/>
    <tile/>
@@ -62513,9 +62513,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="77"/>
+   <tile gid="110"/>
+   <tile gid="113"/>
+   <tile gid="78"/>
    <tile gid="78"/>
    <tile gid="78"/>
    <tile gid="78"/>
@@ -62763,9 +62763,9 @@
    <tile gid="77"/>
    <tile gid="78"/>
    <tile gid="78"/>
-   <tile gid="78"/>
-   <tile gid="78"/>
    <tile gid="114"/>
+   <tile gid="111"/>
+   <tile gid="111"/>
    <tile gid="111"/>
    <tile gid="111"/>
    <tile gid="111"/>
@@ -87282,7 +87282,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="18"/>
    <tile/>
    <tile/>
    <tile/>
@@ -100074,7 +100074,7 @@
    <tile/>
   </data>
  </layer>
- <objectgroup id="7" name="Collisions" visible="0">
+ <objectgroup id="7" name="Collisions">
   <properties>
    <property name="Draw" type="bool" value="false"/>
   </properties>
@@ -100136,6 +100136,7 @@
   <object id="904" x="3936" y="528" width="32" height="32"/>
   <object id="905" x="3952" y="560" width="32" height="32"/>
   <object id="906" x="3984" y="592" width="14.6667" height="16"/>
+  <object id="907" x="3120" y="768" width="32" height="32"/>
  </objectgroup>
  <layer id="9" name="Navigation" width="250" height="100" visible="0">
   <properties>
@@ -112337,8 +112338,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="11"/>
+   <tile gid="11"/>
    <tile/>
    <tile/>
    <tile/>
@@ -112587,8 +112588,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="11"/>
+   <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>

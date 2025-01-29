@@ -164,6 +164,10 @@ public:
 		return posDoor;
 	}
 
+	std::map<int, Vector2D> GetBossList() {
+		return posBoss;
+	}
+
 public:
 	std::string mapFileName;
 	std::string mapPath;
@@ -176,4 +180,5 @@ private:
 	std::vector<Vector2D> posChest;
 	std::vector<Vector2D> posRandomEvent;
 	std::map<int, Vector2D> posDoor;
+	std::map<int, Vector2D> posBoss;
 };
