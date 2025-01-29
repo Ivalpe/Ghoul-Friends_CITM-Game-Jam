@@ -80,6 +80,20 @@ void Events::LoadLevelEvents(int lvl) {
 	}
 }
 
+void Events::FullReset() {
+	isFireExtinguished = false;
+	FireEventDone = false;
+	zeraApproached = false;
+	zeraEventDone = false;
+	helpedMan = false;
+	armGuyEventDone = false;
+	franEventDone = false;
+	demonEventDone = false;
+	bossEventDone = false;
+	firstRespawn = false;
+	crowEventDone = false;
+}
+
 void Events::CleanUp() {
 	if (fire) {
 		Engine::GetInstance().physics->DeleteBody((fire)->getBody());

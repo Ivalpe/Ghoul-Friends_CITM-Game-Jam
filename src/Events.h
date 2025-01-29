@@ -38,6 +38,8 @@ public:
 
 	void CleanUp();
 
+	void FullReset();
+
 	ActiveEvent currentEvent = ActiveEvent::NONE;
 
 	//events
