@@ -60,6 +60,7 @@ public:
 	}
 
 	void Restart() {
+		canShot = false;
 		life = 100;
 		maxLife = 100;
 		fireRate = 60;

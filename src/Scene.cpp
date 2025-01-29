@@ -501,6 +501,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		{
 		case 1:
 			itemsList.clear();
+			eventManager->FullReset();
 			LoadLevel(0);
 			player->Restart();
 
