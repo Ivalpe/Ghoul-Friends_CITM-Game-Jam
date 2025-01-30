@@ -30,7 +30,7 @@
 
 ## Ayuda
 ---
-** Este apartado puede contener spoilers
+** Este apartado puede contener spoilers **
 ### Guía de objetos
 
 ### Guía de NPCs
