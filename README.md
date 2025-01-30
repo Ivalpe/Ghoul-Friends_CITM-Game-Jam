@@ -32,6 +32,15 @@
 ---
 **Este apartado puede contener spoilers**
 ### Guía de objetos
+![Item](https://github.com/Ivalpe/Ghoul-Friends_CITM-Game-Jam/blob/main/Assets/Items/armor.png) Aumenta la armadura en un 5%
+
+![Item](https://github.com/Ivalpe/Ghoul-Friends_CITM-Game-Jam/blob/main/Assets/Items/bookDmg.png) Aumenta el daño en un 10%
+
+![Item](https://github.com/Ivalpe/Ghoul-Friends_CITM-Game-Jam/blob/main/Assets/Items/drums.png) Aumenta la velocidad de ataque en un 20%
+
+![Item](https://github.com/Ivalpe/Ghoul-Friends_CITM-Game-Jam/blob/main/Assets/Items/life.png) Aumenta la vida maxima en un 15%
+
+![Item](https://github.com/Ivalpe/Ghoul-Friends_CITM-Game-Jam/blob/main/Assets/Items/regeneration.png) Regenera el 1% de vida máxima cada 5 segundos
 
 ### Guía de NPCs
 Para ver todos los dialogos:
