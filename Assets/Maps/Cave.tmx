@@ -57506,7 +57506,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="14"/>
    <tile/>
    <tile/>
    <tile/>
@@ -72232,7 +72232,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="14"/>
    <tile/>
    <tile/>
    <tile/>
@@ -72293,7 +72293,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="17"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
